@@ -42,9 +42,10 @@
                                             <input type="hidden" name="customer_id" id="customer_id" value="{{$customer->id}}">
                                             <!--Row-1-->
                                             <div class="col-12 col-md-4">
-                                                <label class="form-label">How many members will there</label>
-                                                <input type="number" class="form-control" id="memberCount" placeholder="How many members will there"
-                                                name="members" value="{{$customer->customerInfo ? $customer->customerInfo->members : ''}}">
+                                                <label class="form-label">Family Members: </label>
+                                                <button type="button" class="btn btn-info btn-sm text-sm" id="addMembers">+ Add Family Members</button>
+                                                {{-- <input type="button" class="form-control" id="memberCount" placeholder="How many members will there"
+                                                name="members" value="{{$customer->customerInfo ? $customer->customerInfo->members : ''}}"> --}}
                                             </div>
                                             @if ($customer->customerInfo)
                                             <div class="row mt-3">
@@ -71,12 +72,13 @@
                                             <div class="row">
                                                 <div class="col-1 col-md-0 mb-2 text-end">
                                                     <label class="text-end">{{$key + 1}}</label>
+                                                    <input type="hidden" name="member_id" id="" value="{{$member->id}}">
                                                 </div>
                                                 <div class="col-12 col-md-3 mb-2">
-                                                    <input type="text" class="form-control" placeholder="Member Name" name="member_name[{{$key+1}}]" value="{{$member->member_name}}">
+                                                    <input type="text" class="form-control" placeholder="Member Name" name="member_name[{{$key + 1}}]" value="{{$member->member_name}}">
                                                 </div>
                                                 <div class="col-12 col-md-2 mb-2">
-                                                    <select class="form-select" name="member_gender[{{$key+1}}]">
+                                                    <select class="form-select" name="member_gender[{{$key + 1}}]">
                                                         <option value="Male" {{$member->member_gender == 'Male' ? 'selected' : ''}}>Male</option>
                                                         <option value="Female" {{$member->member_gender == 'Female' ? 'selected' : ''}}>Female</option>
                                                         <option value="Other" {{$member->member_gender == 'Other' ? 'selected' : ''}}>Other</option>
@@ -84,11 +86,14 @@
                                                 </div>
                                                 <div class="col-12 col-md-3 mb-2">
                                                     <input type="text" class="form-control" placeholder="Relation With Rental"
-                                                    name="member_relation[{{$key+1}}]" value="{{$member->member_relation}}">
+                                                    name="member_relation[{{$key + 1}}]" value="{{$member->member_relation}}">
                                                 </div>
                                                 <div class="col-12 col-md-2 mb-2">
                                                     <input type="text" class="form-control" placeholder="Contact Number"
-                                                    name="member_phone[{{$key+1}}]" value="{{$member->member_phone}}">
+                                                    name="member_phone[{{$key + 1}}]" value="{{$member->member_phone}}">
+                                                </div>
+                                                <div class="col-12 col-md-1 mb-2">
+                                                    <a href="{{route('booking.member.delete',$member->id)}}" class="btn btn-danger memberDelete">x</a>
                                                 </div>
                                             </div>
                                             @endforeach
@@ -463,62 +468,56 @@
             }
         });
 
-        // Listen for changes on the input field
-        $('#memberCount').on('input', function () {
-            // Get the number of members from the input field
-            let memberCount = $(this).val();
-
-            // Clear previous rows
-            $('.member-rows').empty();
-            let headerRow = `
-                    <div class="row mt-3">
-                        <div class="col-12 col-md-1 mb-2">
-                        </div>
-                        <div class="col-12 col-md-3">
-                            <label class="form-label">Member Name</label>
-                        </div>
-                        <div class="col-12 col-md-3">
-                            <label class="form-label">Gender</label>
-                        </div>
-                        <div class="col-12 col-md-2">
-                            <label class="form-label">Relation With Rental</label>
-                        </div>
-                        <div class="col-12 col-md-2">
-                            <label class="form-label">Contact Number</label>
-                        </div>
+        let i = 0;
+        $('#addMembers').on('click', function () {
+            i++;
+            let memberRow = `
+                <div class="row">
+                    <div class="col-1 col-md-0 mb-2 text-end">
+                        <label class="text-end">${i}</label>
+                        <input type="hidden" name="member_id" id="" value="">
                     </div>
-                `;
-                // Append the new row to the container
-                $('.member-rows').append(headerRow);
-            // Generate new rows based on the number entered
-            for (let i = 0; i < memberCount; i++) {
-                let memberRow = `
-                    <div class="row">
-                        <div class="col-1 col-md-0 mb-2 text-end">
-                            <label class="text-end">${i +1}</label>
-                        </div>
-                        <div class="col-12 col-md-3 mb-2">
-                            <input type="text" class="form-control" placeholder="Member Name" name="member_name[]">
-                        </div>
-                        <div class="col-12 col-md-2 mb-2">
-                            <select class="form-select" name="member_gender[]">
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                        <div class="col-12 col-md-3 mb-2">
-                            <input type="text" class="form-control" placeholder="Relation With Rental" name="member_relation[]">
-                        </div>
-                        <div class="col-12 col-md-2 mb-2">
-                            <input type="text" class="form-control" placeholder="Contact Number" name="member_phone[]">
-                        </div>
+                    <div class="col-12 col-md-3 mb-2">
+                        <input type="text" class="form-control" placeholder="Member Name" name="member_name[]">
                     </div>
-                `;
-                // Append the new row to the container
-                $('.member-rows').append(memberRow);
-            }
+                    <div class="col-12 col-md-2 mb-2">
+                        <select class="form-select" name="member_gender[]">
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-3 mb-2">
+                        <input type="text" class="form-control" placeholder="Relation With Rental" name="member_relation[]">
+                    </div>
+                    <div class="col-12 col-md-2 mb-2">
+                        <input type="text" class="form-control" placeholder="Contact Number" name="member_phone[]">
+                    </div>
+                </div>
+            `;
+            $('.member-rows').append(memberRow);
 
+        });
+
+        $(document).on('click', '.memberDelete', function (e) {
+            e.preventDefault(); // Prevent the default anchor behavior
+            var url = $(this).attr('href'); // Get the href link
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;
+                    Swal.fire("Deleted", "Member deleted succefully!", "danger");
+                }
+            });
         });
     });
 

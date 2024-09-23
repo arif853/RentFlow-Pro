@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use misterspelik\LaravelPdf\Facades\Pdf as PDF;
 use App\Models\Asset;
 use App\Models\Floor;
 use App\Models\Booking;
@@ -9,11 +10,12 @@ use App\Models\Building;
 use App\Models\Customer;
 use App\Models\Location;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use App\Models\CustomerExtra;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+
 
 class BookingController extends Controller
 {
@@ -414,38 +416,56 @@ class BookingController extends Controller
         }
 
         try {
+            // dd($validatedData,$validatedFamilymember);
+            DB::beginTransaction();
            // Store booking data
            $customerExtra = CustomerExtra::updateOrCreate(
-                ['customer_id' => $request->customer_id], // The condition to find an existing record
-                $validatedData // The data to update or create with
+                ['customer_id' => $request->customer_id],
+                $validatedData
             );
-            // $customerExtra = CustomerExtra::createOrUpdate($validatedData);
 
-            // Insert family members
-            if (isset($validatedData['members']) && $validatedData['members'] > 0) {
-                for ($i = 0; $i < $validatedData['members']; $i++) {
-                    DB::table('family_member')->insert([
-                        'customer_extra_id' => $customerExtra->id,
-                        'member_name' => $validatedFamilymember['member_name'][$i] ?? null,
-                        'member_gender' => $validatedFamilymember['member_gender'][$i] ?? null,
-                        'member_relation' => $validatedFamilymember['member_relation'][$i] ?? null,
-                        'member_phone' => $validatedFamilymember['member_phone'][$i] ?? null,
-                    ]);
+            if (isset($validatedFamilymember['member_name'])) {
+                foreach($validatedFamilymember['member_name'] as $i => $value) {
+                    $memberName = $validatedFamilymember['member_name'][$i] ?? null;
+                    if (!empty($memberName)) {
+                        DB::table('family_member')->updateOrInsert(
+                            ['customer_extra_id' => $customerExtra->id, 'member_name' => $memberName],
+                            [
+                                'member_gender' => $validatedFamilymember['member_gender'][$i] ?? null,
+                                'member_relation' => $validatedFamilymember['member_relation'][$i] ?? null,
+                                'member_phone' => $validatedFamilymember['member_phone'][$i] ?? null,
+                            ]
+                        );
+                    }
                 }
             }
-
-            // dd($validatedData, $validatedFamilymember);
+            DB::commit();
             // Return success response or redirect
             return redirect()->route('booking.index')->with('success', 'Booking data submitted successfully. Thank You');
         } catch (\Exception $e) {
             //throw $th;
+            DB::rollBack();
             Log::info($e);
             return redirect()->back()->with('danger','Booking error, check log.');
         }
 
     }
 
+    public function BookingMemberDelete($id)
+    {
+        DB::table('family_member')->where('id', $id)->delete();
+        return redirect()->back()->with('danger', 'Member removed succefully!');
+    }
 
+    public function formPrint()
+    {
+        $data = [
+            'name' => 'Arif Hossen',
+        ];
+        $pdf = PDF::loadView('admin.booking.rentantform',$data);
+        return $pdf->download('document.pdf');
+
+    }
     /**
      * Remove the specified resource from storage.
      */

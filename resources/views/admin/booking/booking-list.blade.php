@@ -73,8 +73,9 @@
                             <td>
                                 <div class="table-actions d-flex align-items-center gap-3 fs-6">
                                     @if ($booking->status == 'pending')
-                                    <a href="{{route('booking.approved',$booking->id)}}" class="text-primary btn_bookingConfirm" data-bs-toggle="tooltip"
-                                        data-bs-placement="bottom" title="Approve"><i class="bi bi-check-lg"></i></a>
+                                    <a href="{{ route('booking.approved', $booking->id) }}" class="text-primary btn_bookingConfirm" data-bs-toggle="tooltip"
+                                        data-bs-placement="bottom" title="Approve" id="confirmApproveBtn">
+                                        <i class="bi bi-check-lg"></i></a>
                                     @else
                                     <a href="{{route('booking.show',$booking->id)}}" class="text-primary" data-bs-toggle="tooltip"
                                         data-bs-placement="bottom" title="Views"><i class="bi bi-eye-fill"></i></a>
@@ -91,6 +92,9 @@
                                             <i class="bi bi-trash-fill"></i>
                                         </button>
                                     </form>
+                                    <a href="{{route('booking.printPDF')}}" class="text-primary" data-bs-toggle="tooltip"
+                                        data-bs-placement="bottom" title="Rentant Form print" >
+                                        <i class="bi bi-printer"></i></a>
                                 </div>
 
                             </td>
@@ -106,6 +110,30 @@
 @endsection
 @push('script')
 <script>
+    $(document).ready(function(){
+
+        $(document).on('click', '#confirmApproveBtn', function (e) {
+            e.preventDefault(); // Prevent the default anchor behavior
+            var url = $(this).attr('href'); // Get the href link
+
+            Swal.fire({
+                title: "Do you want to approve this booking?",
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: "Approve",
+                denyButtonText: `Deny!`
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If confirmed, redirect to the route
+                    window.location.href = url;
+                    Swal.fire("Thank You", "Booking Cofirmed", "success");
+                } else if (result.isDenied) {
+                    Swal.fire("Sorry!", "Booking is not confirmed", "info");
+                }
+            });
+        });
+    });
+
     document.querySelectorAll('.delete-btn').forEach(button => {
         button.addEventListener('click', function (e) {
             e.preventDefault();

@@ -74,11 +74,15 @@ Route::middleware('auth')->group(function () {
 
     // Booking Resource Routes
     Route::resource('/dashboard/booking', BookingController::class);
+
     // Booking Other Routes
     Route::get('/dashboard/booking/approval/list', [BookingController::class, 'approvalList']);
     Route::get('/dashboard/booking/step/{booking}/second-step', [BookingController::class, 'secondStep'])->name('booking.step2');
     Route::get('/dashboard/booking/step/{customer}/last-step', [BookingController::class, 'lastStep'])->name('booking.step3');
     Route::post('/dashboard/booking/step/{customer}/final-step', [BookingController::class, 'BookingFinalSubmit'])->name('booking.final');
+    Route::get('/dashboard/booking/member/{id}/delete', [BookingController::class, 'BookingMemberDelete'])->name('booking.member.delete');
+
+    Route::get('/dashboard/booking/report/DMP-from/printPDF', [BookingController::class, 'formPrint'])->name('booking.printPDF');
 
     Route::get('/dashboard/booking/status/{booking}/update', [BookingController::class, 'bookingApproved'])->name('booking.approved');
 
