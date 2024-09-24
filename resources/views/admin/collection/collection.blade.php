@@ -39,11 +39,11 @@
 
                                         <div class="col-12">
                                             <label class="form-label">Complex</label>
-                                            <select class="form-select" name="complex_id" id="complex_id">
+                                            <select class="form-select" name="building_id" id="building_id">
                                                 <!-- Asset will be dynamically populated here -->
                                                 <option value="">Select Complex</option>
                                                 @foreach ($buildings as $building)
-                                                <option value="{{$building->id}}">{{$building->building_name}}</option>
+                                                <option value="{{$building->id}}" data-building-name="{{ $building->building_name }}">{{$building->building_name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -55,36 +55,35 @@
 
                                             </select>
                                         </div>
-                                        <div class="col-12">
+                                        <div class="col-12" id="asset_info">
                                             <div class="card border shadow-none radius-10" id=""
                                                 style="margin-bottom: 0px;">
                                                 <div class="card-body">
                                                     <ul class="list-group list-group-flush">
                                                         <li
                                                             class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
-                                                            <span class="side-title">Asset ID :</span>
-                                                            <span id="building-name">Concord Tower</span>
+                                                            <span class="side-title">Unit Name :</span>
+                                                            <span id="unit_name">---</span>
                                                         </li>
                                                         <li
                                                             class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
-                                                            <span class="side-title">Employee Name :</span>
-                                                            <span id="building-type">Commercial</span>
+                                                            <span class="side-title">Building Name :</span>
+                                                            <span id="building_name">---</span>
                                                         </li>
                                                         <li
                                                             class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
-                                                            <span class="side-title">Building :</span>
-                                                            <span id="total-floor">12</span>
+                                                            <span class="side-title">Monthly Rent :</span>
+                                                            <span id="monthly_rent">---</span>
                                                         </li>
                                                         <li
                                                             class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
-                                                            <span class="side-title">Rooms :</span>
-                                                            <span id="building-code">BL-2001</span>
+                                                            <span class="side-title">Service Charge :</span>
+                                                            <span id="service_charge">---</span>
                                                         </li>
                                                         <li
                                                             class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
-                                                            <span class="side-title">Address :</span>
-                                                            <span id="building-address">522/B, North Shahjahanpur,
-                                                                Dhaka</span>
+                                                            <span class="side-title">Others Charge :</span>
+                                                            <span id="others_charge">---</span>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -142,29 +141,55 @@
 @push('script')
 <script>
     $(document).ready(function () {
-        $('#complex_id').on('change', function() {
-            var ComplexId = $(this).val();
-            console.log(ComplexId);
 
-            const selectunitid = document.querySelector('#unit_id');
-            selectunitid.innerHTML = ''; // Clear previous orders
-            const userOrders = orders.filter(order => order.userId === userId);
-            // @foreach ($assets as $asset)
-            //    <option value="{{$asset->unit_id}}">{{$asset->unit_name}}</option>
-            //  @endforeach
+        $('#building_id').on('change', function () {
+            var buildingId = $(this).val();
+            var selectedOption  = this.options[this.selectedIndex];
+            var buildingName =  selectedOption.getAttribute('data-building-name');
 
-            userOrders.forEach(order => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${order.orderId}</td>
-                    <td>${order.product}</td>
-                    <td>${order.amount}</td>
-                `;
-                orderTableBody.appendChild(row);
-            });
 
+            $('#building_name').text(buildingName);
+
+            console.log(buildingId);
+            $('#unit_id').html('');
+            if (buildingId) {
+                $.ajax({
+                    url: '/dashboard/collection/get-asset/' + buildingId,
+                    type: 'GET',
+                    success: function (data) {
+                        $('#unit_id').html(
+                            '<option value="">Select Asset Name</option>');
+                        $.each(data, function (key, value) {
+                            $('#unit_id').append('<option value="' + value.id +
+                                '">' + value.unit_name + '</option>');
+                        });
+                    }
+                });
+            }
         });
 
+
+
+        $('#unit_id').on('change', function () {
+            var assetId = $(this).val();
+            console.log(assetId);
+            // $('#asset_info').html('');
+            if (assetId) {
+                $.ajax({
+                    url: '/dashboard/collection/get-asset-details/' + assetId,
+                    type: 'GET',
+                    success: function (data) {
+                        // console.log('ajax data', data);
+                        $('#unit_name').text(data.unit_name);
+                        $('#monthly_rent').text(data.monthly_rent);
+                        $('#service_charge').text(data.service_charge);
+                        $('#others_charge').text(data.others_charge);
+
+                    }
+                });
+            }
+        });
     });
+
 </script>
 @endpush

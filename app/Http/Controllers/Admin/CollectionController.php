@@ -66,4 +66,17 @@ class CollectionController extends Controller
     {
         //
     }
+    public function getAssets($buildingId)
+    {
+
+        $assets = Asset::where('building_id',$buildingId)->get();
+        return response()->json($assets);
+    }
+
+    public function getAssetdetails($assetId)
+    {
+
+        $assets = Asset::find($assetId);
+        return response()->json($assets);
+    }
 }

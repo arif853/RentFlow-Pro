@@ -92,6 +92,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/booking/get-apartment-details/{id}', [BookingController::class, 'getApartmentDetails']);
 
     Route::resource('/dashboard/collection', CollectionController::class);
+    Route::get('/dashboard/collection/get-asset/{complex_id}', [CollectionController::class,'getAssets']);
+    Route::get('/dashboard/collection/get-asset-details/{asset_id}', [CollectionController::class,'getAssetdetails']);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
