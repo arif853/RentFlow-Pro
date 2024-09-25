@@ -85,10 +85,13 @@ class CollectionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $collection = Collection::findOrFail($id); // Find the record by ID
+        $collection->delete();
+        return redirect()->back()->with('success', 'Collection deleted successfully');
     }
+
     public function getAssets($buildingId)
     {
 

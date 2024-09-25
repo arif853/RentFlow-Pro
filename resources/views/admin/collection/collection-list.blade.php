@@ -29,6 +29,9 @@
                 </form>
             </div>
             <div class="table-responsive mt-3">
+                @if($collections->isEmpty())
+                <tr>No data available.</tr>
+                @else
                 <table class="table align-middle" id="datatable">
                     <thead class="table-secondary">
                         <tr>
@@ -45,7 +48,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                       @foreach ($collections as $key => $collection)
+
+                        @foreach ($collections as $key => $collection)
                         <tr>
                             <td>{{$key+1}}</td>
                             <td>{{$collection->building_id}}</td>
@@ -54,32 +58,48 @@
                             <td>{{$collection->collection_date}}</td>
                             <td>
                                 @if($collection->collection_type == '1')
-                                    DayWise
+                                DayWise
                                 @elseif($collection->collection_type == '2')
-                                    MonthWise
+                                MonthWise
                                 @endif
                             </td>
                             <td>
                                 @if($collection->collection_type == '1')
-                                    {{$collection->duration}} days ( {{$collection->from_date}} - {{$collection->to_date}} )
+                                {{$collection->duration}} days <br> ( {{$collection->from_date}} -
+                                {{$collection->to_date}} )
                                 @elseif($collection->collection_type == '2')
-                                    {{$collection->month}}
+                                {{$collection->month}}
                                 @endif
                             </td>
                             <td>{{$collection->payable_amount}}</td>
                             <td>{{$collection->collection_amount}}</td>
                             <td>
                                 <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                                    <a href="" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Views" aria-label="Views"><i class="bi bi-eye-fill text-primary"></i></a>
-                                    <a href="" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Edit" aria-label="Edit"><i class="bi bi-pencil-fill text-warning"></i></a>
-                                    <a href="" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Delete" aria-label="elete"><i class="bi bi-trash-fill text-danger"></i></i></a>
+                                    <a href="" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                        data-bs-original-title="Views" aria-label="Views"><i
+                                            class="bi bi-eye-fill text-primary"></i></a>
+                                    <a href="" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                        data-bs-original-title="Edit" aria-label="Edit"><i
+                                            class="bi bi-pencil-fill text-warning"></i></a>
+                                    <form action="{{ route('collection.destroy', $collection->id) }}" method="POST"
+                                        onsubmit="return confirm('Are you sure you want to delete this collection?');"
+                                        class="d-inline delete-form">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-danger border-0 bg-transparent p-0 delete-btn"
+                                            data-bs-toggle="tooltip" title="Delete">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </button>
+                                    </form>
                                 </div>
 
                             </td>
                         </tr>
-                       @endforeach
+                        @endforeach
+
                     </tbody>
                 </table>
+                @endif
             </div>
         </div>
     </div>
