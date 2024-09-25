@@ -24,8 +24,7 @@
                     <div class="d-sm-flex align-items-center">
                         <h5 class="mb-2 mb-sm-0">New Collection</h5>
                         <div class="ms-auto">
-                            <a href="manage-employee.php" class="btn btn-secondary">Upcoming Collection</a>
-                            <button type="button" class="btn btn-primary">Publish</button>
+                            <button type="button" class="btn btn-primary">Save</button>
                         </div>
                     </div>
                 </div>
@@ -43,7 +42,7 @@
                                                 <!-- Asset will be dynamically populated here -->
                                                 <option value="">Select Complex</option>
                                                 @foreach ($buildings as $building)
-                                                <option value="{{$building->id}}" data-building-name="{{ $building->building_name }}">{{$building->building_name}}</option>
+                                                <option value="{{$building->id}}" data-building-name="{{ $building->building_name }}" data-employee_id="{{$building->employee_id}}">{{$building->building_name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -105,7 +104,7 @@
                                         </div>
                                         <div class="col-12">
                                             <label class="form-label">Employee</label>
-                                            <input type="text" class="form-control" placeholder="Employee">
+                                            <input type="text" class="form-control" id="employee_name" value="" placeholder="Employee">
                                         </div>
                                         <div class="col-12">
                                             <label class="form-label">Collection Type</label>
@@ -140,17 +139,35 @@
 
 @push('script')
 <script>
+
     $(document).ready(function () {
 
         $('#building_id').on('change', function () {
             var buildingId = $(this).val();
-            var selectedOption  = this.options[this.selectedIndex];
-            var buildingName =  selectedOption.getAttribute('data-building-name');
 
-
+            var buildingName =  this.options[this.selectedIndex].getAttribute('data-building-name');
             $('#building_name').text(buildingName);
+            // console.log(buildingId);
 
-            console.log(buildingId);
+            var employeeId =  this.options[this.selectedIndex].getAttribute('data-employee_id');
+            // console.log('employeeId',employeeId);
+
+
+            // Get Employee Name
+            if (employeeId) {
+                $.ajax({
+                    url: '/dashboard/collection/get-employee-details/' + employeeId,
+                    type: 'GET',
+                    success: function (data) {
+                        $('#employee_name').val(data.name);
+                        // console.log('ajax data',data.name);
+
+
+                    }
+                });
+            }
+
+
             $('#unit_id').html('');
             if (buildingId) {
                 $.ajax({
@@ -169,11 +186,10 @@
         });
 
 
-
+        // Get Details
         $('#unit_id').on('change', function () {
             var assetId = $(this).val();
             console.log(assetId);
-            // $('#asset_info').html('');
             if (assetId) {
                 $.ajax({
                     url: '/dashboard/collection/get-asset-details/' + assetId,

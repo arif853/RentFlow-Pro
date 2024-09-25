@@ -6,6 +6,7 @@ use App\Models\Asset;
 use App\Models\Building;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Employee;
 
 class CollectionController extends Controller
 {
@@ -78,5 +79,12 @@ class CollectionController extends Controller
 
         $assets = Asset::find($assetId);
         return response()->json($assets);
+    }
+
+    public function getEmployeedetails($employeeId)
+    {
+
+        $employee_details = Employee::find($employeeId);
+        return response()->json($employee_details);
     }
 }
