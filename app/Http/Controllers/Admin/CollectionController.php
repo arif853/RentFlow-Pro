@@ -18,6 +18,7 @@ class CollectionController extends Controller
      */
     public function index()
     {
+        
         $collections = Collection::all();
         return view('admin.collection.collection-list',compact('collections'));
     }

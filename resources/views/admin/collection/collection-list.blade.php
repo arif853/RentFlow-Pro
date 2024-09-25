@@ -52,15 +52,15 @@
                         @foreach ($collections as $key => $collection)
                         <tr>
                             <td>{{$key+1}}</td>
-                            <td>{{$collection->building_id}}</td>
-                            <td>{{$collection->asset_id}}</td>
-                            <td>{{$collection->employee_id}}</td>
+                            <td>{{$collection->building->building_name}}</td>
+                            <td>{{$collection->asset->unit_name}}</td>
+                            <td>{{$collection->employee->name}}</td>
                             <td>{{$collection->collection_date}}</td>
                             <td>
                                 @if($collection->collection_type == '1')
-                                DayWise
+                                Day Wise
                                 @elseif($collection->collection_type == '2')
-                                MonthWise
+                                Month Wise
                                 @endif
                             </td>
                             <td>
