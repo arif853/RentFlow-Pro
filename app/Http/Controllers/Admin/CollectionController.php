@@ -6,7 +6,10 @@ use App\Models\Asset;
 use App\Models\Building;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Collection;
 use App\Models\Employee;
+
+use function Illuminate\Log\log;
 
 class CollectionController extends Controller
 {
@@ -33,7 +36,25 @@ class CollectionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'building_id' => 'required',
+            'asset_id' => 'required',
+            'employee_id' => 'required',
+            'collection_date' => 'required|date',
+            'collection_type' => 'required|string',
+            'month' => 'nullable|string',
+            'from_date' => 'nullable|date',
+            'to_date' => 'nullable|date',
+            'duration' => 'nullable|integer',
+            'payable_amount' => 'required|numeric',
+            'collection_amount' => 'required|numeric',
+        ]);
+
+        // dd($request->all());
+        Collection::create($validatedData);
+
+
+        return redirect()->back()->with('success','Created Successfully');
     }
 
     /**
