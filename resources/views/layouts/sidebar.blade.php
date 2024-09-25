@@ -82,7 +82,7 @@
                             <a href="{{route('booking.index')}}"><i class="bi bi-circle"></i>Booking List</a>
                         </li>
                         <li>
-                            <a href="{{route('collection.create')}}"><i class="bi bi-circle"></i>Collection</a>
+                            <a href="{{route('collection.index')}}"><i class="bi bi-circle"></i>Collection</a>
                         </li>
                     </ul>
                 </li>
