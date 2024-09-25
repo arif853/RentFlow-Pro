@@ -33,73 +33,51 @@
                     <thead class="table-secondary">
                         <tr>
                             <th>Sl</th>
+                            <th>Complex</th>
                             <th>Asset</th>
-                            <th>Building</th>
-                            <th>Floor</th>
-                            <th>client Name</th>
-                            <th>status</th>
+                            <th>Employee</th>
+                            <th>Collection date</th>
+                            <th>Collection Type</th>
+                            <th>Duration</th>
+                            <th>Total payable Rent</th>
+                            <th>Collection Amount</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                       {{-- @foreach ($bookings as $key => $booking)
+                       @foreach ($collections as $key => $collection)
                         <tr>
                             <td>{{$key+1}}</td>
-                            <td>{{$booking->asset->unit_name}},<br>
-                                <span class="font-13">{{$booking->asset->asset_code}}</span>
-                            </td>
-                            <td>{{$booking->building->building_name}} <br>
-                                <span class="font-13">{{$booking->building->building_code}}</span>
-                            </td>
+                            <td>{{$collection->building_id}}</td>
+                            <td>{{$collection->asset_id}}</td>
+                            <td>{{$collection->employee_id}}</td>
+                            <td>{{$collection->collection_date}}</td>
                             <td>
-                                {{$booking->floor->floor_name}},<br>
-                                Floor Size: {{$booking->floor->floor_size}}
-                            </td>
-                            <td>
-                               <span class="">{{$booking->customer->client_name}}</span>  <br>
-                               <a href="tel:{{$booking->customer->client_phone}}" class="font-13">{{$booking->customer->client_phone}}</a><br>
-                               <a href="mailto:{{$booking->customer->client_email}}" class="font-13">{{$booking->customer->client_email}}</a>
-                            </td>
-                            <td>
-                                @if ($booking->status == 'pending')
-                                <a href="#" class="badge bg-warning">Pending</a>
-                                @elseif ($booking->status == 'confirmed')
-                                <a href="#" class="badge bg-success">Confirmed</a>
-                                @else
-                                <a href="#" class="badge bg-danger">Caneled</a>
-
+                                @if($collection->collection_type == '1')
+                                    DayWise
+                                @elseif($collection->collection_type == '2')
+                                    MonthWise
                                 @endif
                             </td>
                             <td>
+                                @if($collection->collection_type == '1')
+                                    {{$collection->duration}} days ( {{$collection->from_date}} - {{$collection->to_date}} )
+                                @elseif($collection->collection_type == '2')
+                                    {{$collection->month}}
+                                @endif
+                            </td>
+                            <td>{{$collection->payable_amount}}</td>
+                            <td>{{$collection->collection_amount}}</td>
+                            <td>
                                 <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                                    @if ($booking->status == 'pending')
-                                    <a href="{{ route('booking.approved', $booking->id) }}" class="text-primary btn_bookingConfirm" data-bs-toggle="tooltip"
-                                        data-bs-placement="bottom" title="Approve" id="confirmApproveBtn">
-                                        <i class="bi bi-check-lg"></i></a>
-                                    @else
-                                    <a href="{{route('booking.show',$booking->id)}}" class="text-primary" data-bs-toggle="tooltip"
-                                        data-bs-placement="bottom" title="Views"><i class="bi bi-eye-fill"></i></a>
-
-                                    @endif
-                                    <a href="{{route('booking.edit',$booking->id)}}" class="text-warning" data-bs-toggle="tooltip"
-                                        data-bs-placement="bottom" title="Edit"><i class="bi bi-pencil-fill"></i></a>
-                                    <form action="{{ route('booking.destroy', $booking->id) }}"
-                                        method="POST" class="d-inline delete-form">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" class="text-danger border-0 bg-transparent p-0 delete-btn"
-                                                data-bs-toggle="tooltip" title="Delete">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </button>
-                                    </form>
-                                    <a href="{{route('booking.printPDF')}}" class="text-primary" data-bs-toggle="tooltip"
-                                        data-bs-placement="bottom" title="Rentant Form print" >
-                                        <i class="bi bi-printer"></i></a>
+                                    <a href="" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Views" aria-label="Views"><i class="bi bi-eye-fill text-primary"></i></a>
+                                    <a href="" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Edit" aria-label="Edit"><i class="bi bi-pencil-fill text-warning"></i></a>
+                                    <a href="" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Delete" aria-label="elete"><i class="bi bi-trash-fill text-danger"></i></i></a>
                                 </div>
 
                             </td>
                         </tr>
-                       @endforeach --}}
+                       @endforeach
                     </tbody>
                 </table>
             </div>
