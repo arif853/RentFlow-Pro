@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\RoomtypeController;
 use App\Http\Controllers\Admin\BuildingController;
+use App\Http\Controllers\Admin\CheckoutController;
 use App\Http\Controllers\Admin\CollectionController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\DesignationController;
@@ -96,6 +97,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/collection/get-asset/{complex_id}', [CollectionController::class,'getAssets']);
     Route::get('/dashboard/collection/get-asset-details/{asset_id}', [CollectionController::class,'getAssetdetails']);
     Route::get('/dashboard/collection/get-employee-details/{employee_id}', [CollectionController::class,'getEmployeedetails']);
+
+    Route::resource('/dashboard/checkout',CheckoutController::class);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
