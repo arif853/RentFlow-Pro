@@ -64,7 +64,8 @@ class CollectionController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $collection = Collection::findOrFail($id);
+        return view('admin.collection.collection-details',compact('collection'));
     }
 
     /**
@@ -136,4 +137,6 @@ class CollectionController extends Controller
         $employee_details = Employee::find($employeeId);
         return response()->json($employee_details);
     }
+
+
 }

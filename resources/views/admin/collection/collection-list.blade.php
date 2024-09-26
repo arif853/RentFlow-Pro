@@ -75,7 +75,7 @@
                             <td>{{$collection->collection_amount}}</td>
                             <td>
                                 <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                                    <a href="" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                    <a href="{{route('collection.show', $collection->id)}}" data-bs-toggle="tooltip" data-bs-placement="bottom"
                                         data-bs-original-title="Views" aria-label="Views"><i
                                             class="bi bi-eye-fill text-primary"></i></a>
                                     <a href="{{route('collection.edit',$collection->id)}}" data-bs-toggle="tooltip" data-bs-placement="bottom"
@@ -91,6 +91,9 @@
                                             <i class="bi bi-trash-fill"></i>
                                         </button>
                                     </form>
+                                    <a href="" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                        data-bs-original-title="Print" aria-label="Print"><i
+                                            class="bi bi-printer text-primary"></i></a>
                                 </div>
 
                             </td>
