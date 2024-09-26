@@ -46,6 +46,13 @@
                                                 {{-- @error('building_id')
                                                 <span class="text-danger">{{$message}}</span>
                                                 @enderror --}}
+                                                {{-- <select name="building_id" id="building_id" class="form-control">
+                                                    <option value="">Select Complex</option>
+                                                    @foreach ($buildings as $building)
+                                                    <option value="{{$building->id}}">{{$building->building_name}}</option>
+
+                                                    @endforeach
+                                                </select> --}}
                                             </div>
                                             <div class="col-12">
                                                 <label class="form-label">Asset Name</label>

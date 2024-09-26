@@ -167,7 +167,7 @@ class BookingController extends Controller
     public function show(Request $request)
     {
         $booking = Booking::find($request->booking);
-        return view('admin.booking.final-booking',compact('booking'));
+        return view('admin.booking.booking-details',compact('booking'));
     }
 
     /**

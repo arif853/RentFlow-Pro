@@ -11,6 +11,7 @@
     <link href="{{asset('admin')}}/assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
     <link href="{{asset('admin')}}/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
     <link href="{{asset('admin')}}/assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+    <link href="{{asset('admin')}}/assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{asset('admin/assets/notifications/notification.css')}}">
     <!-- Bootstrap CSS -->
     <link href="{{asset('admin')}}/assets/css/bootstrap.min.css" rel="stylesheet" />
@@ -653,6 +654,8 @@
     <script src="{{asset('admin')}}/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
     <script src="{{asset('admin')}}/assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js"></script>
     <script src="{{asset('admin')}}/assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="{{asset('admin')}}/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+    <script src="{{asset('admin')}}/assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
     <script src="{{asset('admin')}}/assets/js/pace.min.js"></script>
     <script src="{{asset('admin')}}/assets/js/pace.min.js"></script>
     <script src="{{asset('admin')}}/assets/plugins/chartjs/js/Chart.min.js"></script>
@@ -674,6 +677,15 @@
     @stack('script')
 
     <script>
+        $(document).ready(function() {
+        var table = $('#datatable').DataTable( {
+            lengthChange: false,
+            buttons: [ 'copy', 'excel', 'pdf', 'print']
+        } );
+
+        table.buttons().container()
+            .appendTo( '#example2_wrapper .col-md-6:eq(0)' );
+    } );
         new PerfectScrollbar(".best-product")
 
     </script>

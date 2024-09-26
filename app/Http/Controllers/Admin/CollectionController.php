@@ -30,7 +30,7 @@ class CollectionController extends Controller
     public function create()
     {
         $buildings = Building::where('status', 1)->get();
-        $assets = Asset::paginate(10);
+        $assets = Asset::all();
         return view('admin.collection.collection',compact('buildings','assets'));
     }
 
@@ -57,7 +57,7 @@ class CollectionController extends Controller
         Collection::create($validatedData);
 
 
-        return redirect()->back()->with('success','Created Successfully');
+        return redirect()->back()->with('success','Collection save successfully!');
     }
 
     /**
@@ -75,8 +75,9 @@ class CollectionController extends Controller
     public function edit(string $id)
     {
         $collection = Collection::findOrFail($id);
-        // dd($collection);
-        return view('admin.collection.collection-edit', compact('collection'));
+        $buildings = Building::where('status', 1)->get();
+        $assets = Asset::all();
+        return view('admin.collection.collection-edit', compact('collection','buildings','assets'));
     }
 
     /**
@@ -120,35 +121,26 @@ class CollectionController extends Controller
 
     public function getAssets($buildingId)
     {
-
         $assets = Asset::where('building_id',$buildingId)->get();
         return response()->json($assets);
     }
 
     public function getAssetdetails($assetId)
     {
-
         $assets = Asset::find($assetId);
         return response()->json($assets);
     }
 
     public function getEmployeedetails($employeeId)
     {
-
         $employee_details = Employee::find($employeeId);
         return response()->json($employee_details);
     }
-
-
-
-
 
     public function print($id)
     {
 
         $collection = Collection::findOrFail($id);
-
-
         $mpdf = new Mpdf([
             'format' => 'A4',
             'default_font_size' => 10,
