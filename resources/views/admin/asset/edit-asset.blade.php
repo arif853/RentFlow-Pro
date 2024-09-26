@@ -269,7 +269,7 @@
                                     </div>
                                 </div>
                                 <!--Room-->
-                                
+
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="card shadow-none bg-light border">
@@ -279,19 +279,20 @@
                                             </div>
                                             <div class="card-body">
                                                 @if($asset->rooms->isNotEmpty())
-                                                
+
                                                 @foreach ($asset->rooms as $key => $room)
                                                 <div class="card shadow-none border room-card">
                                                     <div class="card-header d-flex justify-content-between align-items-center">
                                                         <h6 class="mb-0">Room</h6>
-                                                        <a href="#" class="btn btn-danger btn-sm remove-room-btn">Remove</a>
+                                                        <a href="{{route('asset.room.delete', $room->id)}}" class="btn btn-danger btn-sm delete-room">Remove</a>
                                                     </div>
                                                     <div class="card-body">
                                                         <div class="row g-3">
                                                             <div class="col-12">
                                                                 <input type="hidden" name="room_id[{{$key}}]" value="{{$room->id}}">
                                                                 <label class="form-label">Room Type</label>
-                                                                <select class="form-select room-type-dropdown" name="room_type_id[{{$key}}]">
+                                                                <input type="hidden" name="room_type_id[{{$key}}]" value="{{$room->room_type_id}}">
+                                                                <select class="form-select room-type-dropdown" disabled>
                                                                     {{-- @foreach ($roomtypes as $data) --}}
                                                                     <option value="{{$room->room_type_id}}">{{$room->roomtype->roomType}}</option>
                                                                     {{-- @endforeach --}}
@@ -429,7 +430,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+
                                                 @endforeach
                                                 @else
                                                     @php
@@ -768,7 +769,7 @@
             // Call fetchRoomTypes when the document is ready
             fetchRoomTypes();
 
-              
+
             var key = {{$key+1}}
             // Handle the "+ New Room" button click
             $('#add-room-btn').on('click', function () {
@@ -935,6 +936,29 @@
                 $(this).closest('.room-card').remove(); // Remove the closest room card
             });
 
+            $(document).on('click', '.delete-room', function (e) {
+                e.preventDefault(); // Prevent the default anchor behavior
+                var url = $(this).attr('href'); // Get the href link
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = url;
+                        Swal.fire("Deleted!", "Room is deleted.", "success");
+                    }
+                });
+
+            });
+
         });
+
+
+
     </script>
 @endpush

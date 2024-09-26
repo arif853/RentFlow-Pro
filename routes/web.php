@@ -71,7 +71,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/dashboard/employee', EmployeeController::class);
     Route::resource('/dashboard/designation', DesignationController::class);
     Route::resource('/dashboard/asset', AssetController::class);
-
+    Route::get('/dasboard/asset/room-delete/{room}', [AssetController::class, 'assetRoomDelete'])->name('asset.room.delete');
     // Booking Resource Routes
     Route::resource('/dashboard/booking', BookingController::class);
 

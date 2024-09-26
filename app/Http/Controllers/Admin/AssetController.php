@@ -94,18 +94,18 @@ class AssetController extends Controller
                     $room->attach_baranda = $request->has('attach_baranda.' . $key);
                     $room->has_window = $request->has('has_window.' . $key);
                     $room->others = $request->has('others.' . $key);
-    
+
                     if ($request->hasFile('room_image.' . $key)) {
                         $file = $request->file('room_image.' . $key);
                         $filename = time() . '_' . $file->getClientOriginalName();
                         $file->storeAs('public/room_images', $filename);
                         $room->room_image = $filename;
                     }
-    
+
                     $room->save();
                 }
             }
-            
+
             DB::commit();
 
             return redirect()->back()->with('success', 'Asset saved successfully.');
@@ -164,8 +164,8 @@ class AssetController extends Controller
 
         $validatedData = $request->validate([
             // 'building_id' => 'required|exists:buildings,id',
-            'room_type_id.*' => 'required|string',
-            'room_size.*' => 'required|integer',
+            'room_type_id.*' => 'nullable|string',
+            'room_size.*' => 'nullable|integer',
             'room_image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'electricity.*' => 'nullable',
             'aircondition.*' => 'nullable',
@@ -193,7 +193,7 @@ class AssetController extends Controller
                 $validated['water_owner_part_amount'] = null;
                 $validated['water_rental_part_amount'] = null;
             }
-            
+
             $asset->update($validated);
             // Loop through the room types and update or create rooms accordingly
             foreach ($request->room_type_id as $key => $value) {
@@ -274,6 +274,12 @@ class AssetController extends Controller
         $asset->delete();
         return redirect()->route('asset.index')->with('success', 'Asset deleted successfully');
 
+    }
+
+    public function assetRoomDelete(Room $room)
+    {
+        $room->delete();
+        return redirect()->back()->with('succes','Room remove successfully');
     }
 
     public function getBuildingDetails($id)
