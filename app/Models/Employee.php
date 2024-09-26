@@ -18,4 +18,8 @@ class Employee extends Model
     {
         return $this->belongsTo(Designation::class, 'designation_id');
     }
+    public function collections()
+    {
+        return $this->hasMany(Collection::class);
+    }
 }
