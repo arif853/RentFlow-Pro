@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Mpdf\Mpdf;
 use App\Models\Asset;
 use App\Models\Building;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\Collection;
 use App\Models\Employee;
+use App\Models\Collection;
+use Illuminate\Http\Request;
 
 use function Illuminate\Log\log;
+use App\Http\Controllers\Controller;
 
 class CollectionController extends Controller
 {
@@ -136,6 +137,145 @@ class CollectionController extends Controller
 
         $employee_details = Employee::find($employeeId);
         return response()->json($employee_details);
+    }
+
+
+
+
+
+    public function print($id)
+    {
+
+        $collection = Collection::findOrFail($id);
+
+
+        $mpdf = new Mpdf([
+            'format' => 'A4',
+            'default_font_size' => 10,
+        ]);
+
+        $html = '
+                <!DOCTYPE html>
+                <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <title>Collection</title>
+                        <style>
+                            body {
+                                padding: 20px;
+                                font-family: Arial, sans-serif;
+                            }
+                            h1 {
+                                font-size: 24px;
+                                font-weight: bold;
+                            }
+                            h2 {
+                                margin: 0;
+                            }
+                            table {
+                                width: 100%;
+                                border-collapse: collapse;
+                                margin-top: 20px;
+                            }
+                            td {
+                                padding: 10px;
+                                text-align: left;
+                            }
+                            tr:nth-child(odd) {
+                                background-color: #f9f9f9;
+                            }
+                            tr:nth-child(even) {
+                                background-color: #ffffff;
+                            }
+                            .breadcrumb {
+                                list-style: none;
+                                padding: 0;
+                                margin: 0;
+                            }
+                            .breadcrumb li {
+                                display: inline;
+                                margin-right: 5px;
+                            }
+                        </style>
+                    </head>
+                    <body>
+
+                        <main>
+                            <div style="margin-bottom: 20px;">
+                                <h1>Collection</h1>
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li>
+                                            <a href="javascript:;" style="text-decoration: none; color: #007bff;">
+                                                <i class="bx bx-home-alt"></i>
+                                            </a>
+                                        </li>
+                                    </ol>
+                                </nav>
+                            </div>
+
+                            <div style="max-width: 600px; margin: 0 auto;">
+                                <div style="overflow: hidden;">
+                                    <h2>Collection Details</h2>
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>Complex</td>
+                                                <td>' . ($collection->building ? $collection->building->building_name . ", " . $collection->building->building_code : 'N/A') . '</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unit Name</td>
+                                                <td>' . $collection->asset->unit_name . '</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Employee Name</td>
+                                                <td>' . $collection->employee->name . '</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Collection Date</td>
+                                                <td>' . $collection->collection_date . '</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Collection Type</td>
+                                                <td>' . ($collection->collection_type == '1' ? 'Day Wise' : 'Month Wise') . '</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Duration</td>
+                                                <td>' . ($collection->collection_type == '1' ? $collection->duration . ' days, (' . $collection->from_date . ' - ' . $collection->to_date . ')' : $collection->month) . '</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Monthly Rent</td>
+                                                <td>' . $collection->asset->monthly_rent . '</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Service Charge</td>
+                                                <td>' . $collection->asset->service_charge . '</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Other Charge</td>
+                                                <td>' . $collection->asset->others_charge . '</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Payable Rent</td>
+                                                <td>' . $collection->payable_amount . '</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Collection Amount</td>
+                                                <td>' . $collection->collection_amount . '</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </main>
+
+                    </body>
+                </html>
+        ';
+
+        $mpdf->WriteHTML($html);
+
+        $mpdf->Output('collection_' . $id . '.pdf', 'D');
     }
 
 

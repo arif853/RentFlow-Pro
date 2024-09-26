@@ -75,11 +75,11 @@
                             <td>{{$collection->collection_amount}}</td>
                             <td>
                                 <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                                    <a href="{{route('collection.show', $collection->id)}}" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                        data-bs-original-title="Views" aria-label="Views"><i
+                                    <a href="{{route('collection.show', $collection->id)}}" data-bs-toggle="tooltip"
+                                        data-bs-placement="bottom" data-bs-original-title="Views" aria-label="Views"><i
                                             class="bi bi-eye-fill text-primary"></i></a>
-                                    <a href="{{route('collection.edit',$collection->id)}}" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                        data-bs-original-title="Edit" aria-label="Edit"><i
+                                    <a href="{{route('collection.edit',$collection->id)}}" data-bs-toggle="tooltip"
+                                        data-bs-placement="bottom" data-bs-original-title="Edit" aria-label="Edit"><i
                                             class="bi bi-pencil-fill text-warning"></i></a>
                                     <form action="{{ route('collection.destroy', $collection->id) }}" method="POST"
                                         onsubmit="return confirm('Are you sure you want to delete this collection?');"
@@ -91,9 +91,8 @@
                                             <i class="bi bi-trash-fill"></i>
                                         </button>
                                     </form>
-                                    <a href="" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                        data-bs-original-title="Print" aria-label="Print"><i
-                                            class="bi bi-printer text-primary"></i></a>
+                                    <a href="{{route('collection.print',$collection->id)}}" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                        data-bs-original-title="Print" aria-label="Print"><i class="bi bi-printer text-primary"></i></a>
                                 </div>
 
                             </td>
@@ -110,49 +109,7 @@
 <!--end page main-->
 @endsection
 @push('script')
-{{-- <script>
-    $(document).ready(function(){
+<script>
 
-        $(document).on('click', '#confirmApproveBtn', function (e) {
-            e.preventDefault(); // Prevent the default anchor behavior
-            var url = $(this).attr('href'); // Get the href link
-
-            Swal.fire({
-                title: "Do you want to approve this booking?",
-                showDenyButton: true,
-                showCancelButton: false,
-                confirmButtonText: "Approve",
-                denyButtonText: `Deny!`
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // If confirmed, redirect to the route
-                    window.location.href = url;
-                    Swal.fire("Thank You", "Booking Cofirmed", "success");
-                } else if (result.isDenied) {
-                    Swal.fire("Sorry!", "Booking is not confirmed", "info");
-                }
-            });
-        });
-    });
-
-    document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', function (e) {
-            e.preventDefault();
-            const form = this.closest('form');
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-            });
-        });
-    });
-</script> --}}
+</script>
 @endpush
