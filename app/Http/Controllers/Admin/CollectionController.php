@@ -18,7 +18,7 @@ class CollectionController extends Controller
      */
     public function index()
     {
-        
+
         $collections = Collection::all();
         return view('admin.collection.collection-list',compact('collections'));
     }
@@ -72,7 +72,9 @@ class CollectionController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $collection = Collection::findOrFail($id);
+        // dd($collection);
+        return view('admin.collection.collection-edit', compact('collection'));
     }
 
     /**
@@ -80,7 +82,28 @@ class CollectionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'collection_date' => 'required|date',
+            'collection_type' => 'required|string',
+            'month' => 'nullable|string',
+            'from_date' => 'nullable|date',
+            'to_date' => 'nullable|date',
+            'duration' => 'nullable|integer',
+            'collection_amount' => 'required|numeric',
+
+        ]);
+
+        $collection = Collection::findOrFail($id);
+        $collection->collection_date = $request->input('collection_date');
+        $collection->collection_type = $request->input('collection_type');
+        $collection->month = $request->input('month');
+        $collection->from_date = $request->input('from_date');
+        $collection->to_date = $request->input('to_date');
+        $collection->duration = $request->input('duration');
+        $collection->collection_amount = $request->input('collection_amount');
+        $collection->save();
+
+        return redirect()->route('collection.index')->with('success', 'Collection updated successfully.');
     }
 
     /**

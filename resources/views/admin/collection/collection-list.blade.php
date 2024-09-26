@@ -78,7 +78,7 @@
                                     <a href="" data-bs-toggle="tooltip" data-bs-placement="bottom"
                                         data-bs-original-title="Views" aria-label="Views"><i
                                             class="bi bi-eye-fill text-primary"></i></a>
-                                    <a href="" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                    <a href="{{route('collection.edit',$collection->id)}}" data-bs-toggle="tooltip" data-bs-placement="bottom"
                                         data-bs-original-title="Edit" aria-label="Edit"><i
                                             class="bi bi-pencil-fill text-warning"></i></a>
                                     <form action="{{ route('collection.destroy', $collection->id) }}" method="POST"
