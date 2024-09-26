@@ -84,6 +84,9 @@
                         <li>
                             <a href="{{route('collection.index')}}"><i class="bi bi-circle"></i>Collection</a>
                         </li>
+                        <li>
+                            <a href="{{route('checkout.index')}}"><i class="bi bi-circle"></i>Checkout</a>
+                        </li>
                     </ul>
                 </li>
 
