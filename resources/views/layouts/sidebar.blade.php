@@ -105,7 +105,7 @@
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="{{route('users.index')}}">
                         <div class="parent-icon"><i class="bi bi-person-lines-fill"></i></div>
                         <div class="menu-title">Manage Users</div>
                     </a>

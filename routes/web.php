@@ -2,20 +2,23 @@
 
 use Carbon\Carbon;
 use App\Models\Asset;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AssetController;
 use App\Http\Controllers\Admin\FloorController;
 use App\Http\Controllers\Admin\BookingController;
-use App\Http\Controllers\Admin\LocationController;
-use App\Http\Controllers\Admin\RoomtypeController;
 use App\Http\Controllers\Admin\BuildingController;
 use App\Http\Controllers\Admin\CheckoutController;
-use App\Http\Controllers\Admin\CollectionController;
 use App\Http\Controllers\Admin\EmployeeController;
+use App\Http\Controllers\Admin\LocationController;
+use App\Http\Controllers\Admin\RoomtypeController;
+use App\Http\Controllers\Admin\CollectionController;
+use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\DesignationController;
-use Illuminate\Support\Facades\Log;
 
 Route::get('/cache_clear',function(){
     Artisan::call('route:clear');
@@ -99,6 +102,29 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/collection/get-employee-details/{employee_id}', [CollectionController::class,'getEmployeedetails']);
 
     Route::resource('/dashboard/checkout',CheckoutController::class);
+
+
+    // User Managment
+    Route::controller(UserController::class)->middleware(['auth'])->group(function(){
+        Route::get('/dashboard/users/index', 'index')->name('users.index');
+        Route::post('/dashboard/users/store', 'store')->name('users.store');
+        Route::get('/dashboard/users/edit', 'edit')->name('users.edit');
+        Route::post('/dashboard/users/update', 'update')->name('users.update');
+        Route::delete('/dashboard/users/{userId}/delete', 'destroy');
+    });
+
+    // user role permission
+    Route::resource('/dashboard/user/roles', RoleController::class)->middleware('auth');
+    Route::post('/dashboard/users/roles/{role}', [RoleController::class, 'update'])->middleware('auth');
+    Route::delete('/dashboard/users/roles/{id}/delete', [RoleController::class, 'destroy'])->middleware('auth');
+
+    Route::get('/dashboard/users/roles/{roleId}/give-permissions',[RoleController::class, 'addPermission'])->middleware('auth');
+    Route::put('/dashboard/users/roles/{roleId}/give-permissions',[RoleController::class, 'addPermissionToRole'])->middleware('auth');
+
+    Route::resource('/dashboard/users/permissions', PermissionController::class)->middleware('auth');
+    Route::post('/dashboard/users/permissions/{permission}',[PermissionController::class, 'update'])->middleware('auth');
+    Route::delete('/dashboard/users/permissions/{id}/delete',[PermissionController::class, 'destroy'])->middleware('auth');
+    Route::delete('/dashboard/users/permissions/bulkdelete', [PermissionController::class, 'bulkDelete'])->name('permissions.bulk_delete');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
