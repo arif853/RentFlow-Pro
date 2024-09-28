@@ -47,9 +47,9 @@
                                                 @enderror
                                             </div>
                                             <div class="col-12 col-md-6">
-                                                <label class="form-label">Email Address <span class="text-danger">*</span></label>
+                                                <label class="form-label">Email Address </label>
                                                 <input type="email" class="form-control" placeholder="Email Address"
-                                                    name="email" required value="{{$employee->email}}" >
+                                                    name="email"  value="{{$employee->email}}" >
                                                 @error('email')
                                                 <span class="text-danger">{{$message}}</span>
                                                 @enderror
@@ -57,9 +57,9 @@
                                             <!--Row-2-->
                                             <!--Row-3-->
                                             <div class="col-12 col-md-6">
-                                                <label class="form-label">Phone Number <span class="text-danger">*</span></label>
+                                                <label class="form-label">Phone Number </label>
                                                 <input type="text" class="form-control" placeholder="Phone Number "
-                                                    name="phone" id="phoneNumber" required value="{{$employee->phone}}">
+                                                    name="phone" id="phoneNumber"  value="{{$employee->phone}}">
                                                     @error('phone')
                                                 <span class="text-danger">{{$message}}</span>
                                                 @enderror
@@ -74,26 +74,26 @@
                                             </div>
                                             <!--Row-4-->
                                             <div class="col-12 col-md-6">
-                                                <label class="form-label">Present Address<span class="text-danger">*</span></label>
+                                                <label class="form-label">Present Address</label>
                                                 <textarea class="form-control" placeholder="Present Address" rows="4"
-                                                    cols="4" name="present_address" required>{{$employee->present_address}}</textarea>
+                                                    cols="4" name="present_address" >{{$employee->present_address}}</textarea>
                                                 @error('present_address')
                                                 <span class="text-danger">{{$message}}</span>
                                                 @enderror
                                             </div>
                                             <div class="col-12 col-md-6">
-                                                <label class="form-label">Permanent Address<span class="text-danger">*</span></label>
+                                                <label class="form-label">Permanent Address</label>
                                                 <textarea class="form-control" placeholder="Permanent Address" rows="4"
-                                                    cols="4" name="permanent_address" required>{{$employee->permanent_address}}</textarea>
+                                                    cols="4" name="permanent_address" >{{$employee->permanent_address}}</textarea>
                                                 @error('permanent_address')
                                                 <span class="text-danger">{{$message}}</span>
                                                 @enderror
                                             </div>
                                             <!--Row-5-->
                                             <div class="col-12 col-md-4">
-                                                <label class="form-label">NID Card Number<span class="text-danger">*</span></label>
+                                                <label class="form-label">NID Card Number</label>
                                                 <input type="text" class="form-control" placeholder="Product title"
-                                                    name="nid_number" required value="{{$employee->nid_number}}">
+                                                    name="nid_number"  value="{{$employee->nid_number}}">
 
                                                     @error('nid_number')
                                                     <span class="text-danger">{{$message}}</span>
@@ -151,14 +151,14 @@
                                             <div class="col-12">
                                                 <label class="form-label">Employee ID<span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" placeholder="Employee ID"
-                                                name="employee_code" readonly id="employeeCode" required value="{{$employee->employee_code}}">
+                                                name="employee_code" readonly id="employeeCode"  value="{{$employee->employee_code}}">
                                                 @error('employee_code')
                                                 <span class="text-danger">{{$message}}</span>
                                                 @enderror
                                             </div>
                                             <div class="col-12">
                                                 <label class="form-label">Designation<span class="text-danger">*</span></label>
-                                                <select class="form-select" name="designation_id" required>
+                                                <select class="form-select" name="designation_id" >
                                                     <option>Select Designation</option>
                                                     @foreach ($designations as $item)
                                                     <option value="{{$item->id}}" {{$employee->designation_id == $item->id ? 'selected' : ''}}>{{$item->designation_name}}</option>
@@ -172,7 +172,7 @@
                                             <div class="col-12">
                                                 <label class="form-label">Date of Joining <span class="text-danger">*</span></label>
                                                 <input type="date" class="form-control" placeholder="Joining Date" name="date_of_joining"
-                                                 required value="{{$employee->date_of_joining}}">
+                                                  value="{{$employee->date_of_joining}}">
                                                 @error('date_of_joining')
                                                 <span class="text-danger">{{$message}}</span>
                                                 @enderror

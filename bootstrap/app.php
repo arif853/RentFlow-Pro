@@ -13,7 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->append(CheckUserStatus::class);
-        $middleware->alias(['is_active' => CheckUserStatus::class]);
+        $middleware->alias(['is_user_active' => CheckUserStatus::class]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

@@ -180,8 +180,15 @@ class BuildingController extends Controller
      */
     public function destroy(Building $building)
     {
-        $building->delete();
-        return redirect()->route('building.index')->with('success', 'Building deleted successfully');
+        try{
+            $building->delete();
+            return redirect()->route('building.index')->with('success', 'Building deleted successfully');
+        }
+        catch(\Exception $e)
+        {
+            Log::error($e);
+            return redirect()->back()->with('danger','Building can not be delete, Building asset exist.');
+        }
     }
 
     public function locationList(string $id)

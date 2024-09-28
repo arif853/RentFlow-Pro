@@ -38,7 +38,6 @@ class AuthServiceProvider extends ServiceProvider
         Location::class => LocationPolicy::class,
         RoomType::class => RoomTypePolicy::class,
         User::class => UserPolicy::class,
-
     ];
 
     public function boot()

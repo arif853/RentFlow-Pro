@@ -26,7 +26,7 @@ class AssetController extends Controller
 
     public function index()
     {
-        $assets = Asset::paginate(10);
+        $assets = Asset::all();
         return view('admin.asset.manage-asset',compact('assets'));
     }
 

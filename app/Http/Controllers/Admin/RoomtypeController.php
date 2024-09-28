@@ -81,14 +81,14 @@ class RoomtypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, RoomType $roomType)
     {
         $validatedData = $request->validate([
             'roomType' => 'required|string|max:255',
             'status' => 'required|boolean',
         ]);
 
-        $roomType = RoomType::findOrFail($id);
+        // $roomType = RoomType::findOrFail($id);
         $roomType->update($validatedData);
 
         return redirect()->route('roomtype.index')->with('success', 'Room type updated successfully.');
@@ -96,9 +96,9 @@ class RoomtypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(RoomType $roomtype)
     {
-        $roomtype = RoomType::find($id);
+        // $roomtype = RoomType::find($id);
         $roomtype->delete();
         // if (request()->ajax()) {
         //     return response()->json(['success' => 'Slider deleted successfully.']);

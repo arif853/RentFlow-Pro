@@ -60,9 +60,9 @@ Route::get('/dashboard', function () {
 
     return view('admin.dashboard',['assets'=> $assets, 'availableunitCount' => $availableunitCount]);
 
-})->middleware(['auth', 'verified','is_active'])->name('dashboard');
+})->middleware(['auth', 'verified','is_user_active'])->name('dashboard');
 
-Route::middleware(['auth','is_active'])->group(function () {
+Route::middleware(['auth','is_user_active'])->group(function () {
 
     Route::resource('/dashboard/roomtype', RoomTypeController::class);
     Route::resource('/dashboard/floors', FloorController::class);
@@ -71,16 +71,18 @@ Route::middleware(['auth','is_active'])->group(function () {
 
     Route::get('/dashboard/locations/location-list/{id}',[BuildingController::class, 'locationList']);
     Route::get('/dashboard/building/employee_details/{id}', [BuildingController::class, 'getEmployeeDetails']);
-    Route::get('/dashboard/building/building_details/{id}', [AssetController::class, 'getBuildingDetails']);
-    Route::get('/dashboard/room-types',[AssetController::class, 'getRoomType']);
 
     Route::resource('/dashboard/employee', EmployeeController::class);
     Route::resource('/dashboard/designation', DesignationController::class);
+
+    // Asset
     Route::resource('/dashboard/asset', AssetController::class);
+    Route::get('/dashboard/building/building_details/{id}', [AssetController::class, 'getBuildingDetails']);
+    Route::get('/dashboard/room-types',[AssetController::class, 'getRoomType']);
     Route::get('/dasboard/asset/room-delete/{room}', [AssetController::class, 'assetRoomDelete'])->name('asset.room.delete');
+
     // Booking Resource Routes
     Route::resource('/dashboard/booking', BookingController::class);
-
     // Booking Other Routes
     Route::get('/dashboard/booking/approval/list', [BookingController::class, 'approvalList']);
     Route::get('/dashboard/booking/step/{booking}/second-step', [BookingController::class, 'secondStep'])->name('booking.step2');
@@ -89,13 +91,13 @@ Route::middleware(['auth','is_active'])->group(function () {
     Route::get('/dashboard/booking/member/{id}/delete', [BookingController::class, 'BookingMemberDelete'])->name('booking.member.delete');
 
     Route::get('/dashboard/booking/report/DMP-from/printPDF', [BookingController::class, 'formPrint'])->name('booking.printPDF');
-
     Route::get('/dashboard/booking/status/{booking}/update', [BookingController::class, 'bookingApproved'])->name('booking.approved');
 
     Route::get('/dashboard/booking/get-buildings/{id}', [BookingController::class, 'getBuildings']);
     Route::get('/dashboard/booking/get-asset/{id}', [BookingController::class, 'getAssets']);
     Route::get('/dashboard/booking/get-apartment-details/{id}', [BookingController::class, 'getApartmentDetails']);
 
+    // collection
     Route::resource('/dashboard/collection', CollectionController::class);
     Route::get('/dashboard/collection/{id}/print', [CollectionController::class, 'print'])->name('collection.print');
     Route::get('/dashboard/collection/get-asset/{complex_id}', [CollectionController::class,'getAssets']);
