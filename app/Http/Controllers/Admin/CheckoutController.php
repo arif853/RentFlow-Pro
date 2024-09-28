@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Asset;
 use App\Models\Checkout;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CheckoutController extends Controller
 {
@@ -22,7 +23,8 @@ class CheckoutController extends Controller
      */
     public function create()
     {
-        return view('admin.checkout.checkout');
+        $assets = Asset::all();
+        return view('admin.checkout.checkout',compact('assets'));
     }
 
     /**
@@ -46,7 +48,7 @@ class CheckoutController extends Controller
      */
     public function edit(string $id)
     {
-        //
+
     }
 
     /**

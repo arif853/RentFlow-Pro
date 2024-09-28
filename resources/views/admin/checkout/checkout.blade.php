@@ -38,23 +38,13 @@
                                     <div class="card-body">
                                         <div class="row g-3">
                                             <!--Row-1-->
-
-                                            <div class="col-12">
-                                                <label class="form-label">Complex</label>
-                                                <select class="form-select" name="building_id" id="building_id">
-                                                    <!-- Asset will be dynamically populated here -->
-                                                    <option value="">Select Complex</option>
-
-                                                    <option value=" "> Value 1</option>
-                                                </select>
-
-                                            </div>
                                             <div class="col-12">
                                                 <label class="form-label">Asset Name</label>
                                                 <select class="form-select" name="asset_id" id="unit_id">
                                                     <!-- Asset will be dynamically populated here -->
-                                                    <option value="">Select Asset Name</option>
-
+                                                    @foreach ($assets as $asset)
+                                                    <option value="{{$asset->id}}">{{$asset->unit_name}}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                             <div class="col-12">
@@ -75,6 +65,10 @@
                                                     <option class="" value="December">December</option>
                                                 </select>
                                             </div>
+                                            <div>
+                                                <input type="date" id="availabilityDate" value="">
+                                            </div>
+
                                             <div>
                                                 <label class="form-label">Notes</label>
                                                 <input type="hidden" name="employee_id" value="" id="employeeId">
@@ -101,7 +95,40 @@
 
 @push('script')
 <script>
+    document.getElementById('selected_month').addEventListener('change', function () {
+        const monthMap = {
+            "January": 0,
+            "February": 1,
+            "March": 2,
+            "April": 3,
+            "May": 4,
+            "June": 5,
+            "July": 6,
+            "August": 7,
+            "September": 8,
+            "October": 9,
+            "November": 10,
+            "December": 11
+        };
 
+        const selectedMonth = this.value;
+        const currentYear = new Date().getFullYear();
+
+        const selectedMonthIndex = monthMap[selectedMonth];
+        let nextMonthDate = new Date(currentYear, selectedMonthIndex + 1, 1); // Next month's 1st day
+
+        const year = nextMonthDate.getFullYear(); // e.g., 2024
+        const day = String(nextMonthDate.getDate()).padStart(2, '0'); // Day of the month
+        const month = String(nextMonthDate.getMonth() + 1).padStart(2, '0'); // Month (0-based)
+
+        // Format the date as 'YYYY-DD-MM'
+        const formattedDate = `${year}-${day}-${month}`;
+
+        // console.log(formattedDate); 
+
+        document.getElementById('availabilityDate').value = formattedDate;
+
+    });
 
 </script>
 @endpush
