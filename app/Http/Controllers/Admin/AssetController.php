@@ -18,6 +18,12 @@ use Illuminate\Support\Facades\Storage;
 
 class AssetController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(Asset::class, 'asset');
+    }
+
     public function index()
     {
         $assets = Asset::paginate(10);

@@ -8,6 +8,10 @@ use App\Http\Controllers\Controller;
 
 class FloorController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Floor::class, 'floor');
+    }
     /**
      * Display a listing of the resource.
      */

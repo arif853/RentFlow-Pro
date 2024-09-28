@@ -6,6 +6,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="{{asset('admin/assets/images/favicon-32x32.png')}}" type="image/png" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!--plugins-->
     <link href="{{asset('admin')}}/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
     <link href="{{asset('admin')}}/assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />

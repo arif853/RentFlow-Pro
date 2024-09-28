@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Storage;
 
 class LocationController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Location::class, 'location');
+    }
+
     public function index()
     {
         $locations = Location::paginate(10);

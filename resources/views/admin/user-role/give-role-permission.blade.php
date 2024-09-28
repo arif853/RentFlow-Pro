@@ -23,6 +23,9 @@
     .table tr td{
         vertical-align: middle;
     }
+    .uppercase{
+        text-transform: uppercase;
+    }
 </style>
 <div class="row">
     <div class="col-lg-12 col-md-12">
@@ -43,8 +46,8 @@
                     @foreach($groupedPermissions as $category => $types)
 
                     <div class="card">
-                        <div class="card-header alert alert-primary d-flex justify-content-between">
-                            <h4 class=" uppercase">{{ $category }}</h4>
+                        <div class="card-header alert bg-light-primary d-flex justify-content-between">
+                            <h4 class="uppercase">{{ $category }}</h4>
                             <label class=" uppercase" for="selectall_{{$category}}">
                                 <input type="checkbox" name="" id="selectall_{{$category}}" class="select_All me-1" data-category="{{$category}}">
                                 Select ALL
@@ -89,7 +92,7 @@
 </main>
 @endsection
 
-@push('product')
+@push('script')
 <script>
     $(document).ready(function() {
         function updateSelectAll(category) {

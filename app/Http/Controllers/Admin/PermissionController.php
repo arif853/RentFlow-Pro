@@ -40,7 +40,7 @@ class PermissionController extends Controller
         ]);
 
         Session::flash('success','Permission Created Successfully.');
-        return response()->json(['status'=> 200]);
+        return redirect()->back();
     }
 
     /**

@@ -68,30 +68,28 @@
                             </td>
                             <td>{{$key + 1}}</td>
                             <td>{{$permission->name}}</td>
-
                             <td>
                                 @if($permission->name =='Super Admin')
                                 <form class="deleteForm" action="{{ url('/dashboard/permissions/'.$permission->id.'/delete') }}" method="post">
                                     @csrf
                                     @method('DELETE')
-                                    <a href="#"  class="btn btn-sm font-sm rounded btn-brand edit d-none"
+                                    <a href="#"  class="btn btn-sm font-sm rounded btn-info edit d-none"
                                     data-bs-toggle="modal" data-bs-target="#roleUpdateModal" data-permission-id="{{ $permission->id}}">
                                         <i class="material-icons md-edit"></i> Edit
                                     </a>
-                                    <a href="#" class="btn btn-sm font-sm btn-light rounded delete d-none">
+                                    <a href="#" class="btn btn-sm font-sm btn-danger rounded delete d-none">
                                         <i class="material-icons md-delete_forever"></i> Delete
                                     </a>
                                 </form>
                                 @else
-                                <form class="deleteForm" action="{{ url('/dashboard/permissions/'.$permission->id.'/delete') }}" method="post">
+                                <form class="deleteForm" action="{{ url('/dashboard/users/permissions/'.$permission->id) }}" method="post">
                                     @csrf
                                     @method('DELETE')
-
-                                    <a href="#"  class="btn btn-sm font-sm rounded btn-brand edit mr-5"
+                                    <a href="#"  class="btn btn-sm font-sm rounded btn-info edit mr-5"
                                     data-bs-toggle="modal" data-bs-target="#permissionUpdateModal" data-permission-id="{{ $permission->id}}">
                                         <i class="material-icons md-edit"></i> Edit
                                     </a>
-                                    <a href="#" class="btn btn-sm font-sm btn-light rounded delete">
+                                    <a href="#" class="btn btn-sm font-sm btn-danger rounded delete">
                                         <i class="material-icons md-delete_forever"></i> Delete
                                     </a>
                                 </form>
@@ -111,7 +109,7 @@
 @include('admin.user-role.permission.create')
 
 @endsection
-@push('product')
+@push('script')
 <script>
 $(document).ready(function() {
 

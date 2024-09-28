@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Validator;
 
 class BuildingController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(Building::class, 'building');
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -80,7 +86,7 @@ class BuildingController extends Controller
             // Create a new building record
             Building::create($data);
             // Redirect with success message
-            
+
             return redirect()->route('building.index')->with('success', 'Building created successfully!');
         } catch (\Exception $e) {
             // Handle errors, such as database connection issues or other exceptions

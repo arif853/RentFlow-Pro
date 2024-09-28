@@ -117,7 +117,6 @@
     // Edit ROle
     $(document).on('click', '.edit', function (e) {
         e.preventDefault();
-        var roleId = $(this).data('role-id');
         // console.log(categoryId);
 
         $.ajaxSetup({
@@ -126,8 +125,13 @@
             }
         });
 
-        var editURL = "{{url('')}}" + '/dashboard/users/roles/' + roleId + '/edit';
-        // console.log(editURL);
+        var roleId = $(this).data('role-id');
+
+        var editURL = '{{ route("roles.edit", ":roleId") }}'; // Use a placeholder in Blade
+        // Replace the placeholder with the actual roleId value
+        editURL = editURL.replace(':roleId', roleId);
+
+        console.log(editURL);
 
         $.ajax({
             url: editURL,
@@ -156,7 +160,7 @@
         const data = new FormData(this);
         // console.log(data);
         $.ajax({
-            url: '{{url(' / dashboard / users / roles ')}}',
+            url: '{{url(' / dashboard/user/ roles ')}}',
             method: 'post',
             data: data,
             cache: false,
@@ -186,10 +190,14 @@
         const data = new FormData(this);
         var roleId = $('#role_id').val();
         // console.log(roleId);
+        var updateURL = '{{ route("roles.update", ":roleId") }}'; // Use a placeholder in Blade
+        // Replace the placeholder with the actual roleId value
+        updateURL = updateURL.replace(':roleId', roleId);
 
+        console.log(updateURL);
+        console.log(data);
         $.ajax({
-            url: '{{url('
-            dashboard / users / roles / ')}}' + '/' + roleId,
+            url: updateURL ,
             method: 'post',
             data: data,
             cache: false,

@@ -4,10 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Designation;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 
 class DesignationController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Employee::class, 'employee');
+    }
     /**
      * Display a listing of the resource.
      */

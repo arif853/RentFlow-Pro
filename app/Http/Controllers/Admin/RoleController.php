@@ -64,6 +64,7 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
+
         $request->validate([
             'role_name' => 'required|string'
         ]);
@@ -121,7 +122,7 @@ class RoleController extends Controller
         });
         // $rolePermission = $role->permissions->pluck('name');
         $rolePermission = $role->permissions;
-
+        // dd($rolePermission, $groupedPermissions);
         return view('admin.user-role.give-role-permission',compact('role','permissions','groupedPermissions','rolePermission'));
     }
 

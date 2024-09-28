@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Validator;
 
 class RoomtypeController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(RoomType::class, 'roomtype');
+    }
     /**
      * Display a listing of the resource.
      */

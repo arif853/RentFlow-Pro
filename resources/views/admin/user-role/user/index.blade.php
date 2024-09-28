@@ -51,6 +51,7 @@
                     </thead>
                     <tbody>
                         @foreach ($users as $key => $user)
+                        @if($user->is_superadmin == 0 )
                         <tr>
                             <td>{{$key + 1}}</td>
                             <td>{{$user->name}}</td>
@@ -92,8 +93,8 @@
 
                             </td>
                         </tr>
+                        @endif
                         @endforeach
-
                     </tbody>
 
                 </table>

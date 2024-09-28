@@ -105,7 +105,7 @@ Route::middleware('auth')->group(function () {
 
 
     // User Managment
-    Route::controller(UserController::class)->middleware(['auth'])->group(function(){
+    Route::controller(UserController::class)->group(function(){
         Route::get('/dashboard/users/index', 'index')->name('users.index');
         Route::post('/dashboard/users/store', 'store')->name('users.store');
         Route::get('/dashboard/users/edit', 'edit')->name('users.edit');
@@ -114,16 +114,16 @@ Route::middleware('auth')->group(function () {
     });
 
     // user role permission
-    Route::resource('/dashboard/user/roles', RoleController::class)->middleware('auth');
-    Route::post('/dashboard/users/roles/{role}', [RoleController::class, 'update'])->middleware('auth');
-    Route::delete('/dashboard/users/roles/{id}/delete', [RoleController::class, 'destroy'])->middleware('auth');
+    Route::resource('/dashboard/user/roles', RoleController::class);
+    Route::post('/dashboard/users/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
+    Route::delete('/dashboard/users/roles/{id}/delete', [RoleController::class, 'destroy']);
 
-    Route::get('/dashboard/users/roles/{roleId}/give-permissions',[RoleController::class, 'addPermission'])->middleware('auth');
-    Route::put('/dashboard/users/roles/{roleId}/give-permissions',[RoleController::class, 'addPermissionToRole'])->middleware('auth');
+    Route::get('/dashboard/users/roles/{roleId}/give-permissions',[RoleController::class, 'addPermission']);
+    Route::put('/dashboard/users/roles/{roleId}/give-permissions',[RoleController::class, 'addPermissionToRole']);
 
-    Route::resource('/dashboard/users/permissions', PermissionController::class)->middleware('auth');
-    Route::post('/dashboard/users/permissions/{permission}',[PermissionController::class, 'update'])->middleware('auth');
-    Route::delete('/dashboard/users/permissions/{id}/delete',[PermissionController::class, 'destroy'])->middleware('auth');
+    Route::resource('/dashboard/users/permissions', PermissionController::class);
+    Route::post('/dashboard/users/permissions/{permission}',[PermissionController::class, 'update']);
+    // Route::delete('/dashboard/users/permissions/{id}/delete',[PermissionController::class, 'destroy']);
     Route::delete('/dashboard/users/permissions/bulkdelete', [PermissionController::class, 'bulkDelete'])->name('permissions.bulk_delete');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

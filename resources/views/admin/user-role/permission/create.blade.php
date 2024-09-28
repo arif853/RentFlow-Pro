@@ -11,6 +11,7 @@
         {{-- <div class="category_form" id="category_form"></div> --}}
         <form action="{{route('permissions.store')}}" method="POST">
             @csrf
+            @method('POST')
             <div class="modal-body">
                 <p class="mb-4"><span class="text-warning">* Warning: </span> Make a permission name like <span class="text-warning">Type + ( Permission For )</span>.
                     You can add 4 types of permission ( Create, Update, Delete, View ). If you need other type contact technical team. <br>

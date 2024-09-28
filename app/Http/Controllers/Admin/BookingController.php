@@ -19,6 +19,12 @@ use Illuminate\Support\Facades\Storage;
 
 class BookingController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(Booking::class, 'booking');
+    }
+
     /**
      * Display a listing of the resource.
      */

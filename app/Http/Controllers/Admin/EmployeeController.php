@@ -15,6 +15,11 @@ use Illuminate\Support\Facades\Validator;
 
 class EmployeeController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Employee::class, 'employee');
+    }
+    
     /**
      * Display a listing of the resource.
      */

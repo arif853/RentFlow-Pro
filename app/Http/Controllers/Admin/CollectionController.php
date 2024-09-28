@@ -14,6 +14,11 @@ use App\Http\Controllers\Controller;
 
 class CollectionController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Collection::class, 'collection');
+    }
+
     /**
      * Display a listing of the resource.
      */
