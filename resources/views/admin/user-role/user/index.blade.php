@@ -78,15 +78,24 @@
                                     </a>
                                 </form>
                                 @elseif ($user->id != auth()->user()->id)
-                                <form class="deleteForm" action="{{ url('/dashboard/users/'.$user->id.'/delete') }}" method="post">
+                                    <a href="{{route('user.deactive',$user->id)}}" class="text-secondary mx-2 border-0 bg-transparent p-0" data-bs-toggle="tooltip"
+                                        data-bs-placement="bottom" title="{{$user->status == 0 ? 'Active' : 'Deactive'}}">
+                                        @if ($user->status == 0)
+                                        <i class="bi bi-lock-fill"></i>
+                                        @else
+                                        <i class="bi bi-unlock-fill"></i>
+                                        @endif
+                                    </a>
+                                    <a href="#" class="text-warning edit mx-2" data-bs-toggle="modal" data-bs-target="#userEditModal"
+                                        data-user-id="{{ $user->id}}"><i class="bi bi-pencil-fill"></i>
+                                    </a>
+                                <form class="deleteForm d-inline" action="{{ url('/dashboard/users/'.$user->id.'/delete') }}" method="post">
                                     @csrf
                                     @method('DELETE')
-                                    <a href="#"  class="btn btn-sm font-sm rounded btn-brand edit"
-                                    data-bs-toggle="modal" data-bs-target="#userEditModal" data-user-id="{{ $user->id}}">
-                                        <i class="material-icons md-edit"></i> Edit
-                                    </a>
-                                    <a href="#" class="btn btn-sm font-sm btn-light rounded delete">
-                                        <i class="material-icons md-delete_forever"></i> Delete
+
+                                    <a href="#" class="text-danger border-0 bg-transparent p-0 delete-btn delete mx-2"
+                                        data-bs-toggle="tooltip" title="Delete">
+                                        <i class="bi bi-trash-fill"></i>
                                     </a>
                                 </form>
                                 @endif

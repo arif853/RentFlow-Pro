@@ -26,13 +26,19 @@
     .uppercase{
         text-transform: uppercase;
     }
+    .pull-left{
+        float: left;
+    }
+    .pull-right{
+        float: right;
+    }
 </style>
 <div class="row">
     <div class="col-lg-12 col-md-12">
         <div class="card mb-4">
             <div class="card-header">
                 <div class="left pull-left">
-                    <p>Assign Permission To </p>
+                    <p>Assign Permission To {{$role->name}}</p>
                     <h3>Role : <span>{{$role->name}}</span></h3>
                 </div>
                 <div class="right pull-right">
@@ -80,9 +86,9 @@
                     </div>
 
                     @endforeach
-                    <a href="javascript:history.back()" class="btn btn-danger"><i class="fas fa-times"></i> Cancel</a>
+                    {{-- <a href="javascript:history.back()" class="btn btn-danger"><i class="fas fa-times"></i> Cancel</a> --}}
 
-                    <button type="submit" class="btn btn-success-light btn-lg pull-right">Save</button>
+                    <button type="submit" class="btn btn-success btn-lg pull-right">Save</button>
                 </form>
 
             </div> <!-- card-body end// -->

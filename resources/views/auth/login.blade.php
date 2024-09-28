@@ -25,7 +25,6 @@
     <!--start wrapper-->
     <div class="wrapper">
 
-
         <!--start content-->
         <main class="authentication-content">
             <div class="container-fluid">
@@ -41,6 +40,11 @@
                                     @if (session('status'))
                                         <div class="mb-4 font-medium text-sm text-green-600">
                                             {{ session('status') }}
+                                        </div>
+                                    @endif
+                                    @if (session('error'))
+                                        <div class="alert alert-danger">
+                                            {{ session('error') }}
                                         </div>
                                     @endif
                                     <form class="form-body" method="POST" action="{{ route('login') }}">

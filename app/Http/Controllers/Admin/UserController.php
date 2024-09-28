@@ -126,6 +126,17 @@ class UserController extends Controller
         return response()->json(['status'=>200]);
     }
 
+    public function deactivateUser($id)
+    {
+        $user = User::find($id);
+        if ($user) {
+            $user->status = $user->status == 1 ? 0 : 1; // Set status to deactivated
+            $user->save();
+        }
+
+        return redirect()->back()->with('success', 'User has been deactivated.');
+    }
+
     /**
      * Remove the specified resource from storage.
      */

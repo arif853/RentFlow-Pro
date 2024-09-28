@@ -59,9 +59,10 @@ Route::get('/dashboard', function () {
     $assets = Asset::orderBy('created_at', 'desc')->paginate(5);
 
     return view('admin.dashboard',['assets'=> $assets, 'availableunitCount' => $availableunitCount]);
-})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+})->middleware(['auth', 'verified','is_active'])->name('dashboard');
+
+Route::middleware(['auth','is_active'])->group(function () {
 
     Route::resource('/dashboard/roomtype', RoomTypeController::class);
     Route::resource('/dashboard/floors', FloorController::class);
@@ -111,6 +112,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard/users/edit', 'edit')->name('users.edit');
         Route::post('/dashboard/users/update', 'update')->name('users.update');
         Route::delete('/dashboard/users/{userId}/delete', 'destroy');
+        Route::get('/dashboard/users/dective_user/{id}', 'deactivateUser')->name('user.deactive');
     });
 
     // user role permission
