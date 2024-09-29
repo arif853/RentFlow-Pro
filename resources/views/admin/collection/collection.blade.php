@@ -114,6 +114,41 @@
                                                         </ul>
                                                     </div>
                                                 </div>
+                                                <div class="card border shadow-none radius-10" id=""
+                                                    style="margin-bottom: 0px; margin-top: 20px;">
+                                                    <div class="card-body">
+                                                        <ul class="list-group list-group-flush">
+                                                            <li
+                                                                class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                                                <span class="side-title">Customer Name :</span>
+                                                                <span id="client_name">---</span>
+                                                            </li>
+                                                            <li
+                                                                class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                                                <span class="side-title">Phone Number :</span>
+                                                                <span id="client_number">---</span>
+                                                            </li>
+                                                            <li
+                                                                class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                                                <span class="side-title">Email :</span>
+                                                                <span id="client_email">---</span>
+                                                                <input id="client_email" type="text" name="client_email" style="display:none;">
+                                                            </li>
+                                                            <li
+                                                                class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                                                <span class="side-title">Occupation :</span>
+                                                                <span id="client_occupation">---</span>
+                                                                <input id="client_occupation" type="text" name="client_occupation" style="display:none;">
+                                                            </li>
+                                                            <li
+                                                                class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                                                <span class="side-title">NID Number :</span>
+                                                                <span id="client_nid">---</span>
+                                                                <input id="client_nid" type="text" name="client_nid" style="display:none;">
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -343,6 +378,8 @@
                 });
             }
         });
+
+
 
 
 
