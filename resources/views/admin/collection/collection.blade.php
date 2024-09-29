@@ -82,19 +82,22 @@
                                                                 class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                                                                 <span class="side-title">Gas Bill Type :</span>
                                                                 <span id="gas_bill_type">---</span>
-                                                                <input id="gas_type" type="text" name="gas_type" style="display:none;">
+                                                                <input id="gas_type" type="text" name="gas_type"
+                                                                    style="display:none;">
                                                             </li>
                                                             <li
                                                                 class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                                                                 <span class="side-title">Electricity Bill Type :</span>
                                                                 <span id="electricity_bill_type">---</span>
-                                                                <input id="electricity_type" type="text" name="electricity_type" style="display:none;">
+                                                                <input id="electricity_type" type="text"
+                                                                    name="electricity_type" style="display:none;">
                                                             </li>
                                                             <li
                                                                 class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                                                                 <span class="side-title">Water Bill Type :</span>
                                                                 <span id="water_bill_type">---</span>
-                                                                <input id="water_type" type="text" name="water_type" style="display:none;">
+                                                                <input id="water_type" type="text" name="water_type"
+                                                                    style="display:none;">
                                                             </li>
                                                             <li
                                                                 class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
@@ -132,19 +135,22 @@
                                                                 class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                                                                 <span class="side-title">Email :</span>
                                                                 <span id="client_email">---</span>
-                                                                <input id="client_email" type="text" name="client_email" style="display:none;">
+                                                                <input id="client_email" type="text" name="client_email"
+                                                                    style="display:none;">
                                                             </li>
                                                             <li
                                                                 class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                                                                 <span class="side-title">Occupation :</span>
                                                                 <span id="client_occupation">---</span>
-                                                                <input id="client_occupation" type="text" name="client_occupation" style="display:none;">
+                                                                <input id="client_occupation" type="text"
+                                                                    name="client_occupation" style="display:none;">
                                                             </li>
                                                             <li
                                                                 class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                                                                 <span class="side-title">NID Number :</span>
-                                                                <span id="client_nid">---</span>
-                                                                <input id="client_nid" type="text" name="client_nid" style="display:none;">
+                                                                <span id="nid_number">---</span>
+                                                                <input id="nid_number" type="text" name="nid_number"
+                                                                    style="display:none;">
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -192,7 +198,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <div id="bill_type" style="display:none;">
-                                                   <h5>Pre Paid</h5>
+                                                    <h5>Pre Paid</h5>
                                                 </div>
                                                 <div class="d-flex justify-content-start">
                                                     <div class="col-3" id="gas_type_show"
@@ -205,14 +211,15 @@
                                                         style="display:none; margin-right:10px;">
                                                         <label class="form-label">Electricity Bill</label>
                                                         <input type="number" class="form-control"
-                                                            placeholder="Electricity Bill" id="electricity_amount" value=""
-                                                            name="electricity_amount">
+                                                            placeholder="Electricity Bill" id="electricity_amount"
+                                                            value="" name="electricity_amount">
                                                     </div>
                                                     <div class="col-3" id="water_type_show"
                                                         style="display:none; margin-right:10px;">
                                                         <label class="form-label">Water Bill</label>
-                                                        <input type="number" class="form-control" placeholder="Water Bill"
-                                                            id="water_amount" value="" name="water_amount">
+                                                        <input type="number" class="form-control"
+                                                            placeholder="Water Bill" id="water_amount" value=""
+                                                            name="water_amount">
                                                     </div>
                                                 </div>
                                             </div>
@@ -304,13 +311,28 @@
         // Get Details
         $('#unit_id').on('change', function () {
             var assetId = $(this).val();
+
+
             // console.log(assetId);
             if (assetId) {
+
                 $.ajax({
                     url: '/dashboard/collection/get-asset-details/' + assetId,
                     type: 'GET',
                     success: function (data) {
                         // console.log('ajax data', data);
+                        // console.log(data.bookings);
+                        data.bookings.forEach(item => {
+                            const customer = item.customer; // Accessing the customer object
+                            console.log(customer);
+                            $('#client_name').text(customer.client_name);
+                            $('#client_phone').text(customer.client_phone);
+                            $('#client_email').text(customer.client_email);
+                            $('#client_occupation').text(customer.client_occupation);
+                            $('#nid_number').text(customer.nid_number);
+
+                        });
+
                         $('#unit_name').text(data.unit_name);
                         $('#gas_bill_type').text(data.gas_type);
                         $('#electricity_bill_type').text(data.electricity_type);
@@ -321,7 +343,8 @@
                         $('#monthly_rent').text(data.monthly_rent);
                         $('#service_charge').text(data.service_charge);
                         $('#others_charge').text(data.others_charge);
-                        if (data.gas_type === 'Post Paid' || data.electricity_type === 'Post Paid' || data.water_type === 'Post Paid') {
+                        if (data.gas_type === 'Post Paid' || data.electricity_type ===
+                            'Post Paid' || data.water_type === 'Post Paid') {
                             $('#bill_type').show();
                         } else {
                             $('#bill_type').hide();

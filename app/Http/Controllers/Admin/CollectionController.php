@@ -4,13 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use Mpdf\Mpdf;
 use App\Models\Asset;
+use App\Models\Booking;
 use App\Models\Building;
 use App\Models\Employee;
 use App\Models\Collection;
-use Illuminate\Http\Request;
 
+use Illuminate\Http\Request;
 use function Illuminate\Log\log;
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 
 class CollectionController extends Controller
 {
@@ -128,7 +130,9 @@ class CollectionController extends Controller
     public function getAssetdetails($assetId)
     {
 
-        $assets = Asset::find($assetId);
+        $assets = Asset::with(['bookings','bookings.customer'])->find($assetId);
+
+        // dd($assets);
         return response()->json($assets);
     }
 
