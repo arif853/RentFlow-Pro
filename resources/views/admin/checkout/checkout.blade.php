@@ -66,14 +66,14 @@
                                                 </select>
                                             </div>
                                             <div>
-                                                <input type="date" id="availabilityDate" value="">
+                                                <input type="date" id="availability_date" name="availability_date" value="" style="display: none;">
                                             </div>
 
                                             <div>
                                                 <label class="form-label">Notes</label>
-                                                <input type="hidden" name="employee_id" value="" id="employeeId">
-                                                <input type="text" class="form-control" id="employee_name" value=""
-                                                    placeholder="Employee">
+                                                <input type="hidden" name="employee_id" value="{{$asset->employee_id}}" id="employeeId">
+                                                <input type="text" class="form-control" id="notes" name="notes" value=""
+                                                    placeholder="Notes">
                                             </div>
 
                                         </div>
@@ -124,9 +124,9 @@
         // Format the date as 'YYYY-DD-MM'
         const formattedDate = `${year}-${day}-${month}`;
 
-        // console.log(formattedDate); 
+        // console.log(formattedDate);
 
-        document.getElementById('availabilityDate').value = formattedDate;
+        document.getElementById('availability_date').value = formattedDate;
 
     });
 

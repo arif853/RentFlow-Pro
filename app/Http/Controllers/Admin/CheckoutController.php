@@ -32,7 +32,20 @@ class CheckoutController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //   dd($request->all());
+          $validatedData = $request->validate([
+            'asset_id' => 'required',
+            'employee_id' => 'required',
+            'month' => 'nullable|string',
+            'availability_date' => 'required|date',
+            'notes' => 'nullable|string',
+        ]);
+
+
+        Checkout::create($validatedData);
+
+
+        return redirect()->back()->with('success','Created Successfully');
     }
 
     /**
