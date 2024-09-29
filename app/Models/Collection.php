@@ -14,13 +14,16 @@ class Collection extends Model
         'asset_id',
         'employee_id',
         'collection_date',
-        'collection_type',
         'month',
-        'from_date',
-        'to_date',
-        'duration',
         'payable_amount',
         'collection_amount',
+        'due_amount',
+        'water_amount',
+        'gas_amount',
+        'electricity_amount',
+        'gas_type',
+        'electricity_type',
+        'water_type',
     ];
 
     public function building()

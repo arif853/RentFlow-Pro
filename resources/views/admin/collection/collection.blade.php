@@ -80,6 +80,24 @@
                                                             </li>
                                                             <li
                                                                 class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                                                <span class="side-title">Gas Bill Type :</span>
+                                                                <span id="gas_bill_type">---</span>
+                                                                <input id="gas_type" type="text" name="gas_type" style="display:none;">
+                                                            </li>
+                                                            <li
+                                                                class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                                                <span class="side-title">Electricity Bill Type :</span>
+                                                                <span id="electricity_bill_type">---</span>
+                                                                <input id="electricity_type" type="text" name="electricity_type" style="display:none;">
+                                                            </li>
+                                                            <li
+                                                                class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                                                <span class="side-title">Water Bill Type :</span>
+                                                                <span id="water_bill_type">---</span>
+                                                                <input id="water_type" type="text" name="water_type" style="display:none;">
+                                                            </li>
+                                                            <li
+                                                                class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                                                                 <span class="side-title">Monthly Rent :</span>
                                                                 <span id="monthly_rent">---</span>
                                                             </li>
@@ -107,7 +125,8 @@
                                         <div class="row g-3">
                                             <div class="col-12">
                                                 <label class="form-label">Collection Date </label>
-                                                <input type="date" class="form-control" name="collection_date" id="collection_date" placeholder="Collection Date">
+                                                <input type="date" class="form-control" name="collection_date"
+                                                    id="collection_date" placeholder="Collection Date">
                                             </div>
                                             <div class="col-12">
                                                 <label class="form-label">Employee</label>
@@ -116,34 +135,8 @@
                                                     placeholder="Employee" readonly>
                                             </div>
                                             <div class="col-12">
-                                                <label for="collection_type" class="form-label">Collection Type</label>
-                                                <select class="form-select" id="collection_type" name="collection_type">
-                                                    <option value="">Select Collection Type</option>
-                                                    <option value="1"> Day Wise</option>
-                                                    <option value="2">Month Wise</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-12">
-                                                <!-- Day Wise Date Pickers in One Row, Responsive -->
-                                                <div id="day_wise_dates" class="form-group row" style="display:none;">
-                                                    <div class="col-12 col-sm-6">
-                                                        <label for="from_date">From Date</label>
-                                                        <input type="date" id="from_date" class="form-control"
-                                                            placeholder="Select From Date" name="from_date">
-                                                    </div>
-                                                    <div class="col-12 col-sm-6">
-                                                        <label for="to_date">To Date</label>
-                                                        <input type="date" id="to_date" class="form-control"
-                                                            placeholder="Select To Date" name="to_date">
-                                                    </div>
-                                                   <div class="mt-3 d-flex">
-                                                    Total days: <p id="days_difference"></p>
-                                                    <input type="hidden" name="duration" value="" id="duration_days">
-                                                   </div>
-                                                </div>
-
                                                 <!-- Month Wise Selection -->
-                                                <div class="col-12" id="month_wise_dates" style="display:none;">
+                                                <div class="col-12" id="month_wise_dates">
                                                     <label>Select Month</label>
                                                     <select class="form-select col-12" id="selected_month" name="month">
                                                         <option class="" value="">Select a month</option>
@@ -163,13 +156,47 @@
                                                 </div>
                                             </div>
                                             <div class="col-12">
+                                                <div id="bill_type" style="display:none;">
+                                                   <h5>Pre Paid</h5>
+                                                </div>
+                                                <div class="d-flex justify-content-start">
+                                                    <div class="col-3" id="gas_type_show"
+                                                        style="display:none; margin-right:10px;">
+                                                        <label class="form-label">Gas Bill</label>
+                                                        <input type="number" class="form-control" placeholder="Gas Bill"
+                                                            id="gas_amount" value="" name="gas_amount">
+                                                    </div>
+                                                    <div class="col-3" id="electricity_type_show"
+                                                        style="display:none; margin-right:10px;">
+                                                        <label class="form-label">Electricity Bill</label>
+                                                        <input type="number" class="form-control"
+                                                            placeholder="Electricity Bill" id="electricity_amount" value=""
+                                                            name="electricity_amount">
+                                                    </div>
+                                                    <div class="col-3" id="water_type_show"
+                                                        style="display:none; margin-right:10px;">
+                                                        <label class="form-label">Water Bill</label>
+                                                        <input type="number" class="form-control" placeholder="Water Bill"
+                                                            id="water_amount" value="" name="water_amount">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12">
                                                 <label class="form-label">Total Payable Rent</label>
-                                                <input type="number" class="form-control" placeholder="Total Payable Rent"
-                                                    id="total_payable_amount" value="" readonly name="payable_amount">
+                                                <input type="number" class="form-control"
+                                                    placeholder="Total Payable Rent" id="total_payable_amount" value=""
+                                                    readonly name="payable_amount">
                                             </div>
                                             <div class="col-12">
                                                 <label class="form-label">Collection Amount</label>
-                                                <input type="number" class="form-control" name="collection_amount" placeholder="Collection Amount" id="collection_amount">
+                                                <input type="number" class="form-control" name="collection_amount"
+                                                    placeholder="Collection Amount" id="collection_amount">
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label">Due</label>
+                                                <input type="number" class="form-control" name="due_amount"
+                                                    placeholder="Collection Amount" id="due_amount" readonly>
                                             </div>
                                         </div>
                                         <!--end row-->
@@ -192,61 +219,6 @@
 @push('script')
 <script>
     $(document).ready(function () {
-
-        // Show the appropriate section based on the selected collection type
-        $('#collection_type').on('change', function () {
-            var selectedType = $(this).val();
-
-            if (selectedType == '1') {
-                $('#day_wise_dates').show(); // Show date pickers for day wise
-                $('#month_wise_dates').hide(); // Hide month selection
-                $('#selected_month').val(''); // Hide month selection
-
-            } else if (selectedType == '2') {
-                $('#day_wise_dates').hide(); // Hide date pickers
-                $('#month_wise_dates').show(); // Show month divs
-                $('#from_date').val('');
-                $('#to_date').val('');
-                $('#days_difference').text('');
-            } else {
-                $('#day_wise_dates').hide(); // Hide both if none selected
-                $('#month_wise_dates').hide();
-            }
-        });
-
-
-
-
-        function calculateDays() {
-            var fromDate = $('#from_date').val();
-            var toDate = $('#to_date').val();
-
-            if (fromDate && toDate) {
-                var start = new Date(fromDate);
-                var end = new Date(toDate);
-                var timeDiff = end - start;
-
-                // Calculate days
-                var daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24)); // Convert milliseconds to days
-                if(daysDiff<0){
-                    // Display the result
-                $('#days_difference').text('');
-                alert("Invalid date input");
-                }else{
-                // Display the result
-                $('#days_difference').text(daysDiff);
-                $('#duration_days').val(daysDiff);
-                }
-
-            } else {
-                $('#days_difference').text(''); // Clear the result if any date is not selected
-            }
-        }
-
-        // Attach change event to both date inputs
-        $('#from_date, #to_date').on('change', calculateDays);
-
-
 
 
         $('#building_id').on('change', function () {
@@ -305,15 +277,68 @@
                     success: function (data) {
                         // console.log('ajax data', data);
                         $('#unit_name').text(data.unit_name);
+                        $('#gas_bill_type').text(data.gas_type);
+                        $('#electricity_bill_type').text(data.electricity_type);
+                        $('#water_bill_type').text(data.water_type);
+                        $('#gas_type').val(data.gas_type);
+                        $('#electricity_type').val(data.electricity_type);
+                        $('#water_type').val(data.water_type);
                         $('#monthly_rent').text(data.monthly_rent);
                         $('#service_charge').text(data.service_charge);
                         $('#others_charge').text(data.others_charge);
+                        if (data.gas_type === 'Post Paid' || data.electricity_type === 'Post Paid' || data.water_type === 'Post Paid') {
+                            $('#bill_type').show();
+                        } else {
+                            $('#bill_type').hide();
+                        }
+
+                        if (data.gas_type === 'Post Paid') {
+                            $('#gas_type_show').show();
+                        } else {
+                            $('#gas_type_show').hide();
+                        }
+                        if (data.electricity_type === 'Post Paid') {
+                            $('#electricity_type_show').show();
+                        } else {
+                            $('#electricity_type_show').hide();
+                        }
+                        if (data.water_type === 'Post Paid') {
+                            $('#water_type_show').show();
+                        } else {
+                            $('#water_type_show').hide();
+                        }
                         $('#total_payable_amount').val(
                             parseFloat(data.monthly_rent || 0) +
                             parseFloat(data.service_charge || 0) +
                             parseFloat(data.others_charge || 0)
                         );
 
+                        $('#gas_amount, #electricity_amount, #water_amount').on('keyup',
+                            function () {
+                                $('#total_payable_amount').val(
+                                    parseFloat(data.monthly_rent || 0) +
+                                    parseFloat(data.service_charge || 0) +
+                                    parseFloat(data.others_charge || 0) +
+                                    parseFloat($('#gas_amount').val() || 0) +
+                                    parseFloat($('#electricity_amount').val() ||
+                                        0) +
+                                    parseFloat($('#water_amount').val() || 0)
+                                );
+                            });
+
+                        $('#collection_amount').on('keyup',
+                            function () {
+                                $('#due_amount').val(
+                                    parseFloat($('#total_payable_amount').val() ||
+                                        0) -
+                                    parseFloat($('#collection_amount').val() || 0)
+                                );
+                                if ($('#due_amount').val() < 0) {
+                                    alert(
+                                        "Warning: Due amount is negative! Please check the collection amount."
+                                    );
+                                }
+                            });
                     }
                 });
             }
@@ -332,66 +357,6 @@
 
         // Set the value of the date input to today's date
         $('#collection_date').val(formattedDate);
-
-
-
-        // $('#form_submit_btn').on('click', function(e) {
-        //     console.log('Submit');
-
-        //         e.preventDefault(); // Prevent the default form submission
-
-        //         // Collecting values by ID
-        //         const complexId = $('#building_id').val();
-        //         const assetId = $('#unit_id').val();
-        //         const collectionDate = $('#collection_date').val();
-        //         const collectionType = $('#collection_type').val();
-        //         const month = $('#selected_month').val();
-        //         const fromDate = $('#from_date').val();
-        //         const toDate = $('#to_date').val();
-        //         const duration = parseInt($('#days_difference').text());
-        //         const payableAmount = $('#total_payable_amount').val();
-        //         const collectionAmount = $('#collection_amount').val();
-
-        //         // console.log('complexId',complexId);
-        //         // console.log('assetId',assetId);
-        //         // console.log('collectionDate',collectionDate);
-        //         // console.log('collectionType',collectionType);
-        //         // console.log('month',month);
-        //         // console.log('fromDate',fromDate);
-        //         // console.log('toDate',toDate);
-        //         // console.log('duration',duration);
-        //         // console.log('payableAmount',payableAmount);
-        //         // console.log('collectionAmount',collectionAmount);
-
-
-        //         // Sending the data via AJAX
-        //         $.ajax({
-        //             url: '/dashboard/collection',
-        //             method: 'POST',
-        //             data: {
-        //                 building_id: complexId,
-        //                 asset_id: assetId,
-        //                 collection_date: collectionDate,
-        //                 collection_type: collectionType,
-        //                 month: month,
-        //                 from_date: fromDate,
-        //                 to_date: toDate,
-        //                 duration: duration,
-        //                 payable_amount: payableAmount,
-        //                 collection_amount: collectionAmount,
-        //                 _token: '{{ csrf_token() }}' // Include CSRF token
-        //             },
-        //             success: function(response) {
-        //                 console.log(response); // Handle success response
-        //                 alert('Form submitted successfully!');
-        //             },
-        //             error: function(xhr) {
-        //                 console.error(xhr.responseText); // Handle error response
-        //                 alert('Something went wrong!');
-        //             }
-        //         });
-        //     });
-
 
 
     });

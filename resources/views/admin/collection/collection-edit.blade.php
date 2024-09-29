@@ -71,6 +71,30 @@
                                                             </li>
                                                             <li
                                                                 class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                                                <span class="side-title">Gas Bill Type :</span>
+                                                                <span
+                                                                    id="gas_bill_type">{{$collection->gas_type}}</span>
+                                                                <input id="gas_type" type="text" name="gas_type"
+                                                                    style="display:none;">
+                                                            </li>
+                                                            <li
+                                                                class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                                                <span class="side-title">Electricity Bill Type :</span>
+                                                                <span
+                                                                    id="electricity_bill_type">{{$collection->electricity_type}}</span>
+                                                                <input id="electricity_type" type="text"
+                                                                    name="electricity_type" style="display:none;">
+                                                            </li>
+                                                            <li
+                                                                class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                                                <span class="side-title">Water Bill Type :</span>
+                                                                <span
+                                                                    id="water_bill_type">{{$collection->water_type}}</span>
+                                                                <input id="water_type" type="text" name="water_type"
+                                                                    style="display:none;">
+                                                            </li>
+                                                            <li
+                                                                class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                                                                 <span class="side-title">Monthly Rent :</span>
                                                                 <span
                                                                     id="monthly_rent">{{$collection->asset->monthly_rent}}</span>
@@ -111,85 +135,58 @@
                                                     value="{{$collection->employee->name}}" placeholder="Employee"
                                                     readonly>
                                             </div>
+
                                             <div class="col-12">
-                                                <label for="collection_type" class="form-label">Collection Type</label>
-                                                <select class="form-select" id="collection_type" name="collection_type">
-                                                    <option value="">Select Collection Type</option>
-                                                    <option value="1"
-                                                        {{ old('collection_type', $collection->collection_type) == '1' ? 'selected' : '' }}>
-                                                        Day Wise</option>
-                                                    <option value="2"
-                                                        {{ old('collection_type', $collection->collection_type) == '2' ? 'selected' : '' }}>
-                                                        Month Wise</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-12">
-                                                <!-- Day Wise Date Pickers in One Row, Responsive -->
-                                                <div id="day_wise_dates" class="form-group row" style="display:none;">
-                                                    <div class="col-12 col-sm-6">
-                                                        <label for="from_date">From Date</label>
-                                                        <input type="date" id="from_date" class="form-control"
-                                                            placeholder="Select From Date" name="from_date"
-                                                            value="{{$collection->from_date}}">
-                                                    </div>
-                                                    <div class="col-12 col-sm-6">
-                                                        <label for="to_date">To Date</label>
-                                                        <input type="date" id="to_date" class="form-control"
-                                                            placeholder="Select To Date" name="to_date"
-                                                            value="{{$collection->to_date}}">
-                                                    </div>
-                                                    <div class="mt-3 d-flex">
-                                                        Total days: <p id="days_difference">{{$collection->duration}}
-                                                        </p>
-                                                        <input type="hidden" name="duration"
-                                                            value="{{$collection->duration}}" id="duration_days">
-                                                    </div>
-                                                </div>
 
                                                 <!-- Month Wise Selection -->
-                                                <div class="col-12" id="month_wise_dates" style="display:none;">
+                                                <div class="col-12" id="month_wise_dates">
                                                     <label>Select Month</label>
-                                                    <select class="form-select col-12" id="selected_month" name="month">
-                                                        <option class="" value="">Select a month</option>
-                                                        <option value="January"
-                                                            {{ $collection->month == 'January' ? 'selected' : '' }}>
-                                                            January</option>
-                                                        <option value="February"
-                                                            {{ $collection->month == 'February' ? 'selected' : '' }}>
-                                                            February</option>
-                                                        <option value="March"
-                                                            {{ $collection->month == 'March' ? 'selected' : '' }}>March
-                                                        </option>
-                                                        <option value="April"
-                                                            {{ $collection->month == 'April' ? 'selected' : '' }}>April
-                                                        </option>
-                                                        <option value="May"
-                                                            {{ $collection->month == 'May' ? 'selected' : '' }}>May
-                                                        </option>
-                                                        <option value="June"
-                                                            {{ $collection->month == 'June' ? 'selected' : '' }}>June
-                                                        </option>
-                                                        <option value="July"
-                                                            {{ $collection->month == 'July' ? 'selected' : '' }}>July
-                                                        </option>
-                                                        <option value="August"
-                                                            {{ $collection->month == 'August' ? 'selected' : '' }}>
-                                                            August</option>
-                                                        <option value="September"
-                                                            {{ $collection->month == 'September' ? 'selected' : '' }}>
-                                                            September</option>
-                                                        <option value="October"
-                                                            {{ $collection->month == 'October' ? 'selected' : '' }}>
-                                                            October</option>
-                                                        <option value="November"
-                                                            {{ $collection->month == 'November' ? 'selected' : '' }}>
-                                                            November</option>
-                                                        <option value="December"
-                                                            {{ $collection->month == 'December' ? 'selected' : '' }}>
-                                                            December</option>
-                                                    </select>
+                                                    <input type="text" class="form-control" id="selected_month"
+                                                        name="month" value="{{$collection->month}}" readonly>
                                                 </div>
                                             </div>
+
+                                            @if ($collection->gas_type ==="Post Paid" || $collection->electricity_type
+                                            ==="Post Paid" ||$collection->water_type ==="Post Paid")
+                                            <div class="col-12">
+                                                <div id="bill_type">
+                                                    <h5>Pre Paid</h5>
+                                                </div>
+                                                <div class="d-flex justify-content-start">
+                                                    @if ($collection->gas_type === "Post Paid")
+                                                    <div class="col-3" id="gas_type_show" style="margin-right:10px;">
+                                                        <label class="form-label">Gas Bill</label>
+                                                        <input type="number" class="form-label" placeholder="Gas Bill"
+                                                            id="gas_amount" value="{{$collection->gas_amount}}"
+                                                            name="gas_amount" readonly>
+                                                    </div>
+                                                    @endif
+                                                    @if ($collection->electricity_type === "Post Paid")
+                                                    <div class="col-3" id="electricity_type_show"
+                                                        style="margin-right:10px;">
+                                                        <label class="form-label">Electricity Bill</label>
+                                                        <input type="number" class="form-label"
+                                                            placeholder="Electricity Bill" id="electricity_amount"
+                                                            value="{{$collection->electricity_amount}}"
+                                                            name="electricity_amount" readonly>
+                                                    </div>
+                                                    @endif
+                                                    @if ($collection->water_type === "Post Paid")
+                                                    <div class="col-3" id="water_type_show" style="margin-right:10px;">
+                                                        <label class="form-label">Water Bill</label>
+                                                        <input type="number" class="form-label" placeholder="Water Bill"
+                                                            id="water_amount" value="{{$collection->water_amount}}"
+                                                            name="water_amount" readonly>
+                                                    </div>
+                                                    @endif
+
+
+
+                                                </div>
+                                            </div>
+                                            @endif
+
+
                                             <div class="col-12">
                                                 <label class="form-label">Total Payable Rent</label>
                                                 <input type="number" class="form-control"
@@ -198,10 +195,26 @@
                                                     name="payable_amount">
                                             </div>
                                             <div class="col-12">
-                                                <label class="form-label">Collection Amount</label>
+                                                <label class="form-label">Previous Collection Amount</label>
+                                                <input type="number" class="form-control" name="prev_collection_amount"
+                                                    placeholder="Previous Collection Amount" id="prev_collection_amount"
+                                                    value="{{$collection->collection_amount}}" readonly>
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label">New Collection Amount</label>
+                                                <input type="number" class="form-control" name="new_collection_amount"
+                                                    placeholder="New Collection Amount" id="new_collection_amount" value="">
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label">Total Collection Amount</label>
                                                 <input type="number" class="form-control" name="collection_amount"
-                                                    placeholder="Collection Amount" id="collection_amount"
-                                                    value="{{$collection->collection_amount}}">
+                                                    placeholder="Total Collection Amount" id="collection_amount"
+                                                    value="" readonly>
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label">Due</label>
+                                                <input type="number" class="form-control" name="due_amount"
+                                                    placeholder="Due Amount" id="due_amount" value="" readonly>
                                             </div>
                                         </div>
                                         <!--end row-->
@@ -224,142 +237,26 @@
 @push('script')
 <script>
     $(document).ready(function () {
+        $('#new_collection_amount').on('keyup',
+            function () {
 
-        // Initialize based on the selected option on page load
-        var selectedType = $('#collection_type').val();
-        toggleDateFields(selectedType);
+                $('#collection_amount').val(
+                    parseFloat($('#prev_collection_amount').val() ||
+                        0) +
+                    parseFloat($('#new_collection_amount').val() || 0)
+                );
 
-        // Trigger change event when collection_type is changed
-        $('#collection_type').on('change', function () {
-            var selectedType = $(this).val();
-            toggleDateFields(selectedType);
-        });
-
-        function toggleDateFields(selectedType) {
-            if (selectedType == '1') {
-                $('#day_wise_dates').show(); // Show date pickers for day wise
-                $('#month_wise_dates').hide(); // Hide month selection
-                $('#selected_month').val(''); // Clear the month field
-            } else if (selectedType == '2') {
-                $('#day_wise_dates').hide(); // Hide date pickers
-                $('#month_wise_dates').show(); // Show month divs
-                $('#from_date').val(''); // Clear from_date field
-                $('#to_date').val(''); // Clear to_date field
-                $('#days_difference').text(''); // Clear days_difference text
-            } else {
-                $('#day_wise_dates').hide(); // Hide both if none selected
-                $('#month_wise_dates').hide();
-            }
-        }
-
-
-
-
-        function calculateDays() {
-            var fromDate = $('#from_date').val();
-            var toDate = $('#to_date').val();
-
-            if (fromDate && toDate) {
-                var start = new Date(fromDate);
-                var end = new Date(toDate);
-                var timeDiff = end - start;
-
-                // Calculate days
-                var daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24)); // Convert milliseconds to days
-                if (daysDiff < 0) {
-                    // Display the result
-                    $('#days_difference').text('');
-                    alert("Invalid date input");
-                } else {
-                    // Display the result
-                    $('#days_difference').text(daysDiff);
-                    $('#duration_days').val(daysDiff);
+                $('#due_amount').val(
+                    parseFloat($('#total_payable_amount').val() ||
+                        0) -
+                    parseFloat($('#collection_amount').val() || 0)
+                );
+                if ($('#due_amount').val() < 0) {
+                    alert(
+                        "Warning: Due amount is negative! Please check the collection amount."
+                    );
                 }
-
-            } else {
-                $('#days_difference').text(''); // Clear the result if any date is not selected
-            }
-        }
-
-        // Attach change event to both date inputs
-        $('#from_date, #to_date').on('change', calculateDays);
-
-
-
-
-
-
-        // const today = new Date();
-        // const year = today.getFullYear();
-        // const month = String(today.getMonth() + 1).padStart(2, '0'); // Month is zero-based
-        // const day = String(today.getDate()).padStart(2, '0');
-
-        // // Format today's date as yyyy-mm-dd
-        // const formattedDate = `${year}-${month}-${day}`;
-
-        // // Set the value of the date input to today's date
-        // $('#collection_date').val(formattedDate);
-
-
-
-        // $('#form_submit_btn').on('click', function(e) {
-        //     console.log('Submit');
-
-        //         e.preventDefault(); // Prevent the default form submission
-
-        //         // Collecting values by ID
-        //         const complexId = $('#building_id').val();
-        //         const assetId = $('#unit_id').val();
-        //         const collectionDate = $('#collection_date').val();
-        //         const collectionType = $('#collection_type').val();
-        //         const month = $('#selected_month').val();
-        //         const fromDate = $('#from_date').val();
-        //         const toDate = $('#to_date').val();
-        //         const duration = parseInt($('#days_difference').text());
-        //         const payableAmount = $('#total_payable_amount').val();
-        //         const collectionAmount = $('#collection_amount').val();
-
-        //         // console.log('complexId',complexId);
-        //         // console.log('assetId',assetId);
-        //         // console.log('collectionDate',collectionDate);
-        //         // console.log('collectionType',collectionType);
-        //         // console.log('month',month);
-        //         // console.log('fromDate',fromDate);
-        //         // console.log('toDate',toDate);
-        //         // console.log('duration',duration);
-        //         // console.log('payableAmount',payableAmount);
-        //         // console.log('collectionAmount',collectionAmount);
-
-
-        //         // Sending the data via AJAX
-        //         $.ajax({
-        //             url: '/dashboard/collection',
-        //             method: 'POST',
-        //             data: {
-        //                 building_id: complexId,
-        //                 asset_id: assetId,
-        //                 collection_date: collectionDate,
-        //                 collection_type: collectionType,
-        //                 month: month,
-        //                 from_date: fromDate,
-        //                 to_date: toDate,
-        //                 duration: duration,
-        //                 payable_amount: payableAmount,
-        //                 collection_amount: collectionAmount,
-        //                 _token: '{{ csrf_token() }}' // Include CSRF token
-        //             },
-        //             success: function(response) {
-        //                 console.log(response); // Handle success response
-        //                 alert('Form submitted successfully!');
-        //             },
-        //             error: function(xhr) {
-        //                 console.error(xhr.responseText); // Handle error response
-        //                 alert('Something went wrong!');
-        //             }
-        //         });
-        //     });
-
-
+            });
 
     });
 

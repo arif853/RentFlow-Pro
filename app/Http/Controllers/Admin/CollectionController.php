@@ -39,21 +39,25 @@ class CollectionController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $validatedData = $request->validate([
             'building_id' => 'required',
             'asset_id' => 'required',
             'employee_id' => 'required',
             'collection_date' => 'required|date',
-            'collection_type' => 'required|string',
             'month' => 'nullable|string',
-            'from_date' => 'nullable|date',
-            'to_date' => 'nullable|date',
-            'duration' => 'nullable|integer',
             'payable_amount' => 'required|numeric',
-            'collection_amount' => 'required|numeric',
+            'water_amount' => 'nullable|numeric',
+            'gas_amount' => 'nullable|numeric',
+            'electricity_amount' => 'nullable|numeric',
+            'collection_amount' => 'nullable|numeric',
+            'due_amount' => 'nullable|numeric',
+            'water_type' => 'nullable|string',
+            'electricity_type' => 'nullable|string',
+            'gas_type' => 'nullable|string',
         ]);
 
-        // dd($request->all());
+
         Collection::create($validatedData);
 
 
@@ -84,25 +88,21 @@ class CollectionController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // dd($request->all());
         $request->validate([
             'collection_date' => 'required|date',
-            'collection_type' => 'required|string',
-            'month' => 'nullable|string',
-            'from_date' => 'nullable|date',
-            'to_date' => 'nullable|date',
-            'duration' => 'nullable|integer',
             'collection_amount' => 'required|numeric',
-
+            'due_amount' => 'required|numeric',
         ]);
+
+
+
+
 
         $collection = Collection::findOrFail($id);
         $collection->collection_date = $request->input('collection_date');
-        $collection->collection_type = $request->input('collection_type');
-        $collection->month = $request->input('month');
-        $collection->from_date = $request->input('from_date');
-        $collection->to_date = $request->input('to_date');
-        $collection->duration = $request->input('duration');
         $collection->collection_amount = $request->input('collection_amount');
+        $collection->due_amount = $request->input('due_amount');
         $collection->save();
 
         return redirect()->route('collection.index')->with('success', 'Collection updated successfully.');
@@ -236,12 +236,16 @@ class CollectionController extends Controller
                                                 <td>' . $collection->collection_date . '</td>
                                             </tr>
                                             <tr>
-                                                <td>Collection Type</td>
-                                                <td>' . ($collection->collection_type == '1' ? 'Day Wise' : 'Month Wise') . '</td>
+                                                <td>Gas Bill Type</td>
+                                                <td>' . $collection->gas_type . '</td>
                                             </tr>
                                             <tr>
-                                                <td>Duration</td>
-                                                <td>' . ($collection->collection_type == '1' ? $collection->duration . ' days, (' . $collection->from_date . ' - ' . $collection->to_date . ')' : $collection->month) . '</td>
+                                                <td>Electricity Bill Type</td>
+                                                <td>' . $collection->gas_type . '</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Water Bill Type</td>
+                                                <td>' . $collection->gas_type . '</td>
                                             </tr>
                                             <tr>
                                                 <td>Monthly Rent</td>
@@ -262,6 +266,10 @@ class CollectionController extends Controller
                                             <tr>
                                                 <td>Collection Amount</td>
                                                 <td>' . $collection->collection_amount . '</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Due</td>
+                                                <td>' . $collection->due_amount . '</td>
                                             </tr>
                                         </tbody>
                                     </table>

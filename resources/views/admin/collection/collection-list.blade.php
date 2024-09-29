@@ -40,10 +40,10 @@
                             <th>Asset</th>
                             <th>Employee</th>
                             <th>Collection date</th>
-                            <th>Collection Type</th>
-                            <th>Duration</th>
+                            <th>Collection Month</th>
                             <th>Total payable Rent</th>
                             <th>Collection Amount</th>
+                            <th>Due</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -56,23 +56,10 @@
                             <td>{{$collection->asset->unit_name}}</td>
                             <td>{{$collection->employee->name}}</td>
                             <td>{{$collection->collection_date}}</td>
-                            <td>
-                                @if($collection->collection_type == '1')
-                                Day Wise
-                                @elseif($collection->collection_type == '2')
-                                Month Wise
-                                @endif
-                            </td>
-                            <td>
-                                @if($collection->collection_type == '1')
-                                {{$collection->duration}} days <br> ( {{$collection->from_date}} -
-                                {{$collection->to_date}} )
-                                @elseif($collection->collection_type == '2')
-                                {{$collection->month}}
-                                @endif
-                            </td>
+                            <td>{{$collection->month}}</td>
                             <td>{{$collection->payable_amount}}</td>
                             <td>{{$collection->collection_amount}}</td>
+                            <td>{{$collection->due_amount}}</td>
                             <td>
                                 <div class="table-actions d-flex align-items-center gap-3 fs-6">
                                     <a href="{{route('collection.show', $collection->id)}}" data-bs-toggle="tooltip"
