@@ -60,8 +60,10 @@
                                                 <select class="form-select" name="asset_id" id="unit_id">
                                                     <!-- Asset will be dynamically populated here -->
                                                     <option value="">Select Asset Name</option>
-
                                                 </select>
+                                                @error('asset_id')
+                                                <span class="text-danger">{{$message}}</span>
+                                                @enderror
                                             </div>
                                             <div class="col-12" id="asset_info">
                                                 <div class="card border shadow-none radius-10" id=""
@@ -160,6 +162,9 @@
                                                         <option class="" value="November">November</option>
                                                         <option class="" value="December">December</option>
                                                     </select>
+                                                    @error('month')
+                                                    <span class="text-danger">{{$message}}</span>
+                                                    @enderror
                                                 </div>
                                             </div>
                                             <div class="col-12">

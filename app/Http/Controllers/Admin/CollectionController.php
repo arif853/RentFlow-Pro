@@ -49,13 +49,16 @@ class CollectionController extends Controller
             'asset_id' => 'required',
             'employee_id' => 'required',
             'collection_date' => 'required|date',
-            'collection_type' => 'required|string',
-            'month' => 'nullable|string',
-            'from_date' => 'nullable|date',
-            'to_date' => 'nullable|date',
-            'duration' => 'nullable|integer',
+            'month' => 'required|string',
             'payable_amount' => 'required|numeric',
+            'water_amount' => 'nullable|numeric',
+            'gas_amount' => 'nullable|numeric',
+            'electricity_amount' => 'nullable|numeric',
             'collection_amount' => 'required|numeric',
+            'due_amount' => 'nullable|numeric',
+            'water_type' => 'nullable|string',
+            'electricity_type' => 'nullable|string',
+            'gas_type' => 'nullable|string',
         ]);
 
         // dd($request->all());

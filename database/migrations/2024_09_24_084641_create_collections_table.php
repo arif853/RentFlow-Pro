@@ -12,20 +12,26 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('collections', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('building_id')->constrained('buildings');
-            $table->foreignId('asset_id')->constrained('assets');
-            $table->foreignId('employee_id')->constrained('employees');
-            $table->date('collection_date');
-            $table->string('collection_type');
-            $table->string('month')->nullable();
-            $table->date('from_date')->nullable();
-            $table->date('to_date')->nullable();
-            $table->integer('duration')->nullable();
-            $table->decimal('payable_amount', 10, 2);
-            $table->decimal('collection_amount', 10, 2);
-            $table->timestamps();
-        });
+                $table->id();
+                $table->foreignId('building_id')->constrained('buildings');
+                $table->foreignId('asset_id')->constrained('assets');
+                $table->foreignId('employee_id')->constrained('employees');
+                $table->foreignId('customer_id')->constrained('customers');
+                $table->date('collection_date');
+                $table->string('month')->nullable();
+                $table->decimal('payable_amount', 10, 2);
+                $table->decimal('water_amount', 10, 2)->nullable();
+                $table->decimal('gas_amount', 10, 2)->nullable();
+                $table->decimal('electricity_amount', 10, 2)->nullable();
+                $table->decimal('due_amount', 10, 2)->nullable();
+                $table->decimal('collection_amount', 10, 2);
+                $table->string('water_type')->nullable();
+                $table->string('electricity_type')->nullable();
+                $table->string('gas_type')->nullable();
+                $table->timestamps();
+            }
+
+        );
     }
 
     /**
