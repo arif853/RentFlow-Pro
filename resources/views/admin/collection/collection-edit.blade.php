@@ -227,12 +227,12 @@
                                                 <label class="form-label">Total Collection Amount</label>
                                                 <input type="number" class="form-control" name="collection_amount"
                                                     placeholder="Total Collection Amount" id="collection_amount"
-                                                    value="" readonly>
+                                                    value="{{$collection->collection_amount}}" readonly>
                                             </div>
                                             <div class="col-12">
                                                 <label class="form-label">Due</label>
                                                 <input type="number" class="form-control" name="due_amount"
-                                                    placeholder="Due Amount" id="due_amount" value="" readonly>
+                                                    placeholder="Due Amount" id="due_amount" value="{{$collection->due_amount}}" readonly>
                                             </div>
                                         </div>
                                         <!--end row-->

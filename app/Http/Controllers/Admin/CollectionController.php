@@ -97,10 +97,6 @@ class CollectionController extends Controller
             'due_amount' => 'required|numeric',
         ]);
 
-
-
-
-
         $collection = Collection::findOrFail($id);
         $collection->collection_date = $request->input('collection_date');
         $collection->collection_amount = $request->input('collection_amount');

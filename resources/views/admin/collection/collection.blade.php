@@ -178,7 +178,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <div id="bill_type" style="display:none;">
-                                                    <h5>Pre Paid</h5>
+                                                    <h5>Post Paid</h5>
                                                 </div>
                                                 <div class="d-flex justify-content-start">
                                                     <div class="col-3" id="gas_type_show"
