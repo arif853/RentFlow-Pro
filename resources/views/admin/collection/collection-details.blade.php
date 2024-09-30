@@ -51,7 +51,7 @@
                         <li
                             class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-top">
                             <span class="side-title">Employee Name :</span>
-                            <span>{{$collection->employee->name}}</span>
+                            <span>{{$collection->employee ? $collection->employee->name : 'N/A'}}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                             <span class="side-title">Collection Date : </span>

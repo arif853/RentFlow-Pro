@@ -157,7 +157,7 @@
                                                 <label class="form-label">Employee</label>
                                                 <input type="hidden" name="employee_id" value="" id="employeeId">
                                                 <input type="text" class="form-control" id="employee_name"
-                                                    value="{{$collection->employee->name}}" placeholder="Employee"
+                                                    value="{{$collection->employee ? $collection->employee->name : ''}}" placeholder="Employee"
                                                     readonly>
                                             </div>
 

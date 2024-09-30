@@ -50,7 +50,7 @@ class CollectionController extends Controller
             'building_id' => 'required',
             'asset_id' => 'required',
             'customer_id' => 'required',
-            'employee_id' => 'required',
+            'employee_id' => 'nullable|numeric',
             'collection_date' => 'required|date',
             'month' => 'required|string',
             'payable_amount' => 'required|numeric',
@@ -67,8 +67,7 @@ class CollectionController extends Controller
 
         Collection::create($validatedData);
 
-
-        return redirect()->back()->with('success','Collection save successfully!');
+        return redirect()->route('collection.index')->with('success','Collection save successfully!');
     }
 
     /**
@@ -238,7 +237,7 @@ class CollectionController extends Controller
                                             </tr>
                                             <tr>
                                                 <td>Employee Name</td>
-                                                <td>' . $collection->employee->name . '</td>
+                                                <td>' . ($collection->employee ? $collection->employee->name : "N/A") . '</td>
                                             </tr>
                                             <tr>
                                                 <td>Collection Date</td>

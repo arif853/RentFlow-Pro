@@ -56,7 +56,7 @@
                             <td>{{$collection->customer->client_name}}</td>
                             <td>{{$collection->building->building_name}}</td>
                             <td>{{$collection->asset->unit_name}}</td>
-                            <td>{{$collection->employee->name}}</td>
+                            <td>{{$collection->employee ? $collection->employee->name : 'N/A'}}</td>
                             <td>{{$collection->collection_date}}</td>
                             <td>{{$collection->month}}</td>
                             <td>{{$collection->payable_amount}}</td>
