@@ -21,7 +21,7 @@ return new class extends Migration {
                 $table->decimal('gas_amount', 10, 2)->nullable();
                 $table->decimal('electricity_amount', 10, 2)->nullable();
                 $table->decimal('due_amount', 10, 2)->nullable();
-                $table->decimal('collection_amount', 10, 2)->nullable();
+                $table->decimal('collection_amount', 10, 2);
                 $table->string('water_type')->nullable();
                 $table->string('electricity_type')->nullable();
                 $table->string('gas_type')->nullable();
