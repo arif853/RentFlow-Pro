@@ -124,7 +124,11 @@ class CollectionController extends Controller
 
     public function getAssets($buildingId)
     {
-        $assets = Asset::where('building_id',$buildingId)->get();
+        // $assets = Asset::where('building_id',$buildingId)->get();
+        $assets = Asset::where('building_id', $buildingId)
+        ->whereHas('bookings', function ($query) {
+            $query->where('status', 'confirmed');
+        })->get();
         return response()->json($assets);
     }
 
@@ -132,7 +136,6 @@ class CollectionController extends Controller
     {
 
         $assets = Asset::with(['bookings','bookings.customer'])->find($assetId);
-
         // dd($assets);
         return response()->json($assets);
     }

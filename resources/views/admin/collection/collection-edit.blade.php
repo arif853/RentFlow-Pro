@@ -220,17 +220,20 @@
                                                     name="payable_amount">
                                             </div>
                                             <div class="col-12">
-                                                <label class="form-label">Previous Collection Amount</label>
+                                                <label class="form-label">Previous Due</label>
                                                 <input type="number" class="form-control" name="prev_collection_amount"
                                                     placeholder="Previous Collection Amount" id="prev_collection_amount"
-                                                    value="{{$collection->collection_amount}}" readonly>
+                                                    value="{{$collection->collection_amount}}" style="display:none;">
+                                                <input type="number" class="form-control"
+                                                    placeholder="Previous Collection Amount"
+                                                    value="{{$collection->due_amount}}" readonly>
                                             </div>
                                             <div class="col-12">
                                                 <label class="form-label">New Collection Amount</label>
                                                 <input type="number" class="form-control" name="new_collection_amount"
                                                     placeholder="New Collection Amount" id="new_collection_amount" value="">
                                             </div>
-                                            <div class="col-12">
+                                            <div class="col-12" style="display:none;">
                                                 <label class="form-label">Total Collection Amount</label>
                                                 <input type="number" class="form-control" name="collection_amount"
                                                     placeholder="Total Collection Amount" id="collection_amount"
