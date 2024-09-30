@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Asset;
+use App\Models\Building;
 use App\Models\Checkout;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -23,8 +24,9 @@ class CheckoutController extends Controller
      */
     public function create()
     {
+        $buildings = Building::where('status', 1)->get();
         $assets = Asset::all();
-        return view('admin.checkout.checkout',compact('assets'));
+        return view('admin.checkout.checkout',compact('buildings','assets'));
     }
 
     /**
@@ -32,7 +34,7 @@ class CheckoutController extends Controller
      */
     public function store(Request $request)
     {
-        //   dd($request->all());
+          dd($request->all());
           $validatedData = $request->validate([
             'asset_id' => 'required',
             'employee_id' => 'required',

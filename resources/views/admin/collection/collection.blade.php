@@ -269,7 +269,6 @@
                         $('#employee_name').val(data.name);
                         // console.log('ajax data',data.name);
 
-
                     }
                 });
             }

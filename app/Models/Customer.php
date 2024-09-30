@@ -50,6 +50,7 @@ class Customer extends Model
     {
         return $this->hasOne(CustomerExtra::class);
     }
+    
     public function collection()
     {
         return $this->hasOne(Collection::class);

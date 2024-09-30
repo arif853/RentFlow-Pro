@@ -39,13 +39,30 @@
                                         <div class="row g-3">
                                             <!--Row-1-->
                                             <div class="col-12">
+                                                <label class="form-label">Complex</label>
+                                                <select class="form-select" name="building_id" id="building_id">
+                                                    <!-- Asset will be dynamically populated here -->
+                                                    <option value="">Select Complex</option>
+                                                    @foreach ($buildings as $building)
+                                                    <option value="{{$building->id}}"
+                                                        data-building-name="{{ $building->building_name }}"
+                                                        data-employee_id="{{$building->employee_id}}">
+                                                        {{$building->building_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('building_id')
+                                                <span class="text-danger">{{$message}}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="col-12">
                                                 <label class="form-label">Asset Name</label>
                                                 <select class="form-select" name="asset_id" id="unit_id">
                                                     <!-- Asset will be dynamically populated here -->
-                                                    @foreach ($assets as $asset)
-                                                    <option value="{{$asset->id}}">{{$asset->unit_name}}</option>
-                                                    @endforeach
+                                                    <option value="">Select Asset Name</option>
                                                 </select>
+                                                @error('asset_id')
+                                                <span class="text-danger">{{$message}}</span>
+                                                @enderror
                                             </div>
                                             <div class="col-12">
                                                 <label>Select Month</label>
@@ -66,12 +83,14 @@
                                                 </select>
                                             </div>
                                             <div>
-                                                <input type="date" id="availability_date" name="availability_date" value="" style="display: none;">
+                                                <input type="date" id="availability_date" name="availability_date"
+                                                    value="" style="display: none;">
                                             </div>
 
                                             <div>
                                                 <label class="form-label">Notes</label>
-                                                <input type="hidden" name="employee_id" value="{{$asset->employee_id}}" id="employeeId">
+                                                <input type="hidden" name="employee_id" value=""
+                                                    id="employeeId">
                                                 <input type="text" class="form-control" id="notes" name="notes" value=""
                                                     placeholder="Notes">
                                             </div>
@@ -79,6 +98,52 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="card border shadow-none radius-10" id=""
+                                style="margin-bottom: 0px;">
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li
+                                            class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                            <span class="side-title">Created At :</span>
+                                            {{-- <span id="created_at">---</span> --}}
+                                            <input id="created_at" type="date" name="created_at" value="" readonly>
+                                        </li>
+                                        <li
+                                            class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                            <span class="side-title">Customer Name :</span>
+                                            <span id="client_name">---</span>
+                                            <input id="customer_id" type="number" name="customer_id" value="" style="display:none;">
+                                        </li>
+                                        <li
+                                            class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                            <span class="side-title">Phone Number :</span>
+                                            <span id="client_phone">---</span>
+                                        </li>
+                                        <li
+                                            class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                            <span class="side-title">Email :</span>
+                                            <span id="client_email">---</span>
+                                        </li>
+                                        <li
+                                            class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                            <span class="side-title">Birthday :</span>
+                                            <span id="birthday">---</span>
+                                        </li>
+                                        <li
+                                            class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                            <span class="side-title">Gender :</span>
+                                            <span id="gender">---</span>
+                                        </li>
+                                        <li
+                                            class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                            <span class="side-title">NID Number :</span>
+                                            <span id="nid_number">---</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                             </div>
                         </div>
                         <!--end row-->
@@ -94,7 +159,95 @@
 @endsection
 
 @push('script')
+
 <script>
+    $(document).ready(function () {
+
+        $('#building_id').on('change', function () {
+            var buildingId = $(this).val();
+
+            var buildingName = this.options[this.selectedIndex].getAttribute('data-building-name');
+            $('#building_name').text(buildingName);
+            // console.log(buildingId);
+
+            var employeeId = this.options[this.selectedIndex].getAttribute('data-employee_id');
+            // console.log('employeeId',employeeId);
+
+
+            // Get Employee Name
+            if (employeeId) {
+                $.ajax({
+                    url: '/dashboard/collection/get-employee-details/' + employeeId,
+                    type: 'GET',
+                    success: function (data) {
+                        $('#employeeId').val(data.id);
+                        $('#employee_name').val(data.name);
+                        // console.log('ajax data',data.id);
+
+                    }
+                });
+            }
+
+
+            $('#unit_id').html('');
+            if (buildingId) {
+                $.ajax({
+                    url: '/dashboard/collection/get-asset/' + buildingId,
+                    type: 'GET',
+                    success: function (data) {
+                        $('#unit_id').html(
+                            '<option value="">Select Asset Name</option>');
+                        $.each(data, function (key, value) {
+                            $('#unit_id').append('<option value="' + value.id +
+                                '">' + value.unit_name + '</option>');
+                        });
+                    }
+                });
+            }
+        });
+
+        $('#unit_id').on('change', function () {
+            var assetId = $(this).val();
+            // console.log(assetId);
+            if (assetId) {
+                $.ajax({
+                    url: '/dashboard/collection/get-asset-details/' + assetId,
+                    type: 'GET',
+                    success: function (data) {
+                        // console.log( data);
+                        console.log('Collections: ',data.collections);
+                        data.bookings.forEach(item => {
+
+                            const customer = item.customer; // Accessing the customer object
+                            console.log('Bookings: ',item);
+                            console.log('Customers: ',customer.customer_info.advance_amount_type);
+
+                            const date = new Date(item.created_at);
+
+                            // Format the date as YYYY-MM-DD for input type="date"
+                            const year = date.getFullYear();
+                            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+                            const day = String(date.getDate()).padStart(2, '0');
+
+                            const formattedDate = `${year}-${month}-${day}`;
+
+                            $('#created_at').val(formattedDate);
+                            $('#client_name').text(customer.client_name);
+                            $('#client_phone').text(customer.client_phone);
+                            $('#client_email').text(customer.client_email);
+                            $('#birthday').text(customer.birthday);
+                            $('#gender').text(customer.gender);
+                            $('#nid_number').text(customer.nid_number);
+                            $('#customer_id').val(customer.id);
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+
+
     document.getElementById('selected_month').addEventListener('change', function () {
         const monthMap = {
             "January": 0,
@@ -125,7 +278,6 @@
         const formattedDate = `${year}-${day}-${month}`;
 
         // console.log(formattedDate);
-
         document.getElementById('availability_date').value = formattedDate;
 
     });
