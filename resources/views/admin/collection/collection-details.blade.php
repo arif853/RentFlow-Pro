@@ -29,13 +29,24 @@
                         <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                             <span class="side-title">Complex :</span>
                             @if($collection->building)
-                            <span>{{$collection->building->building_name}} <br> {{$collection->building->building_code}}</span>
+                            <span>{{$collection->building->building_name}} <br>
+                                {{$collection->building->building_code}}</span>
                             @endif
                         </li>
                         <li
                             class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-top">
                             <span class="side-title">Unit Name :</span>
                             <span>{{$collection->asset->unit_name}}</span>
+                        </li>
+                        <li
+                            class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-top">
+                            <span class="side-title">Customer Name :</span>
+                            <span>{{$collection->customer->client_name}}</span>
+                        </li>
+                        <li
+                            class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-top">
+                            <span class="side-title">Customer Phone Number :</span>
+                            <span>{{$collection->customer->client_phone}}</span>
                         </li>
                         <li
                             class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-top">
@@ -47,21 +58,19 @@
                             <span>{{$collection->collection_date}}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
-                            <span class="side-title">Collection Type :</span>
-                            <span>@if($collection->collection_type == '1')
-                                Day Wise
-                                @elseif($collection->collection_type == '2')
-                                Month Wise
-                                @endif</span>
+                            <span class="side-title">Gas Bill Type :</span>
+                            <span id="gas_bill_type">{{$collection->gas_type}}</span>
+                            <input id="gas_type" type="text" name="gas_type" style="display:none;">
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
-                            <span class="side-title">Duration :</span>
-                            @if($collection->collection_type == '1')
-                                {{$collection->duration}} days,  ( {{$collection->from_date}} -
-                                {{$collection->to_date}} )
-                            @elseif($collection->collection_type == '2')
-                                {{$collection->month}}
-                            @endif
+                            <span class="side-title">Electricity Bill Type :</span>
+                            <span id="electricity_bill_type">{{$collection->electricity_type}}</span>
+                            <input id="electricity_type" type="text" name="electricity_type" style="display:none;">
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                            <span class="side-title">Water Bill Type :</span>
+                            <span id="water_bill_type">{{$collection->water_type}}</span>
+                            <input id="water_type" type="text" name="water_type" style="display:none;">
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                             <span class="side-title">Monthly Rent :</span>
@@ -82,6 +91,10 @@
                         <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                             <span class="side-title">Collection amount :</span>
                             <span>{{$collection->collection_amount}}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                            <span class="side-title">Due :</span>
+                            <span>{{$collection->due_amount}}</span>
                         </li>
                     </ul>
                 </div>

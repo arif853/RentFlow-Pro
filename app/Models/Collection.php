@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Customer;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Collection extends Model
 {
@@ -12,15 +13,19 @@ class Collection extends Model
     protected $fillable = [
         'building_id',
         'asset_id',
+        'customer_id',
         'employee_id',
         'collection_date',
-        'collection_type',
         'month',
-        'from_date',
-        'to_date',
-        'duration',
         'payable_amount',
         'collection_amount',
+        'due_amount',
+        'water_amount',
+        'gas_amount',
+        'electricity_amount',
+        'gas_type',
+        'electricity_type',
+        'water_type',
     ];
 
     public function building()
@@ -34,5 +39,9 @@ class Collection extends Model
     public function employee()
     {
         return $this->belongsTo(Employee::class);
+    }
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
     }
 }

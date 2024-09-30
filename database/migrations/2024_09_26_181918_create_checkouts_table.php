@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('employee_id')->constrained('employees');
             $table->foreignId('asset_id')->constrained('assets');
-            $table->date('checkout_date');
-            $table->string('checkout_month');
-            $table->string('checkout_text');
+            $table->date('availability_date');
+            $table->string('month');
+            $table->string('notes')->nullable();
             $table->timestamps();
         });
     }
