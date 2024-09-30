@@ -40,6 +40,16 @@
                         </li>
                         <li
                             class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-top">
+                            <span class="side-title">Customer Name :</span>
+                            <span>{{$collection->customer->client_name}}</span>
+                        </li>
+                        <li
+                            class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-top">
+                            <span class="side-title">Customer Phone Number :</span>
+                            <span>{{$collection->customer->client_phone}}</span>
+                        </li>
+                        <li
+                            class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-top">
                             <span class="side-title">Employee Name :</span>
                             <span>{{$collection->employee->name}}</span>
                         </li>

@@ -21,7 +21,6 @@ class CollectionController extends Controller
      */
     public function index()
     {
-
         $collections = Collection::all();
         return view('admin.collection.collection-list',compact('collections'));
     }
@@ -45,6 +44,7 @@ class CollectionController extends Controller
         $validatedData = $request->validate([
             'building_id' => 'required',
             'asset_id' => 'required',
+            'customer_id' => 'required',
             'employee_id' => 'required',
             'collection_date' => 'required|date',
             'month' => 'nullable|string',
@@ -230,6 +230,14 @@ class CollectionController extends Controller
                                             <tr>
                                                 <td>Unit Name</td>
                                                 <td>' . $collection->asset->unit_name . '</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Customer Name</td>
+                                                <td>' . $collection->customer->client_name . '</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Customer Phone Number</td>
+                                                <td>' . $collection->customer->client_phone . '</td>
                                             </tr>
                                             <tr>
                                                 <td>Employee Name</td>

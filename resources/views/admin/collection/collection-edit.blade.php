@@ -114,6 +114,24 @@
                                                         </ul>
                                                     </div>
                                                 </div>
+                                                <div class="card border shadow-none radius-10" id=""
+                                                    style="margin-bottom: 0px; margin-top: 20px;">
+                                                    <div class="card-body">
+                                                        <ul class="list-group list-group-flush">
+                                                            <li
+                                                                class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                                                <span class="side-title">Customer Name :</span>
+                                                                <span id="client_name">{{$collection->customer->client_name}}</span>
+                                                                <input id="customer_id" type="text" name="customer_id" style="display:none;">
+                                                            </li>
+                                                            <li
+                                                                class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                                                <span class="side-title">Phone Number :</span>
+                                                                <span id="client_phone">{{$collection->customer->client_phone}}</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

@@ -13,6 +13,7 @@ return new class extends Migration {
                 $table->foreignId('building_id')->constrained('buildings');
                 $table->foreignId('asset_id')->constrained('assets');
                 $table->foreignId('employee_id')->constrained('employees');
+                $table->foreignId('customer_id')->constrained('customers');
                 $table->date('collection_date');
                 $table->string('month')->nullable();
                 $table->decimal('payable_amount', 10, 2);

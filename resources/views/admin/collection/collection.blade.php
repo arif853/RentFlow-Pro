@@ -125,32 +125,12 @@
                                                                 class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                                                                 <span class="side-title">Customer Name :</span>
                                                                 <span id="client_name">---</span>
+                                                                <input id="customer_id" type="text" name="customer_id" style="display:none;">
                                                             </li>
                                                             <li
                                                                 class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                                                                 <span class="side-title">Phone Number :</span>
-                                                                <span id="client_number">---</span>
-                                                            </li>
-                                                            <li
-                                                                class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
-                                                                <span class="side-title">Email :</span>
-                                                                <span id="client_email">---</span>
-                                                                <input id="client_email" type="text" name="client_email"
-                                                                    style="display:none;">
-                                                            </li>
-                                                            <li
-                                                                class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
-                                                                <span class="side-title">Occupation :</span>
-                                                                <span id="client_occupation">---</span>
-                                                                <input id="client_occupation" type="text"
-                                                                    name="client_occupation" style="display:none;">
-                                                            </li>
-                                                            <li
-                                                                class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
-                                                                <span class="side-title">NID Number :</span>
-                                                                <span id="nid_number">---</span>
-                                                                <input id="nid_number" type="text" name="nid_number"
-                                                                    style="display:none;">
+                                                                <span id="client_phone">---</span>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -327,9 +307,7 @@
                             console.log(customer);
                             $('#client_name').text(customer.client_name);
                             $('#client_phone').text(customer.client_phone);
-                            $('#client_email').text(customer.client_email);
-                            $('#client_occupation').text(customer.client_occupation);
-                            $('#nid_number').text(customer.nid_number);
+                            $('#customer_id').val(customer.id);
 
                         });
 

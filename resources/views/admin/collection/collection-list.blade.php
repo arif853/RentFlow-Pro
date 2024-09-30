@@ -36,6 +36,7 @@
                     <thead class="table-secondary">
                         <tr>
                             <th>Sl</th>
+                            <th>Customer Name</th>
                             <th>Complex</th>
                             <th>Asset</th>
                             <th>Employee</th>
@@ -52,6 +53,7 @@
                         @foreach ($collections as $key => $collection)
                         <tr>
                             <td>{{$key+1}}</td>
+                            <td>{{$collection->customer->client_name}}</td>
                             <td>{{$collection->building->building_name}}</td>
                             <td>{{$collection->asset->unit_name}}</td>
                             <td>{{$collection->employee->name}}</td>
