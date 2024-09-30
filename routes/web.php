@@ -35,6 +35,7 @@ Route::get('/storage_link',function(){
     // return "Storage Linked";
 });
 
+
 Route::get('/', function () {
     return redirect()->route('login');
 });
