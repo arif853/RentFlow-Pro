@@ -12,7 +12,7 @@ return new class extends Migration {
                 $table->id();
                 $table->foreignId('building_id')->constrained('buildings');
                 $table->foreignId('asset_id')->constrained('assets');
-                $table->foreignId('employee_id')->constrained('employees');
+                $table->foreignId('employee_id')->nullable()->constrained('employees');
                 $table->foreignId('customer_id')->constrained('customers');
                 $table->date('collection_date');
                 $table->string('month')->nullable();
@@ -25,6 +25,7 @@ return new class extends Migration {
                 $table->string('water_type')->nullable();
                 $table->string('electricity_type')->nullable();
                 $table->string('gas_type')->nullable();
+                $table->boolean('is_due')->default(false);
                 $table->timestamps();
             }
 

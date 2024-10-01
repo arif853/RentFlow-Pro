@@ -368,11 +368,10 @@
 
                         $('#collection_amount').on('keyup',
                             function () {
-                                $('#due_amount').val(
-                                    parseFloat($('#total_payable_amount').val() ||
+                                var due_amount = parseFloat($('#total_payable_amount').val() ||
                                         0) -
-                                    parseFloat($('#collection_amount').val() || 0)
-                                );
+                                    parseFloat($('#collection_amount').val() || 0);
+                                $('#due_amount').val(due_amount);
                                 if ($('#due_amount').val() < 0) {
                                     alert(
                                         "Warning: Due amount is negative! Please check the collection amount."

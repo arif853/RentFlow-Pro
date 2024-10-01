@@ -82,7 +82,10 @@
                             <a href="{{route('booking.index')}}"><i class="bi bi-circle"></i>Booking List</a>
                         </li>
                         <li>
-                            <a href="{{route('collection.index')}}"><i class="bi bi-circle"></i>Collection</a>
+                            <a href="{{route('collection.index')}}"><i class="bi bi-circle"></i>Collection List</a>
+                        </li>
+                        <li>
+                            <a href="{{route('collection.due')}}"><i class="bi bi-circle"></i>Collection Due List</a>
                         </li>
                         <li>
                             <a href="{{route('checkout.index')}}"><i class="bi bi-circle"></i>Checkout</a>

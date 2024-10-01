@@ -104,6 +104,8 @@ Route::middleware(['auth','is_user_active'])->group(function () {
     Route::get('/dashboard/collection/get-asset/{complex_id}', [CollectionController::class,'getAssets']);
     Route::get('/dashboard/collection/get-asset-details/{asset_id}', [CollectionController::class,'getAssetdetails']);
     Route::get('/dashboard/collection/get-employee-details/{employee_id}', [CollectionController::class,'getEmployeedetails']);
+    Route::get('/dashboard/collection/due/list', [CollectionController::class,'getDues'])->name('collection.due');
+    Route::post('/dashboard/collection/due/payment',[CollectionController::class, 'duePayment'])->name('collection.due.payment');
 
     Route::resource('/dashboard/checkout',CheckoutController::class);
 

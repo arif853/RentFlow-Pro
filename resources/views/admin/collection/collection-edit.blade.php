@@ -283,6 +283,9 @@
                     alert(
                         "Warning: Due amount is negative! Please check the collection amount."
                     );
+                    $('#due_amount').val('');
+                    $('#new_collection_amount').val('');
+                    event.preventDefault();
                 }
             });
 

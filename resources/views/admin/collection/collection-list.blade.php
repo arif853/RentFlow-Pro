@@ -1,17 +1,17 @@
 @extends('layouts.admin')
-@section('title','Manage Booking')
+@section('title','Manage Collection List')
 @section('content')
 <!--start content-->
 <main class="page-content">
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Booking</div>
+        <div class="breadcrumb-title pe-3">Collection</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Manage Collection</li>
+                    <li class="breadcrumb-item active" aria-current="page">Manage Collection List</li>
                 </ol>
             </nav>
         </div>
@@ -21,7 +21,7 @@
     <div class="card">
         <div class="card-body">
             <div class="d-flex align-items-center">
-                <h5 class="mb-0">Manage Collection</h5>
+                <h5 class="mb-0">Manage Collection List</h5>
                 <form class="ms-auto position-relative">
                     <div class="ms-auto">
                         <a href="{{route('collection.create')}}" class="btn btn-primary">Add New Collection</a>

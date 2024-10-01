@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use function Illuminate\Log\log;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use Illuminate\Support\Facades\Session;
 
 class CollectionController extends Controller
 {
@@ -64,8 +65,11 @@ class CollectionController extends Controller
             'gas_type' => 'nullable|string',
         ]);
 
+        $validatedData['is_due'] = isset($validatedData['due_amount']) && $validatedData['due_amount'] > 0;
 
         Collection::create($validatedData);
+
+
 
         return redirect()->route('collection.index')->with('success','Collection save successfully!');
     }
@@ -106,7 +110,9 @@ class CollectionController extends Controller
         $collection->collection_date = $request->input('collection_date');
         $collection->collection_amount = $request->input('collection_amount');
         $collection->due_amount = $request->input('due_amount');
+        $collection->is_due = $collection->due_amount > 0;
         $collection->save();
+
 
         return redirect()->route('collection.index')->with('success', 'Collection updated successfully.');
     }
@@ -291,6 +297,39 @@ class CollectionController extends Controller
         $mpdf->WriteHTML($html);
 
         $mpdf->Output('collection_' . $id . '.pdf', 'D');
+    }
+
+    public function duePayment(Request $request)
+    {
+        $collection = Collection::findOrFail($request->collection_id);
+
+        $collectedAmount = $collection->collection_amount + $request->input('collection_amount');
+        $newDue = $request->input('due_amount');
+        if($newDue == 0)
+        {
+            $isDue = 0;
+        }else{
+            $isDue = 1;
+        }
+        // dd($request->all(),$collectedAmount,$newDue);
+
+        $collection->update([
+            'collection_date' => $request->input('collection_date'),
+            'collection_amount' => $collectedAmount,
+            'due_amount' => $newDue,
+            'is_due' => $isDue,
+        ]);
+
+        Session::flash('success','Due payment successfull.');
+        return response()->json(['status'=>200]);
+
+    }
+
+
+    public function getDues()
+    {
+        $collections = Collection::where('due_amount','!=', 0)->get();
+        return view('admin.collection.collection-due-list',compact('collections'));
     }
 
 

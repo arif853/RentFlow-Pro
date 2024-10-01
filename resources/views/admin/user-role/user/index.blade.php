@@ -211,7 +211,6 @@
                 }
                 else{
                     $.Notification.autoHideNotify('danger', 'top right', 'Danger', res);
-
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
