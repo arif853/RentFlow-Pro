@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Asset;
 use App\Models\Building;
 use App\Models\Checkout;
+use App\Models\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class CheckoutController extends Controller

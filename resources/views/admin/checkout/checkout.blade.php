@@ -141,6 +141,16 @@
                                             <span class="side-title">NID Number :</span>
                                             <span id="nid_number">---</span>
                                         </li>
+                                        <li
+                                            class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                            <span class="side-title">Advanced :</span>
+                                            <span id="advanced">---</span>
+                                        </li>
+                                        <li
+                                            class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                            <span class="side-title">Due :</span>
+                                            <span id="due">---</span>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -215,12 +225,19 @@
                     type: 'GET',
                     success: function (data) {
                         // console.log( data);
-                        console.log('Collections: ',data.collections);
                         data.bookings.forEach(item => {
+                            console.log('Collections-due: ',item.customer.collection.due_amount);
+                            $('#due').text(item.customer.collection.due_amount);
 
                             const customer = item.customer; // Accessing the customer object
-                            console.log('Bookings: ',item);
-                            console.log('Customers: ',customer.customer_info.advance_amount_type);
+
+                            console.log('Rent-advance: ',customer.customer_info.advance_amount_type);
+
+                            if(customer.customer_info.advance_amount_type ==='Yes'){
+                                $('#advanced').text(customer.customer_info.advance_amount);
+                            }else{
+                                $('#advanced').text(customer.customer_info.advance_amount_type);
+                            }
 
                             const date = new Date(item.created_at);
 
@@ -239,6 +256,8 @@
                             $('#gender').text(customer.gender);
                             $('#nid_number').text(customer.nid_number);
                             $('#customer_id').val(customer.id);
+
+
                         });
                     }
                 });
