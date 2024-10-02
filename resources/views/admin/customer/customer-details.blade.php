@@ -317,6 +317,8 @@
 
     </div>
     <!--end row-->
+
+    {{-- Year and Month wise Bill --}}
     <div class="row">
         <div class="col col-lg-12 mx-auto">
             <div class="card">
@@ -336,7 +338,7 @@
                             @endforeach
                         </ul>
                         <div class="tab-content py-3">
-                            @foreach ($collections as $key => $collection)
+                            @foreach ($collections as $collection)
                                 <div class="tab-pane fade" id="{{ $collection->month }}_{{$year}}" role="tabpanel">
                                     <div class="card shadow-sm border-0 overflow-hidden">
                                         <div class="card-body">

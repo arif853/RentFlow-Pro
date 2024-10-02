@@ -268,6 +268,39 @@
                                         </div>
                                     </div>
                                 </div>
+                                                                {{-- Other Bill --}}
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <div class="card shadow-none bg-light border">
+                                                                            <div class="card-header">
+                                                                                <h6 class="mb-0 align-items-center text-center">Other Bill
+                                                                                </h6>
+                                                                            </div>
+                                                                            <div class="card-body">
+                                                                                <div class="row g-3 mb-2">
+                                                                                    <div class="col-12 col-md-4">
+                                                                                        <label class="form-label">Guard Bill</label>
+                                                                                        <input type="number" class="form-control"
+                                                                                            placeholder="Guard Bill" name="guard_amount" value="{{$asset->guard_amount}}">
+                                                                                    </div>
+                                                                                    <div class="col-12 col-md-4">
+                                                                                        <label class="form-label">Internet Bill</label>
+                                                                                        <input type="number" class="form-control"
+                                                                                            placeholder="Internet Bill" name="internet_amount" value="{{$asset->internet_amount}}">
+                                                                                    </div>
+                                                                                    <div class="col-12 col-md-4">
+                                                                                        <label class="form-label">Dish Bill</label>
+                                                                                        <input type="number" class="form-control"
+                                                                                            placeholder="Dish Bill" name="dish_amount" value="{{$asset->dish_amount}}">
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                {{-- Other Bill --}}
                                 <!--Room-->
 
                                 <div class="row">
