@@ -11,7 +11,7 @@
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    {{-- <li class="breadcrumb-item active" aria-current="page">{{$collection->unit_name}}</li> --}}
+                    <li class="breadcrumb-item active" aria-current="page">{{$collection->customer->client_name}} ({{$collection->month}})</li>
                 </ol>
             </nav>
         </div>
@@ -72,6 +72,19 @@
                             <span id="water_bill_type">{{$collection->water_type}}</span>
                             <input id="water_type" type="text" name="water_type" style="display:none;">
                         </li>
+
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="card shadow-sm border-0 overflow-hidden">
+                <div class="card-header py-3 bg-transparent">
+                    <h5 class="mb-2 mb-sm-0">Rent Details</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                             <span class="side-title">Monthly Rent :</span>
                             <span>{{$collection->asset->monthly_rent}}</span>

@@ -22,7 +22,7 @@
         <div class="card-body">
             <div class="d-flex align-items-center">
                 <h5 class="mb-0">Manage Booking</h5>
-                
+
             </div>
             <div class="table-responsive mt-3">
                 <table class="table align-middle" id="datatable">
@@ -52,7 +52,11 @@
                                 Floor Size: {{$booking->floor->floor_size}}
                             </td>
                             <td>
-                               <span class="">{{$booking->customer->client_name}}</span>  <br>
+                                <a href="{{route('customer.show',$booking->customer->id)}}" data-bs-toggle="tooltip"
+                                    data-bs-placement="bottom" data-bs-original-title=" Client Details" aria-label="Client Details"><span class="">{{$booking->customer->client_name}}</span></a>
+
+                                    <br>
+
                                <a href="tel:{{$booking->customer->client_phone}}" class="font-13">{{$booking->customer->client_phone}}</a><br>
                                <a href="mailto:{{$booking->customer->client_email}}" class="font-13">{{$booking->customer->client_email}}</a>
                             </td>

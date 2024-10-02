@@ -53,7 +53,8 @@
                         @foreach ($collections as $key => $collection)
                         <tr>
                             <td>{{$key+1}}</td>
-                            <td>{{$collection->customer->client_name}}</td>
+                            <td><a href="{{route('customer.show',$collection->customer_id)}}" data-bs-toggle="tooltip"
+                                data-bs-placement="bottom" data-bs-original-title="Details" aria-label="Details">{{$collection->customer->client_name}}</a></td>
                             <td>{{$collection->building->building_name}}</td>
                             <td>{{$collection->asset->unit_name}}</td>
                             <td>{{$collection->employee ? $collection->employee->name : 'N/A'}}</td>
