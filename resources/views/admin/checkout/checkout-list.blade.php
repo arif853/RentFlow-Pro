@@ -45,7 +45,7 @@
                         @foreach ($checkouts as  $key => $checkout)
                         <tr>
                             <td>{{ $key +1}}</td>
-                            <td>{{$checkout->asset_id}}</td>
+                            <td>{{$checkout->asset->unit_name}}</td>
                             <td>{{$checkout->month}}</td>
                             <td>{{$checkout->availability_date}}</td>
                             <td>{{$checkout->notes}}</td>

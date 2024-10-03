@@ -9,6 +9,7 @@ use App\Models\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 
 class CheckoutController extends Controller
 {
@@ -36,15 +37,17 @@ class CheckoutController extends Controller
      */
     public function store(Request $request)
     {
-          dd($request->all());
-          $validatedData = $request->validate([
-            'asset_id' => 'required',
-            'employee_id' => 'required',
+        $validatedData = $request->validate([
+            'building_id' => 'required|numeric',
+            'asset_id' => 'required|numeric',
+            'customer_id'=> 'required|numeric',
+            'employee_id' => 'required|numeric',
             'month' => 'nullable|string',
             'availability_date' => 'required|date',
             'notes' => 'nullable|string',
         ]);
 
+        // dd($validatedData);
 
         Checkout::create($validatedData);
 
@@ -81,5 +84,20 @@ class CheckoutController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function getAssets($buildingId)
+    {
+        // $assets = Asset::where('building_id',$buildingId)->get();
+        $assets = Asset::where('building_id', $buildingId)
+        ->whereHas('bookings', function ($query) { $query->where('status', 'confirmed');})->get();
+        return response()->json($assets);
+    }
+
+    public function getAssetdetails($assetId)
+    {
+        $assets = Asset::with(['bookings','bookings.customer','bookings.customer.customerInfo','bookings.customer.collection'])->find($assetId);
+        // dd($assets);
+        return response()->json($assets);
     }
 }

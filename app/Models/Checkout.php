@@ -9,10 +9,16 @@ class Checkout extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'building_id',
         'asset_id',
         'employee_id',
         'month',
         'availability_date',
         'notes',
+        'customer_id'
     ];
+    public function asset()
+{
+    return $this->belongsTo(Asset::class);
+}
 }
