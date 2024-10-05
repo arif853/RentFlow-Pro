@@ -27,7 +27,7 @@
                         <div class="d-sm-flex align-items-center">
                             <h5 class="mb-2 mb-sm-0">New Checkout Request</h5>
                             <div class="ms-auto">
-                                <button type="submit" class="btn btn-primary">Save</button>
+                                <button type="submit" class="btn btn-primary">Send Request</button>
                             </div>
                         </div>
                     </div>
@@ -91,8 +91,7 @@
                                                 <label class="form-label">Notes</label>
                                                 <input type="hidden" name="employee_id" value=""
                                                     id="employeeId">
-                                                <input type="text" class="form-control" id="notes" name="notes" value=""
-                                                    placeholder="Notes">
+                                                <textarea class="form-control" id="notes" name="notes" placeholder="Notes"></textarea>
                                             </div>
 
                                         </div>
@@ -114,7 +113,7 @@
                                             class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                                             <span class="side-title">Customer Name :</span>
                                             <span id="client_name">---</span>
-                                            <input id="customer_id" type="number" name="customer_id" value="" style="display:none;">
+                                            <input id="customer_id" type="number" name="customer_id" style="display:none;">
                                         </li>
                                         <li
                                             class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
@@ -185,6 +184,8 @@
 
 
             // Get Employee Name
+            $('#employeeId').val('');
+            $('#employee_name').val('');
             if (employeeId) {
                 $.ajax({
                     url: '/dashboard/collection/get-employee-details/' + employeeId,
@@ -202,7 +203,7 @@
             $('#unit_id').html('');
             if (buildingId) {
                 $.ajax({
-                    url: '/dashboard/collection/get-asset/' + buildingId,
+                    url: '/dashboard/collection/checkout/get-asset/' + buildingId,
                     type: 'GET',
                     success: function (data) {
                         $('#unit_id').html(
@@ -218,10 +219,20 @@
 
         $('#unit_id').on('change', function () {
             var assetId = $(this).val();
+            $('#due').text('');
+            $('#advanced').text('');
+            $('#created_at').val('');
+            $('#client_name').text('');
+            $('#client_phone').text('');
+            $('#client_email').text('');
+            $('#birthday').text('');
+            $('#gender').text('');
+            $('#nid_number').text('');
+            $('#customer_id').val('');
             // console.log(assetId);
             if (assetId) {
                 $.ajax({
-                    url: '/dashboard/collection/get-asset-details/' + assetId,
+                    url: '/dashboard/collection/checkout/get-asset-details/' + assetId,
                     type: 'GET',
                     success: function (data) {
                         // console.log( data);
