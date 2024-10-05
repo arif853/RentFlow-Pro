@@ -27,6 +27,9 @@ class Collection extends Model
         'electricity_type',
         'water_type',
         'is_due',
+        'internet_amount' ,
+        'dish_amount',
+        'guard_amount',
     ];
 
     public function building()

@@ -172,6 +172,21 @@
                                 {{$asset->water_rental_part_amount}}</span>
                             @endif
                         </li>
+                        <li
+                            class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-top">
+                            <span class="side-title">Guard Bill :</span>
+                            <span>{{$asset->guard_amount}}</span>
+                        </li>
+                        <li
+                            class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-top">
+                            <span class="side-title">Internet Bill :</span>
+                            <span>{{$asset->internet_amount}}</span>
+                        </li>
+                        <li
+                            class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-top">
+                            <span class="side-title">Dish Bill :</span>
+                            <span>{{$asset->dish_amount}}</span>
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -175,7 +175,7 @@
                                             ==="Post Paid" ||$collection->water_type ==="Post Paid")
                                             <div class="col-12">
                                                 <div id="bill_type">
-                                                    <h5>Pre Paid</h5>
+                                                    <h6>Pre Paid</h6>
                                                 </div>
                                                 <div class="d-flex justify-content-start">
                                                     @if ($collection->gas_type === "Post Paid")
@@ -210,6 +210,42 @@
                                                 </div>
                                             </div>
                                             @endif
+
+                                            {{-- Other Bill --}}
+                                            <div class="col-12">
+                                                <div class="card shadow-none bg-light border">
+                                                    <div class="card-header">
+                                                        <h6 class="mb-0 align-items-center text-center">Other Bill
+                                                        </h6>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="row g-3 mb-2">
+                                                            <div class="col-12 col-md-4">
+                                                                <label class="form-label">Guard Bill</label>
+                                                                <input type="number" class="form-control"
+                                                                    placeholder="Guard Bill" name="guard_amount"
+                                                                    value="{{$collection->guard_amount}}" id="guard_amount" readonly>
+                                                            </div>
+                                                            <div class="col-12 col-md-4">
+                                                                <label class="form-label">Internet Bill</label>
+                                                                <input type="number" class="form-control"
+                                                                    placeholder="Internet Bill"
+                                                                    name="internet_amount"
+                                                                    value="{{$collection->internet_amount}}" id="internet_amount" readonly>
+                                                            </div>
+                                                            <div class="col-12 col-md-4">
+                                                                <label class="form-label">Dish Bill</label>
+                                                                <input type="number" class="form-control"
+                                                                    placeholder="Dish Bill" name="dish_amount"
+                                                                    value="{{$collection->dish_amount}}" id="dish_amount" readonly>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            {{-- Other Bill --}}
 
 
                                             <div class="col-12">

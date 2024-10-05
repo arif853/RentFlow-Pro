@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\RoomtypeController;
 use App\Http\Controllers\Admin\CollectionController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\DesignationController;
 
@@ -109,6 +110,7 @@ Route::middleware(['auth','is_user_active'])->group(function () {
 
     Route::resource('/dashboard/checkout',CheckoutController::class);
 
+    Route::resource('/dashboard/customer',CustomerController::class);
 
     // User Managment
     Route::controller(UserController::class)->group(function(){

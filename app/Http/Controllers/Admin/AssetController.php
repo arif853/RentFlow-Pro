@@ -58,6 +58,9 @@ class AssetController extends Controller
             'water_type' => ['nullable', Rule::in(['Prepaid', 'Post Paid', 'Partial'])],
             'water_owner_part_amount' => 'nullable|numeric|min:0',
             'water_rental_part_amount' => 'nullable|numeric|min:0',
+            'guard_amount' => 'nullable|numeric',
+            'internet_amount' => 'nullable|numeric',
+            'dish_amount' => 'nullable|numeric',
             'unit_size' => 'nullable|string|max:255',
             'unit_view' => 'nullable|string|max:255',
             'monthly_rent' => 'nullable|numeric|min:0',
@@ -157,6 +160,9 @@ class AssetController extends Controller
             'water_type' => ['nullable', Rule::in(['Prepaid', 'Post Paid', 'Partial'])],
             'water_owner_part_amount' => 'nullable|numeric|min:0',
             'water_rental_part_amount' => 'nullable|numeric|min:0',
+            'guard_amount' => 'nullable|numeric',
+            'internet_amount' => 'nullable|numeric',
+            'dish_amount' => 'nullable|numeric',
             'unit_size' => 'nullable|string|max:255',
             'unit_view' => 'nullable|string|max:255',
             'monthly_rent' => 'nullable|numeric|min:0',
@@ -201,67 +207,70 @@ class AssetController extends Controller
             }
 
             $asset->update($validated);
-            // Loop through the room types and update or create rooms accordingly
-            foreach ($request->room_type_id as $key => $value) {
-                // Fetch the old room using the correct room ID from the array
-                $oldroom = Room::find($request->room_id[$key] ?? null);
 
-                // Check if the room already exists
-                if ($oldroom) {
-                    // Handle file upload for existing rooms
-                    if ($request->hasFile('room_image.' . $key)) {
-                        $file = $request->file('room_image.' . $key);
-                        $filename = time() . '_' . $file->getClientOriginalName();
-                        $file->storeAs('public/room_images', $filename);
+            if($request->room_type_id){
+                // Loop through the room types and update or create rooms accordingly
+                foreach ($request->room_type_id as $key => $value) {
+                    // Fetch the old room using the correct room ID from the array
+                    $oldroom = Room::find($request->room_id[$key] ?? null);
 
-                        // Delete old image if it exists
-                        if ($oldroom->room_image) {
-                            $filepath = 'public/room_images/' . $oldroom->room_image;
-                            Storage::delete($filepath);
+                    // Check if the room already exists
+                    if ($oldroom) {
+                        // Handle file upload for existing rooms
+                        if ($request->hasFile('room_image.' . $key)) {
+                            $file = $request->file('room_image.' . $key);
+                            $filename = time() . '_' . $file->getClientOriginalName();
+                            $file->storeAs('public/room_images', $filename);
+
+                            // Delete old image if it exists
+                            if ($oldroom->room_image) {
+                                $filepath = 'public/room_images/' . $oldroom->room_image;
+                                Storage::delete($filepath);
+                            }
+                        } else {
+                            $filename = $oldroom->room_image;
                         }
+
+                        // Update the existing room details
+                        $oldroom->update([
+                            'building_id' => $request->building_id,
+                            'asset_id' => $asset->id,
+                            'room_type_id' => $value,
+                            'room_size' => $request->room_size[$key],
+                            'electricity' => $request->has('electricity.' . $key),
+                            'aircondition' => $request->has('aircondition.' . $key),
+                            'attach_toilet' => $request->has('attach_toilet.' . $key),
+                            'attach_baranda' => $request->has('attach_baranda.' . $key),
+                            'has_window' => $request->has('has_window.' . $key),
+                            'others' => $request->has('others.' . $key),
+                            'room_image' => $filename,
+                        ]);
                     } else {
-                        $filename = $oldroom->room_image;
+                        // Create a new room if it doesn't exist
+                        $room = new Room();
+                        $room->building_id = $request->building_id;
+                        $room->asset_id = $asset->id;
+                        $room->room_type_id = $value;
+                        $room->room_size = $request->room_size[$key];
+                        $room->electricity = $request->has('electricity.' . $key);
+                        $room->aircondition = $request->has('aircondition.' . $key);
+                        $room->attach_toilet = $request->has('attach_toilet.' . $key);
+                        $room->attach_baranda = $request->has('attach_baranda.' . $key);
+                        $room->has_window = $request->has('has_window.' . $key);
+                        $room->others = $request->has('others.' . $key);
+
+                        // Handle file upload for new rooms
+                        if ($request->hasFile('room_image.' . $key)) {
+                            $file = $request->file('room_image.' . $key);
+                            $filename = time() . '_' . $file->getClientOriginalName();
+                            $file->storeAs('public/room_images', $filename);
+                            $room->room_image = $filename;
+                        }
+
+                        $room->save();
                     }
-
-                    // Update the existing room details
-                    $oldroom->update([
-                        'building_id' => $request->building_id,
-                        'asset_id' => $asset->id,
-                        'room_type_id' => $value,
-                        'room_size' => $request->room_size[$key],
-                        'electricity' => $request->has('electricity.' . $key),
-                        'aircondition' => $request->has('aircondition.' . $key),
-                        'attach_toilet' => $request->has('attach_toilet.' . $key),
-                        'attach_baranda' => $request->has('attach_baranda.' . $key),
-                        'has_window' => $request->has('has_window.' . $key),
-                        'others' => $request->has('others.' . $key),
-                        'room_image' => $filename,
-                    ]);
-                } else {
-                    // Create a new room if it doesn't exist
-                    $room = new Room();
-                    $room->building_id = $request->building_id;
-                    $room->asset_id = $asset->id;
-                    $room->room_type_id = $value;
-                    $room->room_size = $request->room_size[$key];
-                    $room->electricity = $request->has('electricity.' . $key);
-                    $room->aircondition = $request->has('aircondition.' . $key);
-                    $room->attach_toilet = $request->has('attach_toilet.' . $key);
-                    $room->attach_baranda = $request->has('attach_baranda.' . $key);
-                    $room->has_window = $request->has('has_window.' . $key);
-                    $room->others = $request->has('others.' . $key);
-
-                    // Handle file upload for new rooms
-                    if ($request->hasFile('room_image.' . $key)) {
-                        $file = $request->file('room_image.' . $key);
-                        $filename = time() . '_' . $file->getClientOriginalName();
-                        $file->storeAs('public/room_images', $filename);
-                        $room->room_image = $filename;
-                    }
-
-                    $room->save();
                 }
-            }
+            };
 
             // Commit the transaction
             DB::commit();

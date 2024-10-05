@@ -127,7 +127,8 @@
                                                                 class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                                                                 <span class="side-title">Customer Name :</span>
                                                                 <span id="client_name">---</span>
-                                                                <input id="customer_id" type="text" name="customer_id" style="display:none;">
+                                                                <input id="customer_id" type="text" name="customer_id"
+                                                                    style="display:none;">
                                                             </li>
                                                             <li
                                                                 class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
@@ -183,7 +184,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <div id="bill_type" style="display:none;">
-                                                    <h5>Post Paid</h5>
+                                                    <h6>Post Paid</h6>
                                                 </div>
                                                 <div class="d-flex justify-content-start">
                                                     <div class="col-3" id="gas_type_show"
@@ -208,6 +209,41 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            {{-- Other Bill --}}
+                                            <div class="col-12">
+                                                <div class="card shadow-none bg-light border">
+                                                    <div class="card-header">
+                                                        <h6 class="mb-0 align-items-center text-center">Other Bill
+                                                        </h6>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="row g-3 mb-2">
+                                                            <div class="col-12 col-md-4">
+                                                                <label class="form-label">Guard Bill</label>
+                                                                <input type="number" class="form-control"
+                                                                    placeholder="Guard Bill" name="guard_amount"
+                                                                    value="" id="guard_amount">
+                                                            </div>
+                                                            <div class="col-12 col-md-4">
+                                                                <label class="form-label">Internet Bill</label>
+                                                                <input type="number" class="form-control"
+                                                                    placeholder="Internet Bill"
+                                                                    name="internet_amount"
+                                                                    value="" id="internet_amount">
+                                                            </div>
+                                                            <div class="col-12 col-md-4">
+                                                                <label class="form-label">Dish Bill</label>
+                                                                <input type="number" class="form-control"
+                                                                    placeholder="Dish Bill" name="dish_amount"
+                                                                    value="" id="dish_amount">
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            {{-- Other Bill --}}
 
                                             <div class="col-12">
                                                 <label class="form-label">Total Payable Rent</label>
@@ -307,7 +343,8 @@
                         // console.log('ajax data', data);
                         // console.log(data.bookings);
                         data.bookings.forEach(item => {
-                            const customer = item.customer; // Accessing the customer object
+                            const customer = item
+                            .customer; // Accessing the customer object
                             console.log(customer);
                             $('#client_name').text(customer.client_name);
                             $('#client_phone').text(customer.client_phone);
@@ -353,22 +390,25 @@
                             parseFloat(data.others_charge || 0)
                         );
 
-                        $('#gas_amount, #electricity_amount, #water_amount').on('keyup',
+                        $('#gas_amount, #electricity_amount, #water_amount, #guard_amount, #internet_amount, #dish_amount').on('keyup',
                             function () {
                                 $('#total_payable_amount').val(
                                     parseFloat(data.monthly_rent || 0) +
                                     parseFloat(data.service_charge || 0) +
                                     parseFloat(data.others_charge || 0) +
                                     parseFloat($('#gas_amount').val() || 0) +
-                                    parseFloat($('#electricity_amount').val() ||
-                                        0) +
-                                    parseFloat($('#water_amount').val() || 0)
+                                    parseFloat($('#electricity_amount').val() ||0) +
+                                    parseFloat($('#water_amount').val() ||0) +
+                                    parseFloat($('#guard_amount').val() ||0) +
+                                    parseFloat($('#internet_amount').val() ||0) +
+                                    parseFloat($('#dish_amount').val() || 0)
                                 );
                             });
 
                         $('#collection_amount').on('keyup',
                             function () {
-                                var due_amount = parseFloat($('#total_payable_amount').val() ||
+                                var due_amount = parseFloat($('#total_payable_amount')
+                                        .val() ||
                                         0) -
                                     parseFloat($('#collection_amount').val() || 0);
                                 $('#due_amount').val(due_amount);

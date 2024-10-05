@@ -46,7 +46,8 @@
                         @foreach ($collections as $key => $collection)
                         <tr>
                             <td>{{ $key + 1 }}</td>
-                            <td>{{ $collection->customer->client_name }}</td>
+                            <td><a href="{{route('customer.show',$collection->customer_id)}}" data-bs-toggle="tooltip"
+                                data-bs-placement="bottom" data-bs-original-title="Details" aria-label="Details">{{$collection->customer->client_name}}</a></td>
                             <td>{{ $collection->building->building_name }}</td>
                             <td>{{ $collection->asset->unit_name }}</td>
                             <td>{{ $collection->employee ? $collection->employee->name : 'N/A' }}</td>
@@ -153,78 +154,73 @@
 
 @push('script')
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const payButtons = document.querySelectorAll('[data-bs-toggle="modal"]');
+    $(document).ready(function () {
+        const payButtons = $('[data-bs-toggle="modal"]');
 
-        payButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const customerName = this.getAttribute('data-customer');
-                const dueAmount = this.getAttribute('data-amount');
-                const collectionId = this.getAttribute('data-id');
-                const totalPayableRent = this.getAttribute('data-payable');
-                const collectionAmount = this.getAttribute('data-collection');
-                const collectionMonth = this.getAttribute('data-month');
+        payButtons.each(function () {
+            $(this).on('click', function () {
+                const customerName = $(this).data('customer');
+                const dueAmount = $(this).data('amount');
+                const collectionId = $(this).data('id');
+                const totalPayableRent = $(this).data('payable');
+                const collectionAmount = $(this).data('collection');
+                const collectionMonth = $(this).data('month');
 
-                document.getElementById('customerName').value = customerName;
-                document.getElementById('modalDueAmount').value = dueAmount;
-                document.getElementById('collectionId').value = collectionId;
+                $('#customerName').val(customerName);
+                $('#modalDueAmount').val(dueAmount);
+                $('#collectionId').val(collectionId);
 
                 // Set today's date in the payment date input
                 const today = new Date().toISOString().split('T')[0];
-                document.getElementById('paymentDate').value = today;
+                $('#paymentDate').val(today);
 
                 // Set values for total payable rent, collection amount, and month
-                document.getElementById('totalPayableRent').value = totalPayableRent;
-                document.getElementById('collectionAmount').value = collectionAmount;
-                document.getElementById('collectionMonth').value = collectionMonth;
+                $('#totalPayableRent').val(totalPayableRent);
+                $('#collectionAmount').val(collectionAmount);
+                $('#collectionMonth').val(collectionMonth);
 
                 $('#paymentAmount').on('keyup', function () {
-                    document.getElementById('dueAmount').value = dueAmount-$('#paymentAmount').val();
-                    if ($('#dueAmount').val() < 0) {
-                    alert(
-                        "Warning: Due amount is negative! Please check the collection amount."
-                    );
-                    document.getElementById('paymentAmount').value = '';
-                    document.getElementById('dueAmount').value = '';
-                    event.preventDefault();
+                    const updatedDueAmount = dueAmount - $(this).val();
+                    $('#dueAmount').val(updatedDueAmount);
 
-                }
-
+                    if (updatedDueAmount < 0) {
+                        alert("Warning: Due amount is negative! Please check the collection amount.");
+                        $('#paymentAmount').val('');
+                        $('#dueAmount').val('');
+                        event.preventDefault();
+                    }
                 });
 
-                // Update the form action URL dynamically
-                //  document.getElementById('paymentForm').action = `{{ route('collection.update', '') }}/${collectionId}`
-
+                // Update the form action URL dynamically if needed
+                // $('#paymentForm').attr('action', `{{ route('collection.update', '') }}/${collectionId}`);
             });
         });
-    });
-    $(document).ready(function(){
-        $('#paymentForm').on('submit',function(e){
+
+        $('#paymentForm').on('submit', function (e) {
             e.preventDefault();
             const data = new FormData(this);
 
             $.ajax({
-            url: '{{route('collection.due.payment')}}',
-            method: 'post',
-            data: data,
-            cache: false,
-            processData: false,
-            contentType: false,
-            success: function (res) {
-                if (res.status == 200) {
-                    location.reload();
+                url: '{{route('collection.due.payment')}}',
+                method: 'post',
+                data: data,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function (res) {
+                    if (res.status == 200) {
+                        location.reload();
+                    } else {
+                        $.Notification.autoHideNotify('danger', 'top right', 'Danger', res);
+                    }
+                },
+                error: function (xhr) {
+                    $.Notification.autoHideNotify('danger', 'top right', 'Error', xhr.responseJSON.errors.join('<br>'));
+                    $("#userEditModal").modal('hide');
                 }
-                else{
-                    $.Notification.autoHideNotify('danger', 'top right', 'Danger', res);
-                }
-            },
-            error: function (xhr, textStatus, errorThrown) {
-                $.Notification.autoHideNotify('danger', 'top right', 'Error', xhr.responseJSON.errors.join('<br>'));
-                $("#userEditModal").modal('hide');
-            }
-        })
-
-        })
-    })
+            });
+        });
+    });
 </script>
+
 @endpush
