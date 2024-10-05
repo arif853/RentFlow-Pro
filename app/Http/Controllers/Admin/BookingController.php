@@ -79,10 +79,10 @@ class BookingController extends Controller
             'occupation' => 'required|string',
             'gender' => 'required|in:male,female',
             'nid_number' => 'required|string',
-            'nid_front' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'nid_back' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'nid_front' => 'nullable|file|mimes:pdf,jpeg,png,jpg,gif|max:2048',
+            'nid_back' => 'nullable|file|mimes:pdf,jpeg,png,jpg,gif|max:2048',
             'other_document' => 'nullable|string',
-            'document_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'document_photo' => 'nullable|file|mimes:pdf,jpeg,png,jpg,gif|max:2048',
         ]);
 
         // Handle file uploads
@@ -206,16 +206,16 @@ class BookingController extends Controller
             'present_address' => 'nullable|string|max:500',
             'permanent_address' => 'nullable|string|max:500',
             'nid_number' => 'nullable|string|max:20',
-            'nid_front' => 'nullable|image|mimes:jpg,jpeg,png',
-            'nid_back' => 'nullable|image|mimes:jpg,jpeg,png',
+            'nid_front' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
+            'nid_back' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
             'other_document' => 'nullable|string|in:Passport,Birth Certificate,Driving License',
             'document_photo' => 'nullable|file|mimes:jpg,jpeg,png',
             'marriage_status' => 'nullable|string|in:Married,Unmarried,Divorced',
             'spouse_name' => 'nullable|string|max:255',
             'spouse_phone' => 'nullable|string|max:15',
             'spouse_nid' => 'nullable|string|max:20',
-            's_nid_front' => 'nullable|image|mimes:jpg,jpeg,png',
-            's_nid_back' => 'nullable|image|mimes:jpg,jpeg,png',
+            's_nid_front' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
+            's_nid_back' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
             'emergency_contact_name' => 'nullable|string|max:255',
             'emergency_contact_relation' => 'nullable|string|max:255',
             'emergency_contact_phone' => 'nullable|string|max:15',
@@ -332,15 +332,15 @@ class BookingController extends Controller
             'home_maid_phone' => 'nullable|string|max:255',
             'home_maid_address' => 'nullable|string|max:255',
             'home_maid_nid' => 'nullable|string|max:255',
-            'home_maid_nidfront' => 'nullable|image|mimes:jpg,jpeg,png|max:500',
-            'home_maid_nidback' => 'nullable|image|mimes:jpg,jpeg,png|max:500',
+            'home_maid_nidfront' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:500',
+            'home_maid_nidback' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:500',
             'driver' => 'nullable|string|max:255',
             'driver_name' => 'nullable|string|max:255',
             'driver_phone' => 'nullable|string|max:255',
             'driver_address' => 'nullable|string|max:255',
             'driver_nid' => 'nullable|string|max:255',
-            'driver_nidfront' => 'nullable|image|mimes:jpg,jpeg,png|max:500',
-            'driver_nidback' => 'nullable|image|mimes:jpg,jpeg,png|max:500',
+            'driver_nidfront' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:500',
+            'driver_nidback' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:500',
             'previous_householder_name' => 'nullable|string|max:255',
             'previous_householder_phone' => 'nullable|string|max:255',
             'previous_house_address' => 'nullable|string|max:255',
@@ -475,9 +475,15 @@ class BookingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Booking $booking)
     {
-        //
+        try{
+            $booking->delete();
+            return redirect()->back()->with('success','Booking deleted successfully.');
+        }catch(\Exception $e){
+            Log::alert('Bookigng deletion Error: '.$e->getMessage());
+            return redirect()->back()->with('danger','Booking can not deleted. Error: '.$e->getMessage());
+        }
     }
 
     public function getBuildings($id)
