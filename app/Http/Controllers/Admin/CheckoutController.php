@@ -100,7 +100,6 @@ class CheckoutController extends Controller
     public function getAssetdetails($assetId)
     {
         $assets = Asset::with(['bookings','bookings.customer','bookings.customer.customerInfo','bookings.customer.collection'])->find($assetId);
-        // dd($assets);
         return response()->json($assets);
     }
 
@@ -116,5 +115,12 @@ class CheckoutController extends Controller
         $checkout->save();
         // dd($checkoutId);
         return redirect()->route('checkout.approval.list')->with('success', 'Checkout Successfully');
+    }
+
+    public function CustomerDue($customerId)
+    {
+        $collections = Collection::where('customer_id',$customerId)->get();
+
+        return response()->json($collections);
     }
 }

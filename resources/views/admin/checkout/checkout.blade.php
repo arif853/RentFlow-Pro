@@ -268,21 +268,34 @@
                             $('#gender').text(customer.gender);
                             $('#nid_number').text(customer.nid_number);
                             $('#customer_id').val(customer.id);
-
-                            if (item.customer && item.customer.collection && item.customer.collection.length > 0) {
-                                // Get the first collection's due_amount
-                                $('#due').text(item.customer.collection[0].due_amount);
-                            } else {
-                                // If no collection or empty collection, set due to 0
-                                $('#due').text(0);
-                            }
-
+                            fetchTotalDueAmount(customer.id);
                         });
                     }
                 });
             }
         });
     });
+
+            // Function to fetch the total due amount
+        function fetchTotalDueAmount(customerId) {
+
+            $.ajax({
+                url: '/dashboard/collection/get/collection/details/' + customerId, // Update with your actual endpoint
+                type: 'GET',
+                success: function (collectionData) {
+
+                    let totalDueAmount = 0;
+                    collectionData.forEach(collectionItem => {
+
+                        totalDueAmount += parseFloat(collectionItem.due_amount) || 0;
+                    });
+                    $('#due').text(totalDueAmount);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching collection data:', error);
+                }
+            });
+        }
 
 
 

@@ -219,7 +219,7 @@ class BookingController extends Controller
             'emergency_contact_name' => 'nullable|string|max:255',
             'emergency_contact_relation' => 'nullable|string|max:255',
             'emergency_contact_phone' => 'nullable|string|max:15',
-            'emergency_contact_address' => 'nullable|string|max:15',
+            'emergency_contact_address' => 'nullable|string',
         ]);
 
         $customer = Customer::findOrFail($id);

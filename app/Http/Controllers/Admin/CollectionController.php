@@ -335,5 +335,4 @@ class CollectionController extends Controller
         return view('admin.collection.collection-due-list',compact('collections'));
     }
 
-
 }
