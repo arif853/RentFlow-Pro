@@ -73,4 +73,9 @@ class Asset extends Model
     {
         return $this->hasMany(Collection::class);
     }
+    public function checkouts()
+    {
+        return $this->hasMany(Checkout::class); // Adjust as per your relationship
+    }
+
 }

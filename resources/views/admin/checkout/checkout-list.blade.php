@@ -33,11 +33,12 @@
                     <thead class="table-secondary">
                         <tr>
                             <th>Sl</th>
-                            <th>Asset Name</th>
+                            <th>Building</th>
+                            <th>Asset</th>
                             <th>Checkout Month</th>
                             <th>Available Date</th>
                             <th>Notes</th>
-                            <th>Actions</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,24 +46,17 @@
                         @foreach ($checkouts as  $key => $checkout)
                         <tr>
                             <td>{{ $key +1}}</td>
+                            <td>{{$checkout->asset->building->building_name}}</td>
                             <td>{{$checkout->asset->unit_name}}</td>
                             <td>{{$checkout->month}}</td>
                             <td>{{$checkout->availability_date}}</td>
                             <td>{{$checkout->notes}}</td>
                             <td>
-                                <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                                    <a href="" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                        data-bs-original-title="Views" aria-label="Views"><i
-                                            class="bi bi-eye-fill text-primary"></i></a>
-                                    <a href="" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                        data-bs-original-title="Edit" aria-label="Edit"><i
-                                            class="bi bi-pencil-fill text-warning"></i></a>
-
-                                    <a href="" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                        data-bs-original-title="Print" aria-label="Print"><i
-                                            class="bi bi-printer text-primary"></i></a>
-                                </div>
-
+                                @if ($checkout->is_confirm == 0)
+                                <a href="#" class="badge bg-warning">Pending</a>
+                                @else
+                                <a href="#" class="badge bg-success">Confirmed</a>
+                                @endif
                             </td>
                         </tr>
 

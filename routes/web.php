@@ -109,6 +109,8 @@ Route::middleware(['auth','is_user_active'])->group(function () {
     Route::post('/dashboard/collection/due/payment',[CollectionController::class, 'duePayment'])->name('collection.due.payment');
 
     Route::resource('/dashboard/checkout',CheckoutController::class);
+    Route::get('/dashboard/checkout/approval/list/', [CheckoutController::class,'checkoutApprovalList'])->name('checkout.approval.list');
+    Route::get('/dashboard/checkout/approval/list/approve/{checkout_id}', [CheckoutController::class,'checkoutApproval'])->name('checkout.approval.list.approve');
     Route::get('/dashboard/collection/checkout/get-asset/{complex_id}', [CheckoutController::class,'getAssets']);
     Route::get('/dashboard/collection/checkout/get-asset-details/{asset_id}', [CheckoutController::class,'getAssetdetails']);
 
