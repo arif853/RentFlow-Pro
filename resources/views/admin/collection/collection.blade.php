@@ -160,7 +160,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <!-- Month Wise Selection -->
-                                                <div class="col-12" id="month_wise_dates">
+                                                {{-- <div class="col-12" id="month_wise_dates">
                                                     <label>Select Month</label>
                                                     <select class="form-select col-12" id="selected_month" name="month">
                                                         <option class="" value="">Select a month</option>
@@ -180,7 +180,22 @@
                                                     @error('month')
                                                     <span class="text-danger">{{$message}}</span>
                                                     @enderror
+                                                </div> --}}
+
+                                                <div class="col-12" id="month_wise_dates">
+                                                    <label for="selected_month" class="form-label">Select Month</label>
+                                                    <div class="input-group">
+                                                        <input class="form-control" type="text" id="selected_month" name="month" placeholder="Select month and year" readonly>
+                                                        <span class="input-group-text">
+                                                            <i class="bi bi-calendar"></i>
+                                                        </span>
+                                                    </div>
+                                                    <!-- Display validation error if any -->
+                                                    @error('month')
+                                                    <span class="text-danger">{{$message}}</span>
+                                                    @enderror
                                                 </div>
+
                                             </div>
                                             <div class="col-12">
                                                 <div id="bill_type" style="display:none;">
@@ -282,6 +297,9 @@
                                                 <label class="form-label">Collection Amount</label>
                                                 <input type="number" class="form-control" name="collection_amount"
                                                     placeholder="Collection Amount" id="collection_amount">
+                                                    @error('collection_amount')
+                                                    <span class="text-danger">{{$message}}</span>
+                                                    @enderror
                                             </div>
                                             <div class="col-12">
                                                 <label class="form-label">Due</label>
@@ -307,8 +325,16 @@
 @endsection
 
 @push('script')
+ <!-- Bootstrap Datepicker JS -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 <script>
     $(document).ready(function () {
+        $('#selected_month').datepicker({
+                format: "mm/yyyy", // Month and year only
+                minViewMode: 1,    // Only view month and year
+                autoclose: true,   // Close picker automatically after selection
+                todayHighlight: true
+            });
 
 
         $('#building_id').on('change', function () {
@@ -375,12 +401,12 @@
                             $('#client_name').text(customer.client_name);
                             $('#client_phone').text(customer.client_phone);
                             $('#customer_id').val(customer.id);
-                            if (customer.customer_info.advance_amount_type === 'Yes' && customer.checkout.is_confirm === 1 && customer.customer_info.advance_amount>=data.monthly_rent) {
+                            if (customer.customer_info.advance_amount_type === 'Yes' && customer.checkout && customer.checkout.is_confirm === 1 && parseFloat(customer.customer_info.advance_amount)>=parseFloat(data.monthly_rent)) {
                                 $('#advance_amount').val(customer.customer_info.advance_amount);
                                 $('#left_advance_amount').val(customer.customer_info.advance_amount-data.monthly_rent);
                                 $('#adjust_amount').val(data.monthly_rent);
                                 $('.advanced_amount_type').show();
-                            } else if (customer.customer_info.advance_amount_type === 'Yes' && customer.checkout.is_confirm === 1 && customer.customer_info.advance_amount>0) {
+                            } else if (customer.customer_info.advance_amount_type === 'Yes' && customer.checkout && customer.checkout.is_confirm === 1 && parseFloat(customer.customer_info.advance_amount)>0) {
                                 $('#advance_amount').val(customer.customer_info.advance_amount);
                                 $('#left_advance_amount').val(0);
                                 $('#adjust_amount').val(customer.customer_info.advance_amount);
