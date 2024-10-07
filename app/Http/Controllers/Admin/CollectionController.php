@@ -142,7 +142,7 @@ class CollectionController extends Controller
 
     public function getAssetdetails($assetId)
     {
-        $assets = Asset::with(['bookings','bookings.customer','bookings.customer.customerInfo','bookings.customer.collection'])->find($assetId);
+        $assets = Asset::with(['bookings','bookings.customer','bookings.customer.customerInfo','bookings.customer.collection','bookings.customer.checkout'])->find($assetId);
         // dd($assets);
         return response()->json($assets);
     }

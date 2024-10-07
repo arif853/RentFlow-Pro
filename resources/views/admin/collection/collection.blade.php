@@ -245,8 +245,35 @@
                                             </div>
                                             {{-- Other Bill --}}
 
+
+                                            <div class="col-12 advanced_amount_type" style="display:none;">
+                                                <div class="col-12">
+                                                    <label class="form-label">Total Payable Rent</label>
+                                                    <input type="number" class="form-control"
+                                                        placeholder="Total Payable Rent" id="non_adjust_payable_amount" value=""
+                                                        readonly name="non_adjust_payable_amount">
+                                                </div>
+                                                <div class="row col-12 pt-2">
+                                                    <div class="col-4">
+                                                        <label class="form-label">Advanced Rent</label>
+                                                        <input type="number" class="form-control" placeholder="Adjust Amount" id="advance_amount" value=""
+                                                            readonly name="advance_amount">
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <label class="form-label">Adjust Rent</label>
+                                                        <input type="number" class="form-control" placeholder="Adjust Amount" id="adjust_amount" value=""
+                                                            readonly name="adjust_amount">
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <label class="form-label">Left Advanced Rent</label>
+                                                        <input type="number" class="form-control" placeholder="Adjust Amount" id="left_advance_amount" value=""
+                                                            readonly name="left_advance_amount">
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                             <div class="col-12">
-                                                <label class="form-label">Total Payable Rent</label>
+                                                <label class="form-label">Total Payable Rent <span class="advanced_amount_type" style="display:none;">(After adjust)</span></label>
                                                 <input type="number" class="form-control"
                                                     placeholder="Total Payable Rent" id="total_payable_amount" value=""
                                                     readonly name="payable_amount">
@@ -343,12 +370,26 @@
                         // console.log('ajax data', data);
                         // console.log(data.bookings);
                         data.bookings.forEach(item => {
-                            const customer = item
-                            .customer; // Accessing the customer object
-                            console.log(customer);
+                            const customer = item.customer; // Accessing the customer object
+                            // console.log(customer.checkout.is_confirm);
                             $('#client_name').text(customer.client_name);
                             $('#client_phone').text(customer.client_phone);
                             $('#customer_id').val(customer.id);
+                            if (customer.customer_info.advance_amount_type === 'Yes' && customer.checkout.is_confirm === 1 && customer.customer_info.advance_amount>=data.monthly_rent) {
+                                $('#advance_amount').val(customer.customer_info.advance_amount);
+                                $('#left_advance_amount').val(customer.customer_info.advance_amount-data.monthly_rent);
+                                $('#adjust_amount').val(data.monthly_rent);
+                                $('.advanced_amount_type').show();
+                            } else if (customer.customer_info.advance_amount_type === 'Yes' && customer.checkout.is_confirm === 1 && customer.customer_info.advance_amount>0) {
+                                $('#advance_amount').val(customer.customer_info.advance_amount);
+                                $('#left_advance_amount').val(0);
+                                $('#adjust_amount').val(customer.customer_info.advance_amount);
+                                $('.advanced_amount_type').show();
+                            } else {
+                                $('#advance_amount').val(0);
+                                $('#adjust_amount').val(0);
+                                $('.advanced_amount_type').hide();
+                            }
 
                         });
 
@@ -387,12 +428,18 @@
                         $('#total_payable_amount').val(
                             parseFloat(data.monthly_rent || 0) +
                             parseFloat(data.service_charge || 0) +
+                            parseFloat(data.others_charge || 0) -
+                            parseFloat($('#adjust_amount').val() || 0)
+                        );
+                        $('#non_adjust_payable_amount').val(
+                            parseFloat(data.monthly_rent || 0) +
+                            parseFloat(data.service_charge || 0) +
                             parseFloat(data.others_charge || 0)
                         );
 
                         $('#gas_amount, #electricity_amount, #water_amount, #guard_amount, #internet_amount, #dish_amount').on('keyup',
                             function () {
-                                $('#total_payable_amount').val(
+                                $('#non_adjust_payable_amount').val(
                                     parseFloat(data.monthly_rent || 0) +
                                     parseFloat(data.service_charge || 0) +
                                     parseFloat(data.others_charge || 0) +
@@ -402,6 +449,18 @@
                                     parseFloat($('#guard_amount').val() ||0) +
                                     parseFloat($('#internet_amount').val() ||0) +
                                     parseFloat($('#dish_amount').val() || 0)
+                                );
+                                $('#total_payable_amount').val(
+                                    parseFloat(data.monthly_rent || 0) +
+                                    parseFloat(data.service_charge || 0) +
+                                    parseFloat(data.others_charge || 0) +
+                                    parseFloat($('#gas_amount').val() || 0) +
+                                    parseFloat($('#electricity_amount').val() ||0) +
+                                    parseFloat($('#water_amount').val() ||0) +
+                                    parseFloat($('#guard_amount').val() ||0) +
+                                    parseFloat($('#internet_amount').val() ||0) +
+                                    parseFloat($('#dish_amount').val() || 0) -
+                                    parseFloat($('#adjust_amount').val() || 0)
                                 );
                             });
 
