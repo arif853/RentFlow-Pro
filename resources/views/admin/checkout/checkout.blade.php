@@ -27,7 +27,7 @@
                         <div class="d-sm-flex align-items-center">
                             <h5 class="mb-2 mb-sm-0">New Checkout Request</h5>
                             <div class="ms-auto">
-                                <button type="submit" class="btn btn-primary">Send Request</button>
+                                <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure you want to submit this request?');">Send Request</button>
                             </div>
                         </div>
                     </div>

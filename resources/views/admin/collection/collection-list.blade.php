@@ -68,9 +68,9 @@
                                     <a href="{{route('collection.show', $collection->id)}}" data-bs-toggle="tooltip"
                                         data-bs-placement="bottom" data-bs-original-title="Views" aria-label="Views"><i
                                             class="bi bi-eye-fill text-primary"></i></a>
-                                    <a href="{{route('collection.edit',$collection->id)}}" data-bs-toggle="tooltip"
+                                    {{-- <a href="{{route('collection.edit',$collection->id)}}" data-bs-toggle="tooltip"
                                         data-bs-placement="bottom" data-bs-original-title="Edit" aria-label="Edit"><i
-                                            class="bi bi-pencil-fill text-warning"></i></a>
+                                            class="bi bi-pencil-fill text-warning"></i></a> --}}
                                     <form action="{{ route('collection.destroy', $collection->id) }}" method="POST"
                                         onsubmit="return confirm('Are you sure you want to delete this collection?');"
                                         class="d-inline delete-form">
