@@ -90,6 +90,9 @@
                         <li>
                             <a href="{{route('checkout.index')}}"><i class="bi bi-circle"></i>Checkout</a>
                         </li>
+                        <li>
+                            <a href="{{route('checkout.approval.list')}}"><i class="bi bi-circle"></i>Checkout Approval</a>
+                        </li>
                     </ul>
                 </li>
 

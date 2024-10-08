@@ -41,7 +41,7 @@ class CheckoutController extends Controller
             'building_id' => 'required|numeric',
             'asset_id' => 'required|numeric',
             'customer_id'=> 'required|numeric',
-            'employee_id' => 'required|numeric',
+            'employee_id' => 'nullable|numeric',
             'month' => 'nullable|string',
             'availability_date' => 'required|date',
             'notes' => 'nullable|string',
@@ -52,7 +52,7 @@ class CheckoutController extends Controller
         Checkout::create($validatedData);
 
 
-        return redirect()->back()->with('success','Created Successfully');
+        return redirect()->route('checkout.index')->with('success', 'Created Successfully');
     }
 
     /**
@@ -90,14 +90,37 @@ class CheckoutController extends Controller
     {
         // $assets = Asset::where('building_id',$buildingId)->get();
         $assets = Asset::where('building_id', $buildingId)
-        ->whereHas('bookings', function ($query) { $query->where('status', 'confirmed');})->get();
+        ->whereHas('bookings', function ($query) { $query->where('status', 'confirmed');})
+        ->whereDoesntHave('checkouts')
+        ->get();
+
         return response()->json($assets);
     }
 
     public function getAssetdetails($assetId)
     {
         $assets = Asset::with(['bookings','bookings.customer','bookings.customer.customerInfo','bookings.customer.collection'])->find($assetId);
-        // dd($assets);
         return response()->json($assets);
+    }
+
+    public function checkoutApprovalList()
+    {
+        $checkouts = Checkout::all();
+        return view('admin.checkout.checkout-approval-list',compact('checkouts'));
+    }
+    public function checkoutApproval($checkoutId)
+    {
+        $checkout = Checkout::findOrFail($checkoutId);
+        $checkout->is_confirm =  1;
+        $checkout->save();
+        // dd($checkoutId);
+        return redirect()->route('checkout.approval.list')->with('success', 'Checkout Successfully');
+    }
+
+    public function CustomerDue($customerId)
+    {
+        $collections = Collection::where('customer_id',$customerId)->get();
+
+        return response()->json($collections);
     }
 }

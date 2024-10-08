@@ -18,6 +18,7 @@ return new class extends Migration {
                 $table->string('month')->nullable();
                 $table->decimal('payable_amount', 10, 2);
                 $table->decimal('water_amount', 10, 2)->nullable();
+                $table->decimal('adjust_amount', 10, 2)->nullable();
                 $table->decimal('gas_amount', 10, 2)->nullable();
                 $table->decimal('electricity_amount', 10, 2)->nullable();
                 $table->decimal('due_amount', 10, 2)->nullable();

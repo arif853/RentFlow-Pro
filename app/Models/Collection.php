@@ -30,6 +30,7 @@ class Collection extends Model
         'internet_amount' ,
         'dish_amount',
         'guard_amount',
+        'adjust_amount',
     ];
 
     public function building()

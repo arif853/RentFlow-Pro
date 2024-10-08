@@ -18,7 +18,12 @@ class Checkout extends Model
         'customer_id'
     ];
     public function asset()
-{
-    return $this->belongsTo(Asset::class);
-}
+    {
+        return $this->belongsTo(Asset::class);
+    }
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
 }

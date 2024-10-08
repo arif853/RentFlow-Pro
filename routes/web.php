@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\CollectionController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\DesignationController;
+use App\Models\Checkout;
 
 Route::get('/cache_clear',function(){
     Artisan::call('route:clear');
@@ -109,8 +110,11 @@ Route::middleware(['auth','is_user_active'])->group(function () {
     Route::post('/dashboard/collection/due/payment',[CollectionController::class, 'duePayment'])->name('collection.due.payment');
 
     Route::resource('/dashboard/checkout',CheckoutController::class);
+    Route::get('/dashboard/checkout/approval/list/', [CheckoutController::class,'checkoutApprovalList'])->name('checkout.approval.list');
+    Route::get('/dashboard/checkout/approval/list/approve/{checkout_id}', [CheckoutController::class,'checkoutApproval'])->name('checkout.approval.list.approve');
     Route::get('/dashboard/collection/checkout/get-asset/{complex_id}', [CheckoutController::class,'getAssets']);
     Route::get('/dashboard/collection/checkout/get-asset-details/{asset_id}', [CheckoutController::class,'getAssetdetails']);
+    Route::get('/dashboard/collection/get/collection/details/{customer_id}', [CheckoutController::class,'CustomerDue'])->name('collection.customer.due');
 
     Route::resource('/dashboard/customer',CustomerController::class);
 

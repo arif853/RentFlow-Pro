@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('building_id')->constrained('buildings');
             $table->foreignId('asset_id')->constrained('assets');
-            $table->foreignId('employee_id')->constrained('employees');
+            $table->foreignId('employee_id')->nullable()->constrained('employees');
             $table->foreignId('customer_id')->constrained('customers');
             $table->date('availability_date');
             $table->string('month');

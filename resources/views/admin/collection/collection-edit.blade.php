@@ -246,8 +246,16 @@
                                                 </div>
                                             </div>
                                             {{-- Other Bill --}}
-
-
+                                            @if($collection->adjust_amount != 0)
+                                                <div class="col-12">
+                                                    <label class="form-label">Adjusted Rent</label>
+                                                    <input type="number" class="form-control"
+                                                        placeholder="Total Payable Rent"
+                                                        id="adjust_amount"
+                                                        value="{{ $collection->adjust_amount }}"
+                                                        readonly name="adjust_amount">
+                                                </div>
+                                            @endif
                                             <div class="col-12">
                                                 <label class="form-label">Total Payable Rent</label>
                                                 <input type="number" class="form-control"

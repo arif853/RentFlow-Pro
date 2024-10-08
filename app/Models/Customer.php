@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Checkout;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Customer extends Model
 {
@@ -50,9 +51,13 @@ class Customer extends Model
     {
         return $this->hasOne(CustomerExtra::class);
     }
-    
+
     public function collection()
     {
         return $this->hasOne(Collection::class);
+    }
+    public function checkout()
+    {
+        return $this->hasOne(Checkout::class);
     }
 }

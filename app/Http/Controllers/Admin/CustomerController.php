@@ -42,12 +42,15 @@ class CustomerController extends Controller
         $customer = Customer::find($id);
         $collections = Collection::where('customer_id', $customer->id)->get();
 
-        // Group collections by year
+        // Group collections by year from the month field
         $groupedCollections = $collections->groupBy(function ($collection) {
-            return \Carbon\Carbon::parse($collection->collection_date)->format('Y'); // Extract the year
+            // Extract the year from the month field (MM/YYYY)
+            $date = \Carbon\Carbon::createFromFormat('m/Y', $collection->month);
+            return $date->format('Y'); // Return the year
         });
 
         return view('admin.customer.customer-details', compact('customer', 'groupedCollections'));
+
     }
 
     /**

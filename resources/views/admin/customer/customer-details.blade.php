@@ -327,11 +327,16 @@
                         <h5 class="text-left mb-4">Year: {{ $year }}</h5>
                         <ul class="nav nav-tabs nav-primary" role="tablist">
                             @foreach ($collections as $key => $collection)
+                                @php
+                                    // Extract month name from the month field
+                                    $date = \Carbon\Carbon::createFromFormat('m/Y', $collection->month);
+                                    $monthName = $date->format('F'); // Full month name
+                                @endphp
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link " data-bs-toggle="tab" href="#{{ $collection->month }}_{{$year}}" role="tab" aria-selected="true">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#{{ strtolower($monthName) }}_{{$year}}" role="tab" aria-selected="true">
                                         <div class="d-flex align-items-center">
                                             <div class="tab-icon"><i class='bx bx-calendar font-18 me-1'></i></div>
-                                            <div class="tab-title">{{ $collection->month }}</div>
+                                            <div class="tab-title">{{ $monthName }}</div>
                                         </div>
                                     </a>
                                 </li>
@@ -339,7 +344,12 @@
                         </ul>
                         <div class="tab-content py-3">
                             @foreach ($collections as $collection)
-                                <div class="tab-pane fade" id="{{ $collection->month }}_{{$year}}" role="tabpanel">
+                                @php
+                                    // Extract month name again for the tab-pane ID
+                                    $date = \Carbon\Carbon::createFromFormat('m/Y', $collection->month);
+                                    $monthName = $date->format('F'); // Full month name
+                                @endphp
+                                <div class="tab-pane fade" id="{{ strtolower($monthName) }}_{{$year}}" role="tabpanel">
                                     <div class="card shadow-sm border-0 overflow-hidden">
                                         <div class="card-body">
                                             <ul class="list-group list-group-flush">
@@ -359,9 +369,15 @@
                                                     <span class="side-title">Other Charge:</span>
                                                     <span>{{ $collection->asset->others_charge }}</span>
                                                 </li>
+                                                @if($collection->adjust_amount != 0)
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                                        <span class="side-title">Adjust Rent:</span>
+                                                        <span>{{ $collection->adjust_amount }}</span>
+                                                    </li>
+                                                @endif
                                                 <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                                                     <span class="side-title">Total Payable Rent:</span>
-                                                    <span>{{ $collection->asset->service_charge }}</span>
+                                                    <span>{{ $collection->payable_amount }}</span>
                                                 </li>
                                                 <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                                                     <span class="side-title">Collection Amount:</span>
@@ -382,9 +398,6 @@
             </div>
         </div>
     </div>
-
-
-
 
 </main>
 <!--end page main-->

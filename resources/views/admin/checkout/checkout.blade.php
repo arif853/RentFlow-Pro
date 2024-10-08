@@ -89,7 +89,7 @@
 
                                             <div>
                                                 <label class="form-label">Notes</label>
-                                                <input type="hidden" name="employee_id" value=""
+                                                <input type="hidden" name="employee_id"
                                                     id="employeeId">
                                                 <textarea class="form-control" id="notes" name="notes" placeholder="Notes"></textarea>
                                             </div>
@@ -206,6 +206,8 @@
                     url: '/dashboard/collection/checkout/get-asset/' + buildingId,
                     type: 'GET',
                     success: function (data) {
+                    console.log('assets', data);
+
                         $('#unit_id').html(
                             '<option value="">Select Asset Name</option>');
                         $.each(data, function (key, value) {
@@ -237,12 +239,11 @@
                     success: function (data) {
                         // console.log( data);
                         data.bookings.forEach(item => {
-                            console.log('Collections-due: ',item.customer.collection.due_amount);
-                            $('#due').text(item.customer.collection.due_amount);
+                            // console.log('Collections-due: ',item.customer.collection.due_amount);
 
                             const customer = item.customer; // Accessing the customer object
 
-                            console.log('Rent-advance: ',customer.customer_info.advance_amount_type);
+                            // console.log('Rent-advance: ',customer.customer_info.advance_amount_type);
 
                             if(customer.customer_info.advance_amount_type ==='Yes'){
                                 $('#advanced').text(customer.customer_info.advance_amount);
@@ -267,14 +268,34 @@
                             $('#gender').text(customer.gender);
                             $('#nid_number').text(customer.nid_number);
                             $('#customer_id').val(customer.id);
-
-
+                            fetchTotalDueAmount(customer.id);
                         });
                     }
                 });
             }
         });
     });
+
+            // Function to fetch the total due amount
+        function fetchTotalDueAmount(customerId) {
+
+            $.ajax({
+                url: '/dashboard/collection/get/collection/details/' + customerId, // Update with your actual endpoint
+                type: 'GET',
+                success: function (collectionData) {
+
+                    let totalDueAmount = 0;
+                    collectionData.forEach(collectionItem => {
+
+                        totalDueAmount += parseFloat(collectionItem.due_amount) || 0;
+                    });
+                    $('#due').text(totalDueAmount);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching collection data:', error);
+                }
+            });
+        }
 
 
 

@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use function Illuminate\Log\log;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\CustomerExtra;
 use Illuminate\Support\Facades\Session;
 
 class CollectionController extends Controller
@@ -61,6 +62,7 @@ class CollectionController extends Controller
             'dish_amount' => 'nullable|numeric',
             'guard_amount' => 'nullable|numeric',
             'electricity_amount' => 'nullable|numeric',
+            'adjust_amount' => 'nullable|numeric',
             'collection_amount' => 'required|numeric',
             'due_amount' => 'nullable|numeric',
             'water_type' => 'nullable|string',
@@ -71,6 +73,18 @@ class CollectionController extends Controller
         $validatedData['is_due'] = isset($validatedData['due_amount']) && $validatedData['due_amount'] > 0;
 
         Collection::create($validatedData);
+        // jokhon tar checkout confirm thakbe tokhon if condition diye
+        if($request->adjust_amount > 0){
+
+            $customerId = $validatedData['customer_id'];
+
+            $customerInfo = CustomerExtra::where('customer_id',$customerId)->first();
+            $advanceAmount = $customerInfo->advance_amount - $request->adjust_amount;
+            $customerInfo->update([
+                'advance_amount' => $advanceAmount,
+            ]);
+
+        }
 
 
 
@@ -142,7 +156,7 @@ class CollectionController extends Controller
 
     public function getAssetdetails($assetId)
     {
-        $assets = Asset::with(['bookings','bookings.customer','bookings.customer.customerInfo','bookings.customer.collection'])->find($assetId);
+        $assets = Asset::with(['bookings','bookings.customer','bookings.customer.customerInfo','bookings.customer.collection','bookings.customer.checkout'])->find($assetId);
         // dd($assets);
         return response()->json($assets);
     }
@@ -334,6 +348,5 @@ class CollectionController extends Controller
         $collections = Collection::where('due_amount','!=', 0)->get();
         return view('admin.collection.collection-due-list',compact('collections'));
     }
-
 
 }
