@@ -376,8 +376,7 @@
                                 <div class="col-12">
                                     <div class="card shadow-none bg-light border">
                                         <div class="card-header">
-                                            <h6 class="mb-0 align-items-center text-center">Room/Appartment Details
-                                            </h6>
+                                            <h6 class="mb-0 align-items-center text-center">Room/Appartment Details</h6>
                                         </div>
                                         <div class="card-body">
                                             @if($asset->rooms->isNotEmpty())
@@ -942,15 +941,9 @@
         // Call fetchRoomTypes when the document is ready
         fetchRoomTypes();
 
-
-        var key = {
-            {
-                $key + 1
-            }
-        }
+        var key = {{$key + 1}};
         // Handle the "+ New Room" button click
         $('#add-room-btn').on('click', function () {
-            console.log(key);
 
             // Room card template
             const roomCardTemplate = `
