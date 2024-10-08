@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('checkouts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained('employees');
+            $table->foreignId('building_id')->constrained('buildings');
             $table->foreignId('asset_id')->constrained('assets');
+            $table->foreignId('employee_id')->constrained('employees');
+            $table->foreignId('customer_id')->constrained('customers');
             $table->date('availability_date');
             $table->string('month');
             $table->string('notes')->nullable();
+            $table->boolean('is_confirm')->default(false);
             $table->timestamps();
         });
     }
