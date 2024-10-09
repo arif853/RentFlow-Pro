@@ -107,8 +107,11 @@ class CheckoutController extends Controller
 
     public function checkoutApprovalList()
     {
-        $checkouts = Checkout::all();
-        return view('admin.checkout.checkout-approval-list',compact('checkouts'));
+        // Get all checkouts where is_confirm is not 1
+        $checkouts = Checkout::where('is_confirm', '!=', 1)->get();
+
+        // Return the view with filtered checkouts
+        return view('admin.checkout.checkout-approval-list', compact('checkouts'));
     }
     public function checkoutApproval($checkoutId)
     {
