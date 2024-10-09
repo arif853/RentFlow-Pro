@@ -101,29 +101,9 @@
             const customerId = $(this).data('customer-id'); // Get customer ID from data attribute
             fetchTotalDueAmount(customerId); // Call the function to fetch the total due amount
         });
+    });
 
-        $(document).on('click', '#confirmApproveBtn', function (e) {
-            e.preventDefault(); // Prevent the default anchor behavior
-            var url = $(this).attr('href'); // Get the href link
-
-            Swal.fire({
-                title: "Do you want to approve this Checkout ?",
-                showDenyButton: true,
-                showCancelButton: false,
-                confirmButtonText: "Approve",
-                denyButtonText: `Deny!`
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // If confirmed, redirect to the route
-                    window.location.href = url;
-                    Swal.fire("Thank You", " Checkout Cofirmed", "success");
-                } else if (result.isDenied) {
-                    Swal.fire("Sorry!", " Checkout is not confirmed", "info");
-                }
-            });
-        });
-
-        $(document).on('click', '#confirmApproveBtn', function (e) {
+    $(document).on('click', '#confirmApproveBtn', function (e) {
             e.preventDefault(); // Prevent the default anchor behavior
             var url = $(this).attr('href'); // Get the href link
 
@@ -143,7 +123,6 @@
                 }
             });
         });
-    });
 
 
 
