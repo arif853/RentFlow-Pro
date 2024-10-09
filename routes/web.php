@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\CollectionController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\DesignationController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Models\Checkout;
 
 Route::get('/cache_clear',function(){
@@ -115,6 +116,9 @@ Route::middleware(['auth','is_user_active'])->group(function () {
     Route::get('/dashboard/collection/checkout/get-asset/{complex_id}', [CheckoutController::class,'getAssets']);
     Route::get('/dashboard/collection/checkout/get-asset-details/{asset_id}', [CheckoutController::class,'getAssetdetails']);
     Route::get('/dashboard/collection/get/collection/details/{customer_id}', [CheckoutController::class,'CustomerDue'])->name('collection.customer.due');
+
+    Route::get('/dashboard/report/booking',[ReportController::class,'bookingReport'])->name('report.booking');
+    Route::get('/dashboard/report/booking/details/{buildingId}',[ReportController::class,'bookingDetails']);
 
     Route::resource('/dashboard/customer',CustomerController::class);
 

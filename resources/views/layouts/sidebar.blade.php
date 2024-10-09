@@ -97,10 +97,18 @@
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="javascript:;">
                         <div class="parent-icon"><i class="bi bi-card-checklist"></i></div>
                         <div class="menu-title">Reports</div>
                     </a>
+                    <ul>
+                        <li>
+                            <a href="{{route('report.booking')}}"><i class="bi bi-circle"></i>Booking Report</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="bi bi-circle"></i>Checkout Report</a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li>
