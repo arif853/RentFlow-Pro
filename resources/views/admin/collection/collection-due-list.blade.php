@@ -52,7 +52,7 @@
                             <td>{{ $collection->asset->unit_name }}</td>
                             <td>{{ $collection->employee ? $collection->employee->name : 'N/A' }}</td>
                             <td>{{ $collection->collection_date }}</td>
-                            <td>{{ $collection->month }}</td>
+                            <td>{{ \Carbon\Carbon::createFromFormat('m/Y', $collection->month)->format('F, Y') }}</td>
                             <td>{{ $collection->payable_amount }}</td>
                             <td>{{ $collection->collection_amount }}</td>
                             <td>{{ $collection->due_amount }}</td>
