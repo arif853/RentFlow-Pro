@@ -9,7 +9,9 @@ use App\Models\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Booking;
 use App\Models\Customer;
+use App\Models\CustomerExtra;
 
 class CheckoutController extends Controller
 {
@@ -113,7 +115,16 @@ class CheckoutController extends Controller
         $checkout = Checkout::findOrFail($checkoutId);
         $checkout->is_confirm =  1;
         $checkout->save();
-        // dd($checkoutId);
+        // dd($checkout->customer_id);
+        $customerId = $checkout->customer_id;
+        $booking = Booking::where('customer_id',$customerId)->first();
+        $asset = Asset::find($booking->asset_id);
+        $asset->available_from = $checkout->availability_date;
+        $asset->is_book = 0;
+        $asset->save();
+
+        // dd($asset);
+
         return redirect()->route('checkout.approval.list')->with('success', 'Checkout Successfully');
     }
 

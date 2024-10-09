@@ -4,16 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use Mpdf\Mpdf;
 use App\Models\Asset;
+use App\Models\DueLog;
 use App\Models\Booking;
 use App\Models\Building;
+use App\Models\Customer;
+
 use App\Models\Employee;
 use App\Models\Collection;
-
 use Illuminate\Http\Request;
+use App\Models\CustomerExtra;
 use function Illuminate\Log\log;
 use App\Http\Controllers\Controller;
-use App\Models\Customer;
-use App\Models\CustomerExtra;
 use Illuminate\Support\Facades\Session;
 
 class CollectionController extends Controller
@@ -96,8 +97,12 @@ class CollectionController extends Controller
      */
     public function show(string $id)
     {
+        // dd($id);
         $collection = Collection::findOrFail($id);
-        return view('admin.collection.collection-details',compact('collection'));
+        $due_log = DueLog::where('collection_id',$id)->get();
+
+        // dd($due_log);
+        return view('admin.collection.collection-details',compact('collection','due_log'));
     }
 
     /**
@@ -318,6 +323,7 @@ class CollectionController extends Controller
 
     public function duePayment(Request $request)
     {
+        // dd($request->all());
         $collection = Collection::findOrFail($request->collection_id);
 
         $collectedAmount = $collection->collection_amount + $request->input('collection_amount');
@@ -336,6 +342,16 @@ class CollectionController extends Controller
             'due_amount' => $newDue,
             'is_due' => $isDue,
         ]);
+
+        DueLog::create([
+            'collection_id' => $request->input('collection_id'),
+            'customer_id' => $request->input('customer_id'),
+            'collection_date' => $request->input('collection_date'),
+            'collection_month' => $request->input('collection_month'),
+            'collection_amount' => $request->input('collection_amount'), // Use the correct one
+            'due_amount' => $request->input('due_amount'),
+        ]);
+
 
         Session::flash('success','Due payment successfull.');
         return response()->json(['status'=>200]);

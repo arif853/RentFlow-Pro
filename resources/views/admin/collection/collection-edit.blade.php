@@ -49,9 +49,10 @@
                                                 {{-- <select name="building_id" id="building_id" class="form-control">
                                                     <option value="">Select Complex</option>
                                                     @foreach ($buildings as $building)
-                                                    <option value="{{$building->id}}">{{$building->building_name}}</option>
+                                                    <option value="{{$building->id}}">{{$building->building_name}}
+                                                </option>
 
-                                                    @endforeach
+                                                @endforeach
                                                 </select> --}}
                                             </div>
                                             <div class="col-12">
@@ -128,13 +129,16 @@
                                                             <li
                                                                 class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                                                                 <span class="side-title">Customer Name :</span>
-                                                                <span id="client_name">{{$collection->customer->client_name}}</span>
-                                                                <input id="customer_id" type="text" name="customer_id" style="display:none;">
+                                                                <span
+                                                                    id="client_name">{{$collection->customer->client_name}}</span>
+                                                                <input id="customer_id" type="text" name="customer_id"
+                                                                    style="display:none;">
                                                             </li>
                                                             <li
                                                                 class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                                                                 <span class="side-title">Phone Number :</span>
-                                                                <span id="client_phone">{{$collection->customer->client_phone}}</span>
+                                                                <span
+                                                                    id="client_phone">{{$collection->customer->client_phone}}</span>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -157,8 +161,8 @@
                                                 <label class="form-label">Employee</label>
                                                 <input type="hidden" name="employee_id" value="" id="employeeId">
                                                 <input type="text" class="form-control" id="employee_name"
-                                                    value="{{$collection->employee ? $collection->employee->name : ''}}" placeholder="Employee"
-                                                    readonly>
+                                                    value="{{$collection->employee ? $collection->employee->name : ''}}"
+                                                    placeholder="Employee" readonly>
                                             </div>
 
                                             <div class="col-12">
@@ -181,7 +185,7 @@
                                                     @if ($collection->gas_type === "Post Paid")
                                                     <div class="col-3" id="gas_type_show" style="margin-right:10px;">
                                                         <label class="form-label">Gas Bill</label>
-                                                        <input type="number" class="form-label" placeholder="Gas Bill"
+                                                        <input type="number" class="form-control" placeholder="Gas Bill"
                                                             id="gas_amount" value="{{$collection->gas_amount}}"
                                                             name="gas_amount" readonly>
                                                     </div>
@@ -190,7 +194,7 @@
                                                     <div class="col-3" id="electricity_type_show"
                                                         style="margin-right:10px;">
                                                         <label class="form-label">Electricity Bill</label>
-                                                        <input type="number" class="form-label"
+                                                        <input type="number" class="form-control"
                                                             placeholder="Electricity Bill" id="electricity_amount"
                                                             value="{{$collection->electricity_amount}}"
                                                             name="electricity_amount" readonly>
@@ -199,9 +203,10 @@
                                                     @if ($collection->water_type === "Post Paid")
                                                     <div class="col-3" id="water_type_show" style="margin-right:10px;">
                                                         <label class="form-label">Water Bill</label>
-                                                        <input type="number" class="form-label" placeholder="Water Bill"
-                                                            id="water_amount" value="{{$collection->water_amount}}"
-                                                            name="water_amount" readonly>
+                                                        <input type="number" class="form-control"
+                                                            placeholder="Water Bill" id="water_amount"
+                                                            value="{{$collection->water_amount}}" name="water_amount"
+                                                            readonly>
                                                     </div>
                                                     @endif
 
@@ -224,20 +229,22 @@
                                                                 <label class="form-label">Guard Bill</label>
                                                                 <input type="number" class="form-control"
                                                                     placeholder="Guard Bill" name="guard_amount"
-                                                                    value="{{$collection->guard_amount}}" id="guard_amount" readonly>
+                                                                    value="{{$collection->guard_amount}}"
+                                                                    id="guard_amount" readonly>
                                                             </div>
                                                             <div class="col-12 col-md-4">
                                                                 <label class="form-label">Internet Bill</label>
                                                                 <input type="number" class="form-control"
-                                                                    placeholder="Internet Bill"
-                                                                    name="internet_amount"
-                                                                    value="{{$collection->internet_amount}}" id="internet_amount" readonly>
+                                                                    placeholder="Internet Bill" name="internet_amount"
+                                                                    value="{{$collection->internet_amount}}"
+                                                                    id="internet_amount" readonly>
                                                             </div>
                                                             <div class="col-12 col-md-4">
                                                                 <label class="form-label">Dish Bill</label>
                                                                 <input type="number" class="form-control"
                                                                     placeholder="Dish Bill" name="dish_amount"
-                                                                    value="{{$collection->dish_amount}}" id="dish_amount" readonly>
+                                                                    value="{{$collection->dish_amount}}"
+                                                                    id="dish_amount" readonly>
                                                             </div>
                                                         </div>
 
@@ -247,14 +254,13 @@
                                             </div>
                                             {{-- Other Bill --}}
                                             @if($collection->adjust_amount != 0)
-                                                <div class="col-12">
-                                                    <label class="form-label">Adjusted Rent</label>
-                                                    <input type="number" class="form-control"
-                                                        placeholder="Total Payable Rent"
-                                                        id="adjust_amount"
-                                                        value="{{ $collection->adjust_amount }}"
-                                                        readonly name="adjust_amount">
-                                                </div>
+                                            <div class="col-12">
+                                                <label class="form-label">Adjusted Rent</label>
+                                                <input type="number" class="form-control"
+                                                    placeholder="Total Payable Rent" id="adjust_amount"
+                                                    value="{{ $collection->adjust_amount }}" readonly
+                                                    name="adjust_amount">
+                                            </div>
                                             @endif
                                             <div class="col-12">
                                                 <label class="form-label">Total Payable Rent</label>
@@ -272,10 +278,12 @@
                                                     placeholder="Previous Collection Amount"
                                                     value="{{$collection->due_amount}}" readonly>
                                             </div>
+
                                             <div class="col-12">
                                                 <label class="form-label">New Collection Amount</label>
                                                 <input type="number" class="form-control" name="new_collection_amount"
-                                                    placeholder="New Collection Amount" id="new_collection_amount" value="">
+                                                    placeholder="New Collection Amount" id="new_collection_amount"
+                                                    value="">
                                             </div>
                                             <div class="col-12" style="display:none;">
                                                 <label class="form-label">Total Collection Amount</label>
@@ -286,8 +294,10 @@
                                             <div class="col-12">
                                                 <label class="form-label">Due</label>
                                                 <input type="number" class="form-control" name="due_amount"
-                                                    placeholder="Due Amount" id="due_amount" value="{{$collection->due_amount}}" readonly>
+                                                    placeholder="Due Amount" id="due_amount"
+                                                    value="{{$collection->due_amount}}" readonly>
                                             </div>
+
                                         </div>
                                         <!--end row-->
                                     </div>

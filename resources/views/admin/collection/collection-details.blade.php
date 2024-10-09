@@ -77,8 +77,6 @@
                     </ul>
                 </div>
             </div>
-        </div>
-        <div class="col-12 col-lg-6">
             <div class="card shadow-sm border-0 overflow-hidden">
                 <div class="card-header py-3 bg-transparent">
                     <h5 class="mb-2 mb-sm-0">Rent Details</h5>
@@ -112,6 +110,34 @@
                     </ul>
                 </div>
             </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="card shadow-sm border-0 overflow-hidden">
+                <div class="card-header py-3 bg-transparent">
+                    <h5 class="mb-2 mb-sm-0">Due Payment Details</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-flush">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Due</th>
+                                <th>Collected</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($due_log as $log)
+                                <tr>
+                                    <td>{{ $log->collection_date }}</td>
+                                    <td>{{ $log->due_amount }}</td>
+                                    <td>{{ $log->collection_amount }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
 
     </div>

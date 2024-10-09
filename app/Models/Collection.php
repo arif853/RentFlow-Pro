@@ -49,4 +49,8 @@ class Collection extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+    public function due_log()
+    {
+        return $this->belongsTo(DueLog::class);
+    }
 }
