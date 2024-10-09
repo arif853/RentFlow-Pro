@@ -50,7 +50,7 @@
                             <td>{{$key+1}}</td>
                             <td>{{$checkout->asset->building->building_name}}</td>
                             <td>{{$checkout->asset->asset_code}}</td>
-                            <td>{{$checkout->month}}</td>
+                            <td>{{ \Carbon\Carbon::createFromFormat('m/Y', $checkout->month)->format('F, Y') }}</td>
                             <td><a href="{{route('customer.show',$checkout->customer->id)}}" data-bs-toggle="tooltip"
                                     data-bs-placement="bottom" data-bs-original-title="Details"
                                     aria-label="Details">{{$checkout->customer->client_name}}</a></td>
