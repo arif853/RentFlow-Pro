@@ -77,7 +77,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-danger border-0 bg-transparent p-0 delete-btn"
-                                            data-bs-toggle="tooltip" title="Delete">
+                                            data-bs-toggle="tooltip" title="Delete" id="confirmApproveBtn">
                                             <i class="bi bi-trash-fill"></i>
                                         </button>
                                     </form>
@@ -100,6 +100,25 @@
 @endsection
 @push('script')
 <script>
+$(document).on('click', '#confirmApproveBtn', function (e) {
+            e.preventDefault(); // Prevent the default anchor behavior
+            var url = $(this).attr('href'); // Get the href link
 
+            Swal.fire({
+                title: "Do you want to Delete this ?",
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: "Approve",
+                denyButtonText: `Deny!`
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If confirmed, redirect to the route
+                    window.location.href = url;
+                    Swal.fire("Thank You", " Deleted", "success");
+                } else if (result.isDenied) {
+                    Swal.fire("Sorry!", " Delete is not confirm", "info");
+                }
+            });
+        });
 </script>
 @endpush

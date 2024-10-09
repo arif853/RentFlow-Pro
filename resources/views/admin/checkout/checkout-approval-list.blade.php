@@ -69,11 +69,13 @@
                                 <div class="table-actions d-flex align-items-center gap-3 fs-6"
                                     id="if-due-{{$checkout->customer->id}}">
                                     @if ($checkout->is_confirm == 0)
-                                    <a href="{{route('checkout.approval.list.approve', $checkout->id)}}"
+                                    <div id="confirmApproveBtn-{{$checkout->customer->id}}">
+                                        <a href="{{route('checkout.approval.list.approve', $checkout->id)}}"
                                         class="text-primary btn_checkoutConfirm" data-bs-toggle="tooltip"
-                                        data-bs-placement="bottom" title="Approve"
-                                        id="confirmApproveBtn-{{$checkout->customer->id}}">
+                                        data-bs-placement="bottom" title="Approve" id="confirmApproveBtn">
                                         <i class="bi bi-check-lg"></i></a>
+                                    </div>
+
                                     @else
                                     <a href="#" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom"
                                         title="Confirmed"><i class="bi bi-hand-thumbs-up"></i></a>
@@ -94,9 +96,31 @@
 @push('script')
 <script>
     $(document).ready(function () {
+
         $('tbody tr').each(function () {
             const customerId = $(this).data('customer-id'); // Get customer ID from data attribute
             fetchTotalDueAmount(customerId); // Call the function to fetch the total due amount
+        });
+
+        $(document).on('click', '#confirmApproveBtn', function (e) {
+            e.preventDefault(); // Prevent the default anchor behavior
+            var url = $(this).attr('href'); // Get the href link
+
+            Swal.fire({
+                title: "Do you want to approve this Checkout ?",
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: "Approve",
+                denyButtonText: `Deny!`
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If confirmed, redirect to the route
+                    window.location.href = url;
+                    Swal.fire("Thank You", " Checkout Cofirmed", "success");
+                } else if (result.isDenied) {
+                    Swal.fire("Sorry!", " Checkout is not confirmed", "info");
+                }
+            });
         });
 
         $(document).on('click', '#confirmApproveBtn', function (e) {

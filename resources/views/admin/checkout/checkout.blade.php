@@ -27,7 +27,7 @@
                         <div class="d-sm-flex align-items-center">
                             <h5 class="mb-2 mb-sm-0">New Checkout Request</h5>
                             <div class="ms-auto">
-                                <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure you want to submit this request?');">Send Request</button>
+                                <button type="submit" class="btn btn-primary" id="confirmApproveBtn">Send Request</button>
                             </div>
                         </div>
                     </div>
@@ -333,7 +333,26 @@
             console.log("Availability Date:", formattedDate);
         });
 
+        $(document).on('click', '#confirmApproveBtn', function (e) {
+            e.preventDefault(); // Prevent the default anchor behavior
+            var url = $(this).attr('href'); // Get the href link
 
+            Swal.fire({
+                title: "Do you want to request a checkout ?",
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: "Approve",
+                denyButtonText: `Deny!`
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If confirmed, redirect to the route
+                    window.location.href = url;
+                    Swal.fire("Thank You", " Checkout Request Cofirmed", "success");
+                } else if (result.isDenied) {
+                    Swal.fire("Sorry!", " Checkout Request is not confirmed", "info");
+                }
+            });
+        });
 
 </script>
 @endpush
