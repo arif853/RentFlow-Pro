@@ -137,4 +137,34 @@ class ReportController extends Controller
     }
 
 
+    public function generateCheckoutPdf($buildingId)
+    {
+        // Query the data based on the building ID filter (if provided)
+        $query = Checkout::with(['building', 'asset', 'customer']);
+
+        if ($buildingId != 0) {
+            $query->where('building_id', $buildingId);
+        }
+
+        $checkouts = $query->where('is_confirm', 1)->get();
+
+        // Generate the PDF using Dompdf
+        $pdf = new Dompdf();
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+        $pdf->setOptions($options);
+
+        // Pass data to the view
+        $html = view('admin.report.checkout-pdf-report', compact('checkouts'))->render();
+
+        $pdf->loadHtml($html);
+        $pdf->setPaper('A4');
+        $pdf->render();
+
+        // Output the generated PDF
+        return $pdf->stream('checkout_report.pdf');
+    }
+
+
+
 }

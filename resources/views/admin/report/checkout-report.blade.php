@@ -43,6 +43,7 @@
                         <button type="button" class="btn btn-secondary ms-3" id="btn_submit">Search</button>
                     </div>
                 </div>
+                <button type="button" class="btn btn-primary mt-3" id="btn_download_pdf" style="display: none">Download PDF</button>
                 <div id="chekoutList" class="mt-3">
                     <table class="table table-striped">
                         <thead>
@@ -73,6 +74,7 @@
 <script>
 $(document).ready(function () {
     $('#btn_submit').on('click', function () {
+        $('#btn_download_pdf').show();
         var buildingId = $('#building_id').val();
         console.log(buildingId);
 
@@ -116,6 +118,11 @@ $(document).ready(function () {
             });
         }
     });
+    $('#btn_download_pdf').on('click', function () {
+        var buildingId = $('#building_id').val() || 0; // Default to 0 if not selected
+        window.location.href = `/dashboard/report/checkout/pdf/${buildingId}`;
+    });
+
 });
 </script>
 @endpush

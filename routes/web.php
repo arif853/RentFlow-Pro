@@ -125,6 +125,8 @@ Route::middleware(['auth','is_user_active'])->group(function () {
     Route::get('/dashboard/report/asset/details/',[ReportController::class,'assetDetails']);
     Route::get('/dashboard/report/booking/pdf/{buildingId}', [ReportController::class, 'generatebookingPdf'])->name('report.booking.pdf');
     Route::get('/dashboard/report/asset/pdf/{locationId}/{buildingId}/{floorId}', [ReportController::class, 'generateAssetPdf'])->name('report.asset.pdf');
+    Route::get('/dashboard/report/checkout/pdf/{buildingId}', [ReportController::class, 'generateCheckoutPdf'])->name('report.checkout.pdf');
+
 
     Route::resource('/dashboard/customer',CustomerController::class);
 
