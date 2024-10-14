@@ -11,7 +11,7 @@
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">chekout Report</li>
+                    <li class="breadcrumb-item active" aria-current="page">Chekout Report</li>
                 </ol>
             </nav>
         </div>
@@ -21,7 +21,7 @@
     <div class="card">
         <div class="card-body">
             <div class="d-flex align-items-center">
-                <h5 class="mb-0">chekout Report</h5>
+                <h5 class="mb-0">Chekout Report</h5>
                 <form class="ms-auto position-relative">
                     <div class="ms-auto">
 

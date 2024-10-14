@@ -56,7 +56,7 @@
                     <td>{{ $asset->building->building_name }}</td>
                     <td>{{ $asset->floor->floor_name }}</td>
                     <td>{{ $asset->location->name }}</td>
-                    <td>{{ $asset->is_book == 0 ? $asset->available_from : 'Booked' }}</td>
+                    <td>{{ $asset->is_book == 0 ? $asset->available_from ? $asset->available_from : "N/A": 'Booked' }}</td>
                 </tr>
             @endforeach
         </tbody>

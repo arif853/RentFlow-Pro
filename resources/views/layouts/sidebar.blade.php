@@ -97,7 +97,7 @@
                 </li>
 
                 <li>
-                    <a href="javascript:;">
+                    <a class="has-arrow" href="javascript:;">
                         <div class="parent-icon"><i class="bi bi-card-checklist"></i></div>
                         <div class="menu-title">Reports</div>
                     </a>

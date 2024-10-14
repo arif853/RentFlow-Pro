@@ -11,7 +11,7 @@
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">asset Report</li>
+                    <li class="breadcrumb-item active" aria-current="page">Asset Report</li>
                 </ol>
             </nav>
         </div>
@@ -21,7 +21,7 @@
     <div class="card">
         <div class="card-body">
             <div class="d-flex align-items-center">
-                <h5 class="mb-0">asset Report</h5>
+                <h5 class="mb-0">Asset Report</h5>
                 <form class="ms-auto position-relative">
                     <div class="ms-auto">
 
@@ -145,7 +145,7 @@
                                 <td>${asset.building.building_name}</td>
                                 <td>${asset.floor.floor_name}</td>
                                 <td>${asset.location.name}</td>
-                                <td>${asset.is_book == 0 ? asset.available_from : 'Booked' }</td>
+                                <td>${asset.is_book == 0 ? asset.available_from ?asset.available_from : "N/A" : 'Booked' }</td>
                             </tr>
                         `);
                     });
