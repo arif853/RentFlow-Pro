@@ -46,6 +46,7 @@
                 <th>Floor</th>
                 <th>Location</th>
                 <th>Available From</th>
+                <th>Monthly Rent</th>
             </tr>
         </thead>
         <tbody>
@@ -57,6 +58,7 @@
                     <td>{{ $asset->floor->floor_name }}</td>
                     <td>{{ $asset->location->name }}</td>
                     <td>{{ $asset->is_book == 0 ? $asset->available_from ? $asset->available_from : "N/A": 'Booked' }}</td>
+                    <td>{{ $asset->monthly_rent}}</td>
                 </tr>
             @endforeach
         </tbody>

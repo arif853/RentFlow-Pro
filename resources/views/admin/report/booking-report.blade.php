@@ -54,7 +54,7 @@
                                 <th scope="col">Asset</th>
                                 <th scope="col">Client Name</th>
                                 <th scope="col">Phone Number</th>
-                                <th scope="col">Status</th>
+                                <th scope="col">Monthly Rent</th>
                             </tr>
                         </thead>
                         <tbody id="bookingTableBody">
@@ -97,7 +97,7 @@ $(document).ready(function () {
                                     <td>${booking.asset.unit_name}</td>
                                     <td>${booking.customer.client_name}</td>
                                     <td>${booking.customer.client_phone}</td>
-                                    <td>${booking.status}</td>
+                                    <td>${booking.asset.monthly_rent}</td>
                                 </tr>
                             `);
                         });

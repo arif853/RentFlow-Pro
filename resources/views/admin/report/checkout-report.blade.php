@@ -99,7 +99,7 @@ $(document).ready(function () {
                                     <td>${chekout.customer.client_name}</td>
                                     <td>${chekout.customer.client_phone}</td>
                                     <td>${chekout.month}</td>
-                                    <td>${chekout.is_confirm == 1 ? "Confiremd": "Pending"}</td>
+                                    <td>${chekout.is_confirm == 1 ? "Confirmed": "Pending"}</td>
                                 </tr>
                             `);
                         });

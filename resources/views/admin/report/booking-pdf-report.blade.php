@@ -46,7 +46,7 @@
                 <th>Asset</th>
                 <th>Client Name</th>
                 <th>Phone Number</th>
-                <th>Status</th>
+                <th>Monthly Rent</th>
             </tr>
         </thead>
         <tbody>
@@ -58,7 +58,7 @@
                     <td>{{ $booking->asset->unit_name }}</td>
                     <td>{{ $booking->customer->client_name }}</td>
                     <td>{{ $booking->customer->client_phone }}</td>
-                    <td>{{ $booking->status }}</td>
+                    <td>{{ $booking->asset->monthly_rent }}</td>
                 </tr>
             @endforeach
         </tbody>
