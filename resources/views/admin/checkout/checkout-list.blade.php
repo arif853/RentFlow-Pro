@@ -48,7 +48,7 @@
                             <td>{{ $key +1}}</td>
                             <td>{{$checkout->asset->building->building_name}}</td>
                             <td>{{$checkout->asset->unit_name}}</td>
-                            <td>{{$checkout->month}}</td>
+                            <td>{{ \Carbon\Carbon::createFromFormat('m/Y', $checkout->month)->format('F, Y') }}</td>
                             <td>{{$checkout->availability_date}}</td>
                             <td>{{$checkout->notes}}</td>
                             <td>

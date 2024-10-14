@@ -50,7 +50,7 @@
                             <td>{{$key+1}}</td>
                             <td>{{$checkout->asset->building->building_name}}</td>
                             <td>{{$checkout->asset->asset_code}}</td>
-                            <td>{{$checkout->month}}</td>
+                            <td>{{ \Carbon\Carbon::createFromFormat('m/Y', $checkout->month)->format('F, Y') }}</td>
                             <td><a href="{{route('customer.show',$checkout->customer->id)}}" data-bs-toggle="tooltip"
                                     data-bs-placement="bottom" data-bs-original-title="Details"
                                     aria-label="Details">{{$checkout->customer->client_name}}</a></td>
@@ -69,11 +69,13 @@
                                 <div class="table-actions d-flex align-items-center gap-3 fs-6"
                                     id="if-due-{{$checkout->customer->id}}">
                                     @if ($checkout->is_confirm == 0)
-                                    <a href="{{route('checkout.approval.list.approve', $checkout->id)}}"
+                                    <div id="confirmApproveBtn-{{$checkout->customer->id}}">
+                                        <a href="{{route('checkout.approval.list.approve', $checkout->id)}}"
                                         class="text-primary btn_checkoutConfirm" data-bs-toggle="tooltip"
-                                        data-bs-placement="bottom" title="Approve"
-                                        id="confirmApproveBtn-{{$checkout->customer->id}}">
+                                        data-bs-placement="bottom" title="Approve" id="confirmApproveBtn">
                                         <i class="bi bi-check-lg"></i></a>
+                                    </div>
+
                                     @else
                                     <a href="#" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom"
                                         title="Confirmed"><i class="bi bi-hand-thumbs-up"></i></a>
@@ -94,12 +96,14 @@
 @push('script')
 <script>
     $(document).ready(function () {
+
         $('tbody tr').each(function () {
             const customerId = $(this).data('customer-id'); // Get customer ID from data attribute
             fetchTotalDueAmount(customerId); // Call the function to fetch the total due amount
         });
+    });
 
-        $(document).on('click', '#confirmApproveBtn', function (e) {
+    $(document).on('click', '#confirmApproveBtn', function (e) {
             e.preventDefault(); // Prevent the default anchor behavior
             var url = $(this).attr('href'); // Get the href link
 
@@ -119,7 +123,6 @@
                 }
             });
         });
-    });
 
 
 

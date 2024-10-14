@@ -25,5 +25,9 @@ class Checkout extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+    public function building()
+    {
+        return $this->belongsTo(Building::class, 'building_id');
+    }
 
 }

@@ -74,7 +74,7 @@
                                 <div class="table-actions d-flex align-items-center gap-3 fs-6">
                                     @if ($booking->status == 'pending')
                                     <a href="{{route('booking.approved',$booking->id)}}" class="text-primary" data-bs-toggle="tooltip"
-                                        data-bs-placement="bottom" title="Approve"><i class="bi bi-check-lg"></i></a>
+                                        data-bs-placement="bottom" title="Approve" id="confirmApproveBtn"><i class="bi bi-check-lg"></i></a>
                                     @else
                                     <a href="{{route('booking.show',$booking->id)}}" class="text-primary" data-bs-toggle="tooltip"
                                         data-bs-placement="bottom" title="Views"><i class="bi bi-eye-fill"></i></a>
