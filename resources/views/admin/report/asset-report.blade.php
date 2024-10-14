@@ -63,6 +63,7 @@
                         </div>
                     </div>
                 </div>
+                <button type="button" class="btn btn-primary mt-3" id="btn_download_asset_pdf" style="display: none">Download PDF</button>
                 <div id="assetList" class="mt-3">
                     <table class="table table-striped">
                         <thead>
@@ -95,6 +96,7 @@
 
     // Handle location change
     $('#location_id').on('change', function () {
+        $('#btn_download_asset_pdf').show();
         locationId = $(this).val(); // Get the selected location ID
         console.log(locationId);
         details(); // Call details function to filter assets
@@ -102,6 +104,7 @@
 
     // Handle building change
     $('#building_id').on('change', function () {
+        $('#btn_download_asset_pdf').show();
         buildingId = $(this).val(); // Get the selected building ID
         console.log(buildingId);
         details(); // Call details function to filter assets
@@ -109,6 +112,7 @@
 
     // Handle floor change
     $('#floor_id').on('change', function () {
+        $('#btn_download_asset_pdf').show();
         floorId = $(this).val(); // Get the selected floor ID
         console.log(floorId);
         details(); // Call details function to filter assets
@@ -159,6 +163,16 @@
             }
         });
     }
+
+    $('#btn_download_asset_pdf').on('click', function () {
+        var locationId = $('#location_id').val() || 0; // Default to 0 if not selected
+        var buildingId = $('#building_id').val() || 0; // Default to 0 if not selected
+        var floorId = $('#floor_id').val() || 0; // Default to 0 if not selected
+
+        window.location.href = `/dashboard/report/asset/pdf/${locationId}/${buildingId}/${floorId}`;
+    });
+
+
 });
 
 

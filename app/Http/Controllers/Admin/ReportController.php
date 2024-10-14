@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use App\Models\Asset;
+use App\Models\Floor;
 use App\Models\Booking;
 use App\Models\Building;
 use App\Models\Checkout;
-use App\Models\Floor;
 use App\Models\Location;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ReportController extends Controller
 {
@@ -70,5 +72,69 @@ class ReportController extends Controller
         // Return the filtered assets as a JSON response
         return response()->json($assets);
     }
+
+    public function generatebookingPdf($buildingId)
+    {
+        // Fetch the booking data based on the building ID
+        $bookings = Booking::with(['building', 'floor', 'asset', 'customer'])
+            ->where('building_id', $buildingId)
+            ->where('status', 'confirmed')
+            ->get();
+
+        // Load the view for PDF
+        $pdf = new Dompdf();
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+        $pdf->setOptions($options);
+
+        // Pass data to the view
+        $html = view('admin.report.booking-pdf-report', compact('bookings'))->render();
+
+        $pdf->loadHtml($html);
+        $pdf->setPaper('A4');
+        $pdf->render();
+
+        // Output the generated PDF
+        return $pdf->stream('booking_report.pdf');
+    }
+
+    public function generateAssetPdf($locationId, $buildingId, $floorId)
+    {
+        // Start the query on the Asset model
+        $query = Asset::with(['building', 'floor', 'location']);
+
+        // Apply filters only if they are provided (i.e., not 0)
+        if ($locationId != 0) {
+            $query->where('location_id', $locationId);
+        }
+
+        if ($buildingId != 0) {
+            $query->where('building_id', $buildingId);
+        }
+
+        if ($floorId != 0) {
+            $query->where('floor_id', $floorId);
+        }
+
+        // Execute the query and get the results
+        $assets = $query->get();
+
+        // Load the view for PDF
+        $pdf = new Dompdf();
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+        $pdf->setOptions($options);
+
+        // Pass data to the view
+        $html = view('admin.report.asset-pdf-report', compact('assets'))->render();
+
+        $pdf->loadHtml($html);
+        $pdf->setPaper('A4');
+        $pdf->render();
+
+        // Output the generated PDF
+        return $pdf->stream('asset_report.pdf');
+    }
+
 
 }
