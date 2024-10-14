@@ -103,10 +103,13 @@
                     </a>
                     <ul>
                         <li>
+                            <a href="{{route('report.asset')}}"><i class="bi bi-circle"></i>Asset Report</a>
+                        </li>
+                        <li>
                             <a href="{{route('report.booking')}}"><i class="bi bi-circle"></i>Booking Report</a>
                         </li>
                         <li>
-                            <a href="#"><i class="bi bi-circle"></i>Checkout Report</a>
+                            <a href="{{route('report.checkout')}}"><i class="bi bi-circle"></i>Checkout Report</a>
                         </li>
                     </ul>
                 </li>

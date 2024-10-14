@@ -11,7 +11,7 @@
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Booking Report</li>
+                    <li class="breadcrumb-item active" aria-current="page">chekout Report</li>
                 </ol>
             </nav>
         </div>
@@ -21,7 +21,7 @@
     <div class="card">
         <div class="card-body">
             <div class="d-flex align-items-center">
-                <h5 class="mb-0">Booking Report</h5>
+                <h5 class="mb-0">chekout Report</h5>
                 <form class="ms-auto position-relative">
                     <div class="ms-auto">
 
@@ -43,20 +43,21 @@
                         <button type="button" class="btn btn-secondary ms-3" id="btn_submit">Search</button>
                     </div>
                 </div>
-                <div id="bookingList" class="mt-3">
+                <div id="chekoutList" class="mt-3">
                     <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Building</th>
-                                <th scope="col">Floor</th>
-                                <th scope="col">Asset</th>
+                                <th scope="col">Unit Name</th>
+                                <th scope="col">Asset Code</th>
                                 <th scope="col">Client Name</th>
                                 <th scope="col">Phone Number</th>
+                                <th scope="col">Checkout Month</th>
                                 <th scope="col">Status</th>
                             </tr>
                         </thead>
-                        <tbody id="bookingTableBody">
+                        <tbody id="chekoutTableBody">
                             <!-- Dynamic rows will be inserted here -->
                         </tbody>
                     </table>
@@ -77,40 +78,40 @@ $(document).ready(function () {
 
         if (buildingId) {
             $.ajax({
-                url: '/dashboard/report/booking/details/' + buildingId,
+                url: '/dashboard/report/checkout/details/' + buildingId,
                 type: 'GET',
                 success: function (data) {
                     // Clear the existing table rows
-                    $('#bookingTableBody').empty();
-                    console.log(data);
+                    $('#chekoutTableBody').empty();
+                    // console.log('ajax data',data);
 
                     if (data) {
-                        $.each(data, function (index, booking) {
-                            // console.log(booking.building);
-
-                            $('#bookingTableBody').append(`
+                        $.each(data, function (index, chekout) {
+                            // console.log(chekout.building);
+                            $('#chekoutTableBody').append(`
                                 <tr>
                                     <th scope="row">${index + 1}</th>
-                                    <td>${booking.building.building_name}</td>
-                                    <td>${booking.floor.floor_name}</td>
-                                    <td>${booking.asset.unit_name}</td>
-                                    <td>${booking.customer.client_name}</td>
-                                    <td>${booking.customer.client_phone}</td>
-                                    <td>${booking.status}</td>
+                                    <td>${chekout.building.building_name}</td>
+                                    <td>${chekout.asset.unit_name}</td>
+                                    <td>${chekout.asset.asset_code}</td>
+                                    <td>${chekout.customer.client_name}</td>
+                                    <td>${chekout.customer.client_phone}</td>
+                                    <td>${chekout.month}</td>
+                                    <td>${chekout.is_confirm == 1 ? "Confiremd": "Pending"}</td>
                                 </tr>
                             `);
                         });
                     } else {
-                        console.log('No booking found for this building.');
-                        $('#bookingTableBody').append(`
+                        console.log('No chekout found for this building.');
+                        $('#chekoutTableBody').append(`
                             <tr>
-                                <td colspan="4" class="text-center">No bookings available.</td>
+                                <td colspan="4" class="text-center">No chekouts available.</td>
                             </tr>
                         `);
                     }
                 },
                 error: function () {
-                    console.log('Error fetching booking details.');
+                    console.log('Error fetching chekout details.');
                 }
             });
         }
