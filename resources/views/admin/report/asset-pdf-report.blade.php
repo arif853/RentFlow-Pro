@@ -33,7 +33,7 @@
 <body>
     <div class="head">
         <h1>Rental</h1>
-        <p class="phead">Address: Hello rthis is adress</p>
+        <p class="phead">Address: Hello this is address</p>
         <p class="phead">Phone: 0175454655</p>
     </div>
     <h3>Asset Report</h3>
