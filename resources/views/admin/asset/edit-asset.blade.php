@@ -151,19 +151,17 @@
                                         </div>
 
                                         <div class="col-12 col-md-4">
-                                            <label class="form-label">Floor Name<span
-                                                    class="text-danger">*</span></label>
+                                            <label class="form-label">Floor Name<span class="text-danger">*</span></label>
                                             <select class="form-select" name="floor_id" id="floorId" required>
                                                 <option value="">Select Floor</option>
                                                 @foreach ($floors as $floor)
-                                                <option value="{{ $floor->id }}" data-size="{{ $floor->floor_size }}"
-                                                    data-unit="{{ $floor->total_unit }}"
-                                                    {{$asset->floor_id == $floor->id ? 'selected' : ''}}>
-                                                    {{ $floor->floor_name }}
-                                                </option>
+                                                    <option value="{{ $floor->id }}" data-building-id="{{ $floor->building_id }}" data-size="{{ $floor->floor_size }}" data-unit="{{ $floor->total_unit }}" {{$asset->floor_id == $floor->id ? 'selected' : ''}}>
+                                                        {{ $floor->floor_name }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                         </div>
+
                                         <div class="col-12 col-md-4">
                                             <label class="form-label">Floor Size</label>
                                             <input type="text" class="form-control" placeholder="Floor Size" readonly
@@ -778,6 +776,50 @@
 @push('script')
 <script>
     $(document).ready(function () {
+
+        var $floorSelect = $('#floorId');
+        var $allFloorOptions = $floorSelect.find('option').clone(); // Clone all floor options
+
+        function filterFloors(buildingId, selectedFloorId = null) {
+            // Clear the current floor options
+            $floorSelect.html('<option value="">Select Floor</option>');
+
+            // Filter and append the relevant floors
+            $allFloorOptions.each(function() {
+                var $option = $(this);
+                var floorBuildingId = $option.data('building-id');
+
+                // Only append floors that belong to the selected building
+                if (floorBuildingId == buildingId) {
+                    $floorSelect.append($option);
+                }
+            });
+
+            // If a floor is pre-selected (edit mode), set it as selected
+            if (selectedFloorId) {
+                $floorSelect.val(selectedFloorId);
+            }
+        }
+
+        // Get the pre-selected building and floor IDs for the edit case
+        var selectedBuildingId = $('#building-select').val();
+        var selectedFloorId = $floorSelect.val();
+
+        // On page load, filter the floors based on the selected building (for edit mode)
+        if (selectedBuildingId) {
+            filterFloors(selectedBuildingId, selectedFloorId);
+        }
+
+        // When the building selection changes, update the floor options
+        $('#building-select').on('change', function() {
+            var buildingId = $(this).val();
+            filterFloors(buildingId); // Update floors when building changes
+        });
+
+
+
+
+
 
         function amountCardShow(value, previewId) {
             // Show or hide the amount card based on the selected value

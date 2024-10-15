@@ -35,6 +35,17 @@
                                     @method('PUT')
                                 @endif
                                 <div class="col-12">
+                                    <label class="form-label">Building</label>
+                                    <select class="form-select" name="building_id">
+                                        <option>Select a Building</option>
+                                        @foreach ($buildings as $building)
+                                            <option value="{{ $building->id }}" {{ isset($floor) && $floor->building_id == $building->id ? 'selected' : '' }}>
+                                                {{ $building->building_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-12">
                                     <label class="form-label">Floor Name <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control"
                                            placeholder="Floor Name"
@@ -92,6 +103,7 @@
                                         <tr>
                                             <th><input class="form-check-input" type="checkbox"></th>
                                             <th>#</th>
+                                            <th>Building Name</th>
                                             <th>Floor Name</th>
                                             <th>Floor Size</th>
                                             <th>Total Unit</th>
@@ -104,6 +116,7 @@
                                         <tr>
                                             <td><input class="form-check-input" type="checkbox"></td>
                                             <td>{{ $key + 1 }}</td>
+                                            <td>{{ $floor->building ? $floor->building->building_name: "N/A" }}</td>
                                             <td>{{ $floor->floor_name }}</td>
                                             <td>{{ $floor->floor_size }}</td>
                                             <td>{{ $floor->total_unit }}</td>

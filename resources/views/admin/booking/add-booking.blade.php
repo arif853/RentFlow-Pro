@@ -103,6 +103,7 @@
                                                     <!-- Buildings will be dynamically populated here -->
                                                 </select>
                                             </div>
+
                                             <div class="col-12">
                                                 <div class="card border shadow-none radius-10" id="buildingCardDetails"
                                                     style="margin-bottom: 0px; display: none;">
@@ -164,12 +165,15 @@
                                                     <option> Select Floor</option>
                                                     @foreach ($floors as $floor)
                                                     <option value="{{$floor->id}}"
+                                                        data-building-id="{{ $floor->building_id }}"
                                                         data-floor-size="{{$floor->floor_size}}"
                                                         data-floor-unit="{{$floor->total_unit}}"
                                                         >{{$floor->floor_name}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
+
+
                                             <div class="col-12 col-md-4">
                                                 <label class="form-label">Floor Size</label>
                                                 <input type="text" class="form-control" placeholder="Floor Size" readonly id="floorSize">
@@ -273,6 +277,35 @@
 @push('script')
 <script>
     $(document).ready(function () {
+
+        // Cache the floor select element and all floor options
+        var $floorSelect = $('#floorId');
+        var $allFloorOptions = $floorSelect.find('option').clone(); // Clone all floor options
+
+        // Initially hide all floor options
+        $floorSelect.html('<option value="">Select Floor</option>');
+
+        // Listen for changes on the building dropdown
+        $('#building').on('change', function() {
+            var selectedBuildingId = $(this).val(); // Get the selected building ID
+
+            // Clear the floor dropdown on each building change
+            $floorSelect.html('<option value="">Select Floor</option>');
+
+            // If no building is selected, do nothing
+            if (!selectedBuildingId) return;
+
+            // Filter and append the matching floor options
+            $allFloorOptions.each(function() {
+                var $option = $(this);
+                var buildingId = $option.data('building-id');
+
+                // Append options where the building_id matches
+                if (buildingId == selectedBuildingId) {
+                    $floorSelect.append($option);
+                }
+            });
+        });
 
         $('#draftButton').on('click', function() {
             $('#formAction').val('draft'); // Set action as draft
