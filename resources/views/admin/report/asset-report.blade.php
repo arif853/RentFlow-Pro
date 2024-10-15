@@ -34,7 +34,6 @@
                         <div class="col-11">
                             <label for="location_id">Location</label>
                             <select class="form-select" name="location_id" id="location_id">
-                                <!-- asset will be dynamically populated here -->
                                 <option value="">Select a location</option>
                                 @foreach ($locations as $location)
                                 <option value="{{$location->id}}">{{$location->name}}</option>
@@ -44,24 +43,27 @@
                         <div class="col-11 ps-3">
                             <label for="building_id">Complex</label>
                             <select class="form-select" name="building_id" id="building_id">
-                                <!-- asset will be dynamically populated here -->
                                 <option value="">Select a complex</option>
                                 @foreach ($buildings as $building)
-                                <option value="{{$building->id}}">{{$building->building_name}}</option>
+                                <option value="{{$building->id}}" data-location-id="{{$building->location_id}}">
+                                    {{$building->building_name}}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-11 ps-3">
                             <label for="floor_id">Floor</label>
                             <select class="form-select" name="floor_id" id="floor_id">
-                                <!-- asset will be dynamically populated here -->
                                 <option value="">Select a floor</option>
                                 @foreach ($floors as $floor)
-                                <option value="{{$floor->id}}">{{$floor->floor_name}}</option>
+                                <option value="{{$floor->id}}" data-building-id="{{$floor->building_id}}">
+                                    {{$floor->floor_name}}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
+
                 </div>
                 <button type="button" class="btn btn-primary mt-3" id="btn_download_asset_pdf" style="display: none">Download PDF</button>
                 <div id="assetList" class="mt-3">
@@ -92,6 +94,63 @@
 @push('script')
 <script>
     $(document).ready(function () {
+
+        var $buildingSelect = $('#building_id');
+        var $floorSelect = $('#floor_id');
+        var $allBuildingOptions = $buildingSelect.find('option').clone(); // Clone all building options
+        var $allFloorOptions = $floorSelect.find('option').clone(); // Clone all floor options
+
+        // Initially hide buildings and floors
+        $buildingSelect.html('<option value="">Select a complex</option>');
+        $floorSelect.html('<option value="">Select a floor</option>');
+
+        // When a location is selected, filter the buildings
+        $('#location_id').on('change', function() {
+            var selectedLocationId = $(this).val(); // Get selected location ID
+
+            // Clear the building and floor dropdowns
+            $buildingSelect.html('<option value="">Select a complex</option>');
+            $floorSelect.html('<option value="">Select a floor</option>');
+
+            // If no location is selected, keep buildings and floors empty
+            if (!selectedLocationId) return;
+
+            // Filter the buildings based on the selected location
+            $allBuildingOptions.each(function() {
+                var $option = $(this);
+                var locationId = $option.data('location-id');
+
+                // Only append buildings that belong to the selected location
+                if (locationId == selectedLocationId) {
+                    $buildingSelect.append($option);
+                }
+            });
+        });
+
+        // When a building is selected, filter the floors
+        $('#building_id').on('change', function() {
+            var selectedBuildingId = $(this).val(); // Get selected building ID
+
+            // Clear the floor dropdown
+            $floorSelect.html('<option value="">Select a floor</option>');
+
+            // If no building is selected, keep floors empty
+            if (!selectedBuildingId) return;
+
+            // Filter the floors based on the selected building
+            $allFloorOptions.each(function() {
+                var $option = $(this);
+                var buildingId = $option.data('building-id');
+
+                // Only append floors that belong to the selected building
+                if (buildingId == selectedBuildingId) {
+                    $floorSelect.append($option);
+                }
+            });
+        });
+
+
+
     // Declare variables to store selected IDs
     var locationId, buildingId, floorId;
 
