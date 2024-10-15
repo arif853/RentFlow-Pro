@@ -41,4 +41,8 @@ class Building extends Model
     {
         return $this->hasMany(Checkout::class);
     }
+    public function floor()
+    {
+        return $this->hasMany(Floor::class);
+    }
 }
