@@ -778,28 +778,49 @@
 <script>
     $(document).ready(function () {
 
-        // Cache the floor select element and its options
         var $floorSelect = $('#floorId');
-            var $allFloorOptions = $floorSelect.find('option').clone(); // Clone all floor options
+        var $allFloorOptions = $floorSelect.find('option').clone(); // Clone all floor options
 
-            // Listen for changes on the building dropdown
-            $('#building-select').change(function() {
-                var selectedBuildingId = $(this).val(); // Get the selected building ID
+        function filterFloors(buildingId, selectedFloorId = null) {
+            // Clear the current floor options
+            $floorSelect.html('<option value="">Select Floor</option>');
 
-                // Clear the current floor options
-                $floorSelect.html('<option value="">Select Floor</option>');
+            // Filter and append the relevant floors
+            $allFloorOptions.each(function() {
+                var $option = $(this);
+                var floorBuildingId = $option.data('building-id');
 
-                // Filter the floors based on the selected building ID
-                $allFloorOptions.each(function() {
-                    var $option = $(this);
-                    var buildingId = $option.data('building-id');
-
-                    // Only append the options where building_id matches
-                    if (buildingId == selectedBuildingId) {
-                        $floorSelect.append($option);
-                    }
-                });
+                // Only append floors that belong to the selected building
+                if (floorBuildingId == buildingId) {
+                    $floorSelect.append($option);
+                }
             });
+
+            // If a floor is pre-selected (edit mode), set it as selected
+            if (selectedFloorId) {
+                $floorSelect.val(selectedFloorId);
+            }
+        }
+
+        // Get the pre-selected building and floor IDs for the edit case
+        var selectedBuildingId = $('#building-select').val();
+        var selectedFloorId = $floorSelect.val();
+
+        // On page load, filter the floors based on the selected building (for edit mode)
+        if (selectedBuildingId) {
+            filterFloors(selectedBuildingId, selectedFloorId);
+        }
+
+        // When the building selection changes, update the floor options
+        $('#building-select').on('change', function() {
+            var buildingId = $(this).val();
+            filterFloors(buildingId); // Update floors when building changes
+        });
+
+
+        
+
+
 
         function amountCardShow(value, previewId) {
             // Show or hide the amount card based on the selected value

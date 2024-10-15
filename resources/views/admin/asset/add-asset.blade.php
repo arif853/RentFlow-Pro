@@ -485,28 +485,35 @@
     <script>
         $(document).ready(function(){
 
-            // Cache the floor select element and its options
-            var $floorSelect = $('#floorId');
-            var $allFloorOptions = $floorSelect.find('option').clone(); // Clone all floor options
 
-            // Listen for changes on the building dropdown
-            $('#building-select').change(function() {
-                var selectedBuildingId = $(this).val(); // Get the selected building ID
+        // Cache the floor select element and all floor options
+        var $floorSelect = $('#floorId');
+        var $allFloorOptions = $floorSelect.find('option').clone(); // Clone all floor options
 
-                // Clear the current floor options
-                $floorSelect.html('<option value="">Select Floor</option>');
+        // Initially hide all floor options
+        $floorSelect.html('<option value="">Select Floor</option>');
 
-                // Filter the floors based on the selected building ID
-                $allFloorOptions.each(function() {
-                    var $option = $(this);
-                    var buildingId = $option.data('building-id');
+        // Listen for changes on the building dropdown
+        $('#building-select').on('change', function() {
+            var selectedBuildingId = $(this).val(); // Get the selected building ID
 
-                    // Only append the options where building_id matches
-                    if (buildingId == selectedBuildingId) {
-                        $floorSelect.append($option);
-                    }
-                });
+            // Clear the floor dropdown on each building change
+            $floorSelect.html('<option value="">Select Floor</option>');
+
+            // If no building is selected, do nothing
+            if (!selectedBuildingId) return;
+
+            // Filter and append the matching floor options
+            $allFloorOptions.each(function() {
+                var $option = $(this);
+                var buildingId = $option.data('building-id');
+
+                // Append options where the building_id matches
+                if (buildingId == selectedBuildingId) {
+                    $floorSelect.append($option);
+                }
             });
+        });
 
             $('#unitName').on('keyup', function() {
                 // Get the building name value
