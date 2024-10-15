@@ -184,8 +184,7 @@
 
             var employeeId = this.options[this.selectedIndex].getAttribute('data-employee_id');
             // console.log('employeeId',employeeId);
-
-
+            
             // Get Employee Name
             $('#employeeId').val('');
             $('#employee_name').val('');

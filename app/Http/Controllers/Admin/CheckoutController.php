@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Customer;
 use App\Models\CustomerExtra;
+use PhpParser\Node\Stmt\Return_;
 
 class CheckoutController extends Controller
 {
@@ -45,16 +46,25 @@ class CheckoutController extends Controller
             'customer_id'=> 'required|numeric',
             'employee_id' => 'nullable|numeric',
             'month' => 'nullable|string',
-            'availability_date' => 'required|date',
+            'availability_date' => 'nullable|date',
             'notes' => 'nullable|string',
         ]);
 
-        // dd($validatedData);
+        // dd($request->all());
 
-        Checkout::create($validatedData);
+        try{
+
+            Checkout::create($validatedData);
+            return redirect()->route('checkout.index')->with('success', 'Created Successfully');
+        }
+        catch(\Exception $e){
+
+            // dd($e->getMessage());
+            return redirect()->back()->with('danger','Checkout requset not generated. '.$e->getMessage());
+
+        }
 
 
-        return redirect()->route('checkout.index')->with('success', 'Created Successfully');
     }
 
     /**

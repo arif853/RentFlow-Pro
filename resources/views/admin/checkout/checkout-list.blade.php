@@ -35,6 +35,7 @@
                             <th>Sl</th>
                             <th>Building</th>
                             <th>Asset</th>
+                            <th>Customer</th>
                             <th>Checkout Month</th>
                             <th>Available Date</th>
                             <th>Notes</th>
@@ -47,7 +48,11 @@
                         <tr>
                             <td>{{ $key +1}}</td>
                             <td>{{$checkout->asset->building->building_name}}</td>
-                            <td>{{$checkout->asset->unit_name}}</td>
+                            <td>
+                                <a href="{{route('customer.show',$collection->customer_id)}}" data-bs-toggle="tooltip"
+                                data-bs-placement="bottom" data-bs-original-title="Details" aria-label="Details">{{$checkout->asset->unit_name}}</a>
+                            </td>
+                            <td>{{$checkout->customer->client_name}}</td>
                             <td>{{ \Carbon\Carbon::createFromFormat('m/Y', $checkout->month)->format('F, Y') }}</td>
                             <td>{{$checkout->availability_date}}</td>
                             <td>{{$checkout->notes}}</td>
