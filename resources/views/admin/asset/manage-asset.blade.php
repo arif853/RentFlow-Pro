@@ -50,7 +50,7 @@
                     </div>
                 </div>
 
-                <table class="table align-middle" id="table">
+                <table class="table align-middle" id="datatable">
                     <thead class="table-secondary">
                         <tr>
                             <th>Sl</th>
@@ -112,27 +112,20 @@
 @push('script')
 <script>
 $(document).ready(function() {
-    // Trigger filter when any field is changed
-    $('#asset, #employee, #building').on('keyup change', function() {
-        // Get filter values
-        const assetSearch = $('#asset').val().toLowerCase();
-        const employeeName = $('#employee').val();
-        const buildingName = $('#building').val();
-
-        // Filter table rows
-        $('#assetTableBody tr').filter(function() {
-            const assetId = $(this).find('td:eq(1)').text().toLowerCase(); // Asset ID
-            const employee = $(this).find('td:eq(2)').text(); // Employee Name
-            const building = $(this).find('td:eq(3)').text(); // Building
-
-            const matchAsset = assetId.includes(assetSearch);
-            const matchEmployee = employeeName ? $(this).find('td:eq(2)').text().includes(employeeName) : true;
-            const matchBuilding = buildingName ? $(this).find('td:eq(3)').text().includes(buildingName) : true;
-
-            // Show or hide the row based on the matches
-            $(this).toggle(matchAsset && matchEmployee && matchBuilding);
+// Custom Search: Asset ID or Name
+$('#asset').on('keyup', function () {
+            $('#datatable').DataTable().columns(1).search(this.value).draw();
         });
-    });
+
+        // Custom Search: Employee Name
+        $('#employee').on('change', function () {
+            $('#datatable').DataTable().columns(2).search(this.value).draw();
+        });
+
+        // Custom Search: Building Name
+        $('#building').on('change', function () {
+            $('#datatable').DataTable().columns(3).search(this.value).draw();
+        });
 
     // Delete confirmation
     document.querySelectorAll('.delete-btn').forEach(button => {
@@ -155,6 +148,6 @@ $(document).ready(function() {
         });
     });
 });
-
 </script>
 @endpush
+
