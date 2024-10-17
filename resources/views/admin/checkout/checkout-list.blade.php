@@ -49,7 +49,7 @@
                             <td>{{ $key +1}}</td>
                             <td>{{$checkout->asset->building->building_name}}</td>
                             <td>
-                                <a href="{{route('customer.show',$collection->customer_id)}}" data-bs-toggle="tooltip"
+                                <a href="{{route('customer.show',$checkout->customer_id)}}" data-bs-toggle="tooltip"
                                 data-bs-placement="bottom" data-bs-original-title="Details" aria-label="Details">{{$checkout->asset->unit_name}}</a>
                             </td>
                             <td>{{$checkout->customer->client_name}}</td>

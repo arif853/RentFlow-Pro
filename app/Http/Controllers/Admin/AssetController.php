@@ -27,7 +27,9 @@ class AssetController extends Controller
     public function index()
     {
         $assets = Asset::all();
-        return view('admin.asset.manage-asset',compact('assets'));
+        $employees = Employee::all();
+        $buildings = Building::all();
+        return view('admin.asset.manage-asset',compact('assets','employees','buildings'));
     }
 
     public function create()

@@ -401,7 +401,19 @@
                             $('#client_name').text(customer.client_name);
                             $('#client_phone').text(customer.client_phone);
                             $('#customer_id').val(customer.id);
-                            if (customer.customer_info.advance_amount_type === 'Yes' && customer.checkout && customer.checkout.is_confirm === 1 && parseFloat(customer.customer_info.advance_amount)>=parseFloat(data.monthly_rent)) {
+                            console.log(customer.customer_info.adjustable_amout_type === 'Yes');
+
+                            if (customer.customer_info.adjustable_amout_type === 'Yes' && customer.checkout == null && parseFloat(customer.customer_info.advance_amount)>=parseFloat(customer.customer_info.adjustable_amount)) {
+                                $('.advanced_amount_type').show();
+                                $('#advance_amount').val(customer.customer_info.advance_amount);
+                                $('#left_advance_amount').val(customer.customer_info.advance_amount-customer.customer_info.adjustable_amount);
+                                $('#adjust_amount').val(customer.customer_info.adjustable_amount);
+                            } else if (customer.customer_info.adjustable_amout_type === 'Yes' && customer.checkout == null && parseFloat(customer.customer_info.advance_amount)>0) {
+                                $('#advance_amount').val(customer.customer_info.advance_amount);
+                                $('#left_advance_amount').val(0);
+                                $('#adjust_amount').val(customer.customer_info.advance_amount);
+                                $('.advanced_amount_type').show();
+                            } else if (customer.customer_info.advance_amount_type === 'Yes' && customer.checkout && customer.checkout.is_confirm === 1 && parseFloat(customer.customer_info.advance_amount)>=parseFloat(data.monthly_rent)) {
                                 $('#advance_amount').val(customer.customer_info.advance_amount);
                                 $('#left_advance_amount').val(customer.customer_info.advance_amount-data.monthly_rent);
                                 $('#adjust_amount').val(data.monthly_rent);
