@@ -25,10 +25,30 @@
                 <form class="ms-auto position-relative">
                     <div class="position-absolute top-50 translate-middle-y search-icon px-3"><i
                             class="bi bi-search"></i></div>
-                    <input class="form-control ps-5" type="text" placeholder="search">
                 </form>
             </div>
             <div class="table-responsive mt-3">
+                <div class="col-12 mb-3">
+                    <div class="col-3 d-flex">
+                        <div class="col-11">
+                            <label for="asset">Asset</label>
+                            <input class="form-control" name="asset" id="asset" placeholder="Search Asset id or Name">
+                        </div>
+                        <div class="col-11 ps-3">
+                            <label for="building">Building</label>
+                            <select class="form-select" name="building" id="building">
+                                <option value="">Select a Building</option>
+                                @foreach ($buildings as $building)
+                                <option value="{{ $building->building_name }}">{{ $building->building_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-11 ps-3">
+                            <label for="employee">Client Name or Phone Number</label>
+                            <input class="form-control" name="client_name_phone" id="client_name_phone" placeholder="Search Client Name or Phone Number">
+                        </div>
+                    </div>
+                </div>
                 <table class="table align-middle" id="datatable">
                     <thead class="table-secondary">
                         <tr>
@@ -108,6 +128,21 @@
 <script>
 
     $(document).ready(function(){
+        // Custom Search: Asset ID or Name
+        $('#asset').on('keyup', function () {
+            $('#datatable').DataTable().columns(1).search(this.value).draw();
+        });
+
+
+        // Custom Search: Building Name
+        $('#building').on('change', function () {
+            $('#datatable').DataTable().columns(2).search(this.value).draw();
+        });
+
+        // Custom Search: Client Name or phone
+        $('#client_name_phone').on('keyup', function () {
+            $('#datatable').DataTable().columns(4).search(this.value).draw();
+        });
 
         $(document).on('click', '#confirmApproveBtn', function (e) {
             e.preventDefault(); // Prevent the default anchor behavior

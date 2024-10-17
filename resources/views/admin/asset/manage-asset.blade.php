@@ -112,20 +112,20 @@
 @push('script')
 <script>
 $(document).ready(function() {
-// Custom Search: Asset ID or Name
-$('#asset').on('keyup', function () {
-            $('#datatable').DataTable().columns(1).search(this.value).draw();
-        });
+    // Custom Search: Asset ID or Name
+    $('#asset').on('keyup', function () {
+        $('#datatable').DataTable().columns(1).search(this.value).draw();
+    });
 
-        // Custom Search: Employee Name
-        $('#employee').on('change', function () {
-            $('#datatable').DataTable().columns(2).search(this.value).draw();
-        });
+    // Custom Search: Employee Name
+    $('#employee').on('change', function () {
+        $('#datatable').DataTable().columns(2).search(this.value).draw();
+    });
 
-        // Custom Search: Building Name
-        $('#building').on('change', function () {
-            $('#datatable').DataTable().columns(3).search(this.value).draw();
-        });
+    // Custom Search: Building Name
+    $('#building').on('change', function () {
+        $('#datatable').DataTable().columns(3).search(this.value).draw();
+    });
 
     // Delete confirmation
     document.querySelectorAll('.delete-btn').forEach(button => {

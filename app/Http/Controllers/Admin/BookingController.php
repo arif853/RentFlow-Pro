@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use misterspelik\LaravelPdf\Facades\Pdf as PDF;
 use App\Models\Asset;
 use App\Models\Floor;
 use App\Models\Booking;
 use App\Models\Building;
 use App\Models\Customer;
+use App\Models\Employee;
 use App\Models\Location;
 use Illuminate\Http\Request;
 use App\Models\CustomerExtra;
@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use misterspelik\LaravelPdf\Facades\Pdf as PDF;
 
 
 class BookingController extends Controller
@@ -30,14 +31,16 @@ class BookingController extends Controller
      */
     public function index()
     {
+        $buildings = Building::all();
         $bookings = Booking::all();
-        return view('admin.booking.booking-list',compact('bookings'));
+        return view('admin.booking.booking-list',compact('bookings','buildings'));
     }
 
     public function approvalList()
     {
+        $buildings = Building::all();
         $bookings = Booking::where('status', 'pending')->get();
-        return view('admin.booking.pending-list',compact('bookings'));
+        return view('admin.booking.pending-list',compact('bookings','buildings'));
     }
 
     public function bookingApproved(Booking $booking)
