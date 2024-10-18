@@ -340,7 +340,7 @@
                         <div class="tab-content py-3">
                             @foreach ($collections as $collection)
                                 <div class="tab-pane fade" id="{{ $collection->month }}_{{$year}}" role="tabpanel">
-                                    <div class="card shadow-sm border-0 overflow-hidden">
+                                    <div class="card shadow-sm border-0 overflow-hidden w-25">
                                         <div class="card-body">
                                             <ul class="list-group list-group-flush">
                                                 <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
