@@ -31,6 +31,9 @@
     <link href="{{asset('admin')}}/assets/css/light-theme.css" rel="stylesheet" />
     <link href="{{asset('admin')}}/assets/css/semi-dark.css" rel="stylesheet" />
     <link href="{{asset('admin')}}/assets/css/header-colors.css" rel="stylesheet" />
+    <!-- Bootstrap Datepicker CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+
 
     <title>@yield('title')</title>
 </head>
@@ -618,15 +621,15 @@
     <script src="{{asset('admin')}}/assets/plugins/simplebar/js/simplebar.min.js"></script>
     <script src="{{asset('admin')}}/assets/plugins/metismenu/js/metisMenu.min.js"></script>
     <script src="{{asset('admin')}}/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
-    <script src="{{asset('admin')}}/assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js"></script>
-    <script src="{{asset('admin')}}/assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js"></script>
+    {{-- <script src="{{asset('admin')}}/assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js"></script>
+    <script src="{{asset('admin')}}/assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js"></script> --}}
     <script src="{{asset('admin')}}/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
     <script src="{{asset('admin')}}/assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
-    <script src="{{asset('admin')}}/assets/js/pace.min.js"></script>
+    {{-- <script src="{{asset('admin')}}/assets/js/pace.min.js"></script>
     <script src="{{asset('admin')}}/assets/js/pace.min.js"></script>
     <script src="{{asset('admin')}}/assets/plugins/chartjs/js/Chart.min.js"></script>
     <script src="{{asset('admin')}}/assets/plugins/chartjs/js/Chart.extension.js"></script>
-    <script src="{{asset('admin')}}/assets/plugins/apexcharts-bundle/js/apexcharts.min.js"></script>
+    <script src="{{asset('admin')}}/assets/plugins/apexcharts-bundle/js/apexcharts.min.js"></script> --}}
     {{-- Notify Js --}}
     <script src="{{asset('admin/assets/notifications/bootstrap-notify.js')}}"></script>
     <script src="{{asset('admin/assets/notifications/notifications.js')}}"></script>

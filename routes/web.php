@@ -20,6 +20,8 @@ use App\Http\Controllers\Admin\CollectionController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\DesignationController;
+use App\Http\Controllers\Admin\ReportController;
+use App\Models\Checkout;
 
 Route::get('/cache_clear',function(){
     Artisan::call('route:clear');
@@ -109,8 +111,22 @@ Route::middleware(['auth','is_user_active'])->group(function () {
     Route::post('/dashboard/collection/due/payment',[CollectionController::class, 'duePayment'])->name('collection.due.payment');
 
     Route::resource('/dashboard/checkout',CheckoutController::class);
+    Route::get('/dashboard/checkout/approval/list/', [CheckoutController::class,'checkoutApprovalList'])->name('checkout.approval.list');
+    Route::get('/dashboard/checkout/approval/list/approve/{checkout_id}', [CheckoutController::class,'checkoutApproval'])->name('checkout.approval.list.approve');
     Route::get('/dashboard/collection/checkout/get-asset/{complex_id}', [CheckoutController::class,'getAssets']);
     Route::get('/dashboard/collection/checkout/get-asset-details/{asset_id}', [CheckoutController::class,'getAssetdetails']);
+    Route::get('/dashboard/collection/get/collection/details/{customer_id}', [CheckoutController::class,'CustomerDue'])->name('collection.customer.due');
+
+    Route::get('/dashboard/report/booking',[ReportController::class,'bookingReport'])->name('report.booking');
+    Route::get('/dashboard/report/booking/details/{buildingId}',[ReportController::class,'bookingDetails']);
+    Route::get('/dashboard/report/checkout',[ReportController::class,'checkoutReport'])->name('report.checkout');
+    Route::get('/dashboard/report/checkout/details/{buildingId}',[ReportController::class,'checkoutDetails']);
+    Route::get('/dashboard/report/asset',[ReportController::class,'assetReport'])->name('report.asset');
+    Route::get('/dashboard/report/asset/details/',[ReportController::class,'assetDetails']);
+    Route::get('/dashboard/report/booking/pdf/{buildingId}', [ReportController::class, 'generatebookingPdf'])->name('report.booking.pdf');
+    Route::get('/dashboard/report/asset/pdf/{locationId}/{buildingId}/{floorId}', [ReportController::class, 'generateAssetPdf'])->name('report.asset.pdf');
+    Route::get('/dashboard/report/checkout/pdf/{buildingId}', [ReportController::class, 'generateCheckoutPdf'])->name('report.checkout.pdf');
+
 
     Route::resource('/dashboard/customer',CustomerController::class);
 

@@ -52,7 +52,7 @@
                             <td>{{ $collection->asset->unit_name }}</td>
                             <td>{{ $collection->employee ? $collection->employee->name : 'N/A' }}</td>
                             <td>{{ $collection->collection_date }}</td>
-                            <td>{{ $collection->month }}</td>
+                            <td>{{ \Carbon\Carbon::createFromFormat('m/Y', $collection->month)->format('F, Y') }}</td>
                             <td>{{ $collection->payable_amount }}</td>
                             <td>{{ $collection->collection_amount }}</td>
                             <td>{{ $collection->due_amount }}</td>
@@ -63,6 +63,7 @@
                                         data-bs-original-title="Pay Due" aria-label="Pay Due"
                                         data-id="{{ $collection->id }}"
                                         data-customer="{{ $collection->customer->client_name }}"
+                                        data-customerid="{{ $collection->customer_id }}"
                                         data-amount="{{ $collection->due_amount }}"
                                         data-payable="{{ $collection->payable_amount }}"
                                         data-collection="{{ $collection->collection_amount }}"
@@ -96,6 +97,7 @@
                     <div class="mb-3">
                         <label for="customerName" class="form-label">Customer Name</label>
                         <input type="text" class="form-control" id="customerName" readonly>
+                        <input type="number" class="form-control" id="customerId" name="customer_id" style="display: none;">
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -107,7 +109,7 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="collectionAmount" class="form-label">Collected Amount</label>
-                                <input type="text" class="form-control" id="collectionAmount" readonly>
+                                <input type="text" class="form-control" id="collectionAmount" name="collection_amount" readonly>
                             </div>
                         </div>
                     </div>
@@ -115,7 +117,7 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="collectionMonth" class="form-label">Collection Month</label>
-                        <input type="text" class="form-control" id="collectionMonth" readonly>
+                        <input type="text" class="form-control" id="collectionMonth" name="collection_month" readonly>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -160,6 +162,10 @@
         payButtons.each(function () {
             $(this).on('click', function () {
                 const customerName = $(this).data('customer');
+
+                const customerId = $(this).data('customerid');
+                // console.log(customerId);
+
                 const dueAmount = $(this).data('amount');
                 const collectionId = $(this).data('id');
                 const totalPayableRent = $(this).data('payable');
@@ -167,6 +173,7 @@
                 const collectionMonth = $(this).data('month');
 
                 $('#customerName').val(customerName);
+                $('#customerId').val(customerId);
                 $('#modalDueAmount').val(dueAmount);
                 $('#collectionId').val(collectionId);
 
@@ -213,11 +220,8 @@
                     } else {
                         $.Notification.autoHideNotify('danger', 'top right', 'Danger', res);
                     }
-                },
-                error: function (xhr) {
-                    $.Notification.autoHideNotify('danger', 'top right', 'Error', xhr.responseJSON.errors.join('<br>'));
-                    $("#userEditModal").modal('hide');
                 }
+
             });
         });
     });

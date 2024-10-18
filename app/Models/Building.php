@@ -37,4 +37,12 @@ class Building extends Model
     {
         return $this->hasMany(Collection::class);
     }
+    public function checkout()
+    {
+        return $this->hasMany(Checkout::class);
+    }
+    public function floor()
+    {
+        return $this->hasMany(Floor::class);
+    }
 }

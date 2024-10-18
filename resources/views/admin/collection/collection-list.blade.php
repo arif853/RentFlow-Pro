@@ -28,6 +28,36 @@
                     </div>
                 </form>
             </div>
+            <div class="col-12 mb-3">
+                <div class="col-3 d-flex align-items-center">
+                    <div class="col-11">
+                        <label for="nameOrPhone">Name Or Phone</label>
+                        <input class="form-control" name="nameOrPhone" id="nameOrPhone" placeholder="Search Name Or Phone">
+                    </div>
+                    <div class="col-11 ps-3">
+                        <label for="building">Building</label>
+                        <select class="form-select" name="building" id="building">
+                            <option value="">Select a Building</option>
+                            @foreach ($buildings as $building)
+                            <option value="{{ $building->building_name }}">{{ $building->building_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-9 ps-3">
+                        <label for="employee">Asset</label>
+                        <input class="form-control" name="client_name_phone" id="client_name_phone" placeholder="Search Asset">
+                    </div>
+                    <div class="col-9 ps-3">
+                        <label for="selected_month">Select Month</label>
+                            <div class="input-group">
+                                <input class="form-control" type="text" id="selected_month" name="month" placeholder="Select month and year" readonly>
+                                    <span class="input-group-text">
+                                        <i class="bi bi-calendar"></i>
+                                    </span>
+                            </div>
+                    </div>
+                </div>
+            </div>
             <div class="table-responsive mt-3">
                 @if($collections->isEmpty())
                 <tr>No data available.</tr>
@@ -55,11 +85,12 @@
                             <td>{{$key+1}}</td>
                             <td><a href="{{route('customer.show',$collection->customer_id)}}" data-bs-toggle="tooltip"
                                 data-bs-placement="bottom" data-bs-original-title="Details" aria-label="Details">{{$collection->customer->client_name}}</a></td>
+                            <td>{{$collection->asset->unit_name}}</td>
                             <td>{{$collection->building->building_name}}</td>
                             <td>{{$collection->asset->unit_name}}</td>
                             <td>{{$collection->employee ? $collection->employee->name : 'N/A'}}</td>
                             <td>{{$collection->collection_date}}</td>
-                            <td>{{$collection->month}}</td>
+                            <td>{{ \Carbon\Carbon::createFromFormat('m/Y', $collection->month)->format('F, Y') }}</td>
                             <td>{{$collection->payable_amount}}</td>
                             <td>{{$collection->collection_amount}}</td>
                             <td>{{$collection->due_amount}}</td>
@@ -68,16 +99,16 @@
                                     <a href="{{route('collection.show', $collection->id)}}" data-bs-toggle="tooltip"
                                         data-bs-placement="bottom" data-bs-original-title="Views" aria-label="Views"><i
                                             class="bi bi-eye-fill text-primary"></i></a>
-                                    <a href="{{route('collection.edit',$collection->id)}}" data-bs-toggle="tooltip"
+                                    {{-- <a href="{{route('collection.edit',$collection->id)}}" data-bs-toggle="tooltip"
                                         data-bs-placement="bottom" data-bs-original-title="Edit" aria-label="Edit"><i
-                                            class="bi bi-pencil-fill text-warning"></i></a>
+                                            class="bi bi-pencil-fill text-warning"></i></a> --}}
                                     <form action="{{ route('collection.destroy', $collection->id) }}" method="POST"
                                         onsubmit="return confirm('Are you sure you want to delete this collection?');"
                                         class="d-inline delete-form">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-danger border-0 bg-transparent p-0 delete-btn"
-                                            data-bs-toggle="tooltip" title="Delete">
+                                            data-bs-toggle="tooltip" title="Delete" id="confirmApproveBtn">
                                             <i class="bi bi-trash-fill"></i>
                                         </button>
                                     </form>
@@ -99,7 +130,64 @@
 <!--end page main-->
 @endsection
 @push('script')
+ <!-- Bootstrap Datepicker JS -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 <script>
+    $(document).ready(function() {
+        $('#selected_month').datepicker({
+                format: "mm/yyyy", // Month and year only
+                minViewMode: 1,    // Only view month and year
+                autoclose: true,   // Close picker automatically after selection
+                todayHighlight: true
+        }).on('changeDate', function(e) {
+            // Format the selected date to "Month, YYYY"
+            const selectedDate = e.date;
+            const options = { year: 'numeric', month: 'long' }; // Month and year in long format
+            const formattedDate = new Intl.DateTimeFormat('en-US', options).format(selectedDate);
+            // Display the formatted date in the input field
+            $('#selected_month').val(formattedDate);
+        });
 
+        // Custom Search: Asset ID or Name
+        $('#nameOrPhone').on('keyup', function () {
+            $('#datatable').DataTable().columns(1).search(this.value).draw();
+        });
+
+
+            // Custom Search: Building Name
+        $('#building').on('change', function () {
+            $('#datatable').DataTable().columns(2).search(this.value).draw();
+        });
+
+        // Custom Search: Client Name or phone
+        $('#client_name_phone').on('keyup', function () {
+            $('#datatable').DataTable().columns(3).search(this.value).draw();
+        });
+
+        // Custom Search: Client Name or phone
+        $('#selected_month').on('change', function () {
+            $('#datatable').DataTable().columns(6).search(this.value).draw();
+        });
+    });
+$(document).on('click', '#confirmApproveBtn', function (e) {
+            e.preventDefault(); // Prevent the default anchor behavior
+            var url = $(this).attr('href'); // Get the href link
+
+            Swal.fire({
+                title: "Do you want to Delete this ?",
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: "Approve",
+                denyButtonText: `Deny!`
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If confirmed, redirect to the route
+                    window.location.href = url;
+                    Swal.fire("Thank You", " Deleted", "success");
+                } else if (result.isDenied) {
+                    Swal.fire("Sorry!", " Delete is not confirm", "info");
+                }
+            });
+        });
 </script>
 @endpush

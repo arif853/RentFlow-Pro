@@ -27,7 +27,7 @@
                         <div class="d-sm-flex align-items-center">
                             <h5 class="mb-2 mb-sm-0">New Checkout Request</h5>
                             <div class="ms-auto">
-                                <button type="submit" class="btn btn-primary">Send Request</button>
+                                <button type="button" class="btn btn-primary" id="confirmApproveBtn">Send Request</button>
                             </div>
                         </div>
                     </div>
@@ -64,24 +64,20 @@
                                                 <span class="text-danger">{{$message}}</span>
                                                 @enderror
                                             </div>
-                                            <div class="col-12">
-                                                <label>Select Month</label>
-                                                <select class="form-select col-12" id="selected_month" name="month">
-                                                    <option class="" value="">Select a month</option>
-                                                    <option class="" value="January">January</option>
-                                                    <option class="" value="February">February</option>
-                                                    <option class="" value="March">March</option>
-                                                    <option class="" value="April">April</option>
-                                                    <option class="" value="May">May</option>
-                                                    <option class="" value="June">June</option>
-                                                    <option class="" value="July">July</option>
-                                                    <option class="" value="August">August</option>
-                                                    <option class="" value="September">September</option>
-                                                    <option class="" value="October">October</option>
-                                                    <option class="" value="November">November</option>
-                                                    <option class="" value="December">December</option>
-                                                </select>
+                                            <div class="col-12" id="month_wise_dates">
+                                                <label for="selected_month" class="form-label">Select Month</label>
+                                                <div class="input-group">
+                                                    <input class="form-control" type="text" id="selected_month" name="month" placeholder="Select month and year" readonly>
+                                                    <span class="input-group-text">
+                                                        <i class="bi bi-calendar"></i>
+                                                    </span>
+                                                </div>
+                                                <!-- Display validation error if any -->
+                                                @error('month')
+                                                <span class="text-danger">{{$message}}</span>
+                                                @enderror
                                             </div>
+
                                             <div>
                                                 <input type="date" id="availability_date" name="availability_date"
                                                     value="" style="display: none;">
@@ -89,7 +85,7 @@
 
                                             <div>
                                                 <label class="form-label">Notes</label>
-                                                <input type="hidden" name="employee_id" value=""
+                                                <input type="hidden" name="employee_id"
                                                     id="employeeId">
                                                 <textarea class="form-control" id="notes" name="notes" placeholder="Notes"></textarea>
                                             </div>
@@ -168,9 +164,16 @@
 @endsection
 
 @push('script')
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 <script>
     $(document).ready(function () {
+
+        $('#selected_month').datepicker({
+        format: "mm/yyyy", // Month and year format
+        minViewMode: 1,    // Only allow selecting month and year
+        autoclose: true,   // Automatically close the picker after selection
+        todayHighlight: true // Highlight today's date
+    });
 
         $('#building_id').on('change', function () {
             var buildingId = $(this).val();
@@ -181,8 +184,7 @@
 
             var employeeId = this.options[this.selectedIndex].getAttribute('data-employee_id');
             // console.log('employeeId',employeeId);
-
-
+            
             // Get Employee Name
             $('#employeeId').val('');
             $('#employee_name').val('');
@@ -206,6 +208,8 @@
                     url: '/dashboard/collection/checkout/get-asset/' + buildingId,
                     type: 'GET',
                     success: function (data) {
+                    console.log('assets', data);
+
                         $('#unit_id').html(
                             '<option value="">Select Asset Name</option>');
                         $.each(data, function (key, value) {
@@ -237,12 +241,11 @@
                     success: function (data) {
                         // console.log( data);
                         data.bookings.forEach(item => {
-                            console.log('Collections-due: ',item.customer.collection.due_amount);
-                            $('#due').text(item.customer.collection.due_amount);
+                            // console.log('Collections-due: ',item.customer.collection.due_amount);
 
                             const customer = item.customer; // Accessing the customer object
 
-                            console.log('Rent-advance: ',customer.customer_info.advance_amount_type);
+                            // console.log('Rent-advance: ',customer.customer_info.advance_amount_type);
 
                             if(customer.customer_info.advance_amount_type ==='Yes'){
                                 $('#advanced').text(customer.customer_info.advance_amount);
@@ -267,8 +270,7 @@
                             $('#gender').text(customer.gender);
                             $('#nid_number').text(customer.nid_number);
                             $('#customer_id').val(customer.id);
-
-
+                            fetchTotalDueAmount(customer.id);
                         });
                     }
                 });
@@ -276,41 +278,80 @@
         });
     });
 
+            // Function to fetch the total due amount
+        function fetchTotalDueAmount(customerId) {
+
+            $.ajax({
+                url: '/dashboard/collection/get/collection/details/' + customerId, // Update with your actual endpoint
+                type: 'GET',
+                success: function (collectionData) {
+
+                    let totalDueAmount = 0;
+                    collectionData.forEach(collectionItem => {
+
+                        totalDueAmount += parseFloat(collectionItem.due_amount) || 0;
+                    });
+                    $('#due').text(totalDueAmount);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching collection data:', error);
+                }
+            });
+        }
 
 
-    document.getElementById('selected_month').addEventListener('change', function () {
-        const monthMap = {
-            "January": 0,
-            "February": 1,
-            "March": 2,
-            "April": 3,
-            "May": 4,
-            "June": 5,
-            "July": 6,
-            "August": 7,
-            "September": 8,
-            "October": 9,
-            "November": 10,
-            "December": 11
-        };
 
-        const selectedMonth = this.value;
-        const currentYear = new Date().getFullYear();
+        $('#selected_month').on('change', function () {
+            const selectedDate = $(this).val(); // Get the selected month in "mm/yyyy" format
+            const [month, year] = selectedDate.split('/'); // Split into month and year
 
-        const selectedMonthIndex = monthMap[selectedMonth];
-        let nextMonthDate = new Date(currentYear, selectedMonthIndex + 1, 1); // Next month's 1st day
+            let selectedYear = parseInt(year);
+            let selectedMonth = parseInt(month); // Convert to number
 
-        const year = nextMonthDate.getFullYear(); // e.g., 2024
-        const day = String(nextMonthDate.getDate()).padStart(2, '0'); // Day of the month
-        const month = String(nextMonthDate.getMonth() + 1).padStart(2, '0'); // Month (0-based)
+            // If the selected month is December (12), roll over to January of the next year
+            if (selectedMonth === 12) {
+                selectedMonth = 1;  // January
+                selectedYear += 1;  // Next year
+            } else {
+                // For other months, just increment the month
+                selectedMonth += 1;
+            }
 
-        // Format the date as 'YYYY-DD-MM'
-        const formattedDate = `${year}-${day}-${month}`;
+            // The first day of the next month
+            const nextMonth = String(selectedMonth).padStart(2, '0');  // Ensure it's always 2 digits
+            const day = '01';  // Always the first day of the next month
 
-        // console.log(formattedDate);
-        document.getElementById('availability_date').value = formattedDate;
+            // Format the date as 'YYYY-MM-DD' (for availability_date)
+            const formattedDate = `${selectedYear}-${nextMonth}-${day}`;
 
-    });
+            // Set the availability_date input value to the formatted date
+            $('#availability_date').val(formattedDate);
+
+            // For debugging
+            console.log("Selected Date:", selectedDate);
+            console.log("Availability Date:", formattedDate);
+        });
+
+        $(document).on('click', '#confirmApproveBtn', function (e) {
+            e.preventDefault(); // Prevent the default anchor behavior
+            const form = this.closest('form'); // Get the href link
+
+            Swal.fire({
+                title: "Do you want to request a checkout ?",
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: "Approve",
+                denyButtonText: `Deny!`
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If confirmed, redirect to the route
+                    form.submit();
+                    Swal.fire("Thank You", " Checkout Request Cofirmed", "success");
+                } else if (result.isDenied) {
+                    Swal.fire("Sorry!", " Checkout Request is not confirmed", "info");
+                }
+            });
+        });
 
 </script>
 @endpush

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Floor;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Building;
 
 class FloorController extends Controller
 {
@@ -17,8 +18,9 @@ class FloorController extends Controller
      */
     public function index()
     {
+        $buildings = Building::all();
         $floors = Floor::paginate(10);
-        return view('admin.floor.floor', compact('floors'));
+        return view('admin.floor.floor', compact('floors','buildings'));
     }
 
     /**
@@ -34,7 +36,9 @@ class FloorController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
+            'building_id' => 'required|integer',
             'floor_name' => 'required|string|max:255',
             'floor_size' => 'nullable|string|max:255',
             'total_unit' => 'nullable|integer',
@@ -59,8 +63,9 @@ class FloorController extends Controller
      */
     public function edit(Floor $floor)
     {
+        $buildings = Building::all();
         $floors = Floor::paginate(10);
-        return view('admin.floor.floor', compact('floor','floors'));
+        return view('admin.floor.floor', compact('floor','floors','buildings'));
     }
     /**
      * Update the specified resource in storage.
@@ -68,6 +73,7 @@ class FloorController extends Controller
     public function update(Request $request, Floor $floor)
     {
         $request->validate([
+            'building_id' => 'required|integer',
             'floor_name' => 'required|string|max:255',
             'floor_size' => 'nullable|string|max:255',
             'total_unit' => 'nullable|integer',

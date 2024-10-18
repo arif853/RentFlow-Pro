@@ -30,6 +30,7 @@ class Collection extends Model
         'internet_amount' ,
         'dish_amount',
         'guard_amount',
+        'adjust_amount',
     ];
 
     public function building()
@@ -47,5 +48,9 @@ class Collection extends Model
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+    public function due_log()
+    {
+        return $this->belongsTo(DueLog::class);
     }
 }

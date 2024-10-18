@@ -9,7 +9,10 @@ use App\Models\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Booking;
 use App\Models\Customer;
+use App\Models\CustomerExtra;
+use PhpParser\Node\Stmt\Return_;
 
 class CheckoutController extends Controller
 {
@@ -41,18 +44,27 @@ class CheckoutController extends Controller
             'building_id' => 'required|numeric',
             'asset_id' => 'required|numeric',
             'customer_id'=> 'required|numeric',
-            'employee_id' => 'required|numeric',
+            'employee_id' => 'nullable|numeric',
             'month' => 'nullable|string',
-            'availability_date' => 'required|date',
+            'availability_date' => 'nullable|date',
             'notes' => 'nullable|string',
         ]);
 
-        // dd($validatedData);
+        // dd($request->all());
 
-        Checkout::create($validatedData);
+        try{
+
+            Checkout::create($validatedData);
+            return redirect()->route('checkout.index')->with('success', 'Created Successfully');
+        }
+        catch(\Exception $e){
+
+            // dd($e->getMessage());
+            return redirect()->back()->with('danger','Checkout requset not generated. '.$e->getMessage());
+
+        }
 
 
-        return redirect()->back()->with('success','Created Successfully');
     }
 
     /**
@@ -90,14 +102,49 @@ class CheckoutController extends Controller
     {
         // $assets = Asset::where('building_id',$buildingId)->get();
         $assets = Asset::where('building_id', $buildingId)
-        ->whereHas('bookings', function ($query) { $query->where('status', 'confirmed');})->get();
+        ->whereHas('bookings', function ($query) { $query->where('status', 'confirmed');})
+        ->whereDoesntHave('checkouts')
+        ->get();
+
         return response()->json($assets);
     }
 
     public function getAssetdetails($assetId)
     {
         $assets = Asset::with(['bookings','bookings.customer','bookings.customer.customerInfo','bookings.customer.collection'])->find($assetId);
-        // dd($assets);
         return response()->json($assets);
+    }
+
+    public function checkoutApprovalList()
+    {
+        // Get all checkouts where is_confirm is not 1
+        $checkouts = Checkout::where('is_confirm', '!=', 1)->get();
+
+        // Return the view with filtered checkouts
+        return view('admin.checkout.checkout-approval-list', compact('checkouts'));
+    }
+    public function checkoutApproval($checkoutId)
+    {
+        $checkout = Checkout::findOrFail($checkoutId);
+        $checkout->is_confirm =  1;
+        $checkout->save();
+        // dd($checkout->customer_id);
+        $customerId = $checkout->customer_id;
+        $booking = Booking::where('customer_id',$customerId)->first();
+        $asset = Asset::find($booking->asset_id);
+        $asset->available_from = $checkout->availability_date;
+        $asset->is_book = 0;
+        $asset->save();
+
+        // dd($asset);
+
+        return redirect()->route('checkout.approval.list')->with('success', 'Checkout Successfully');
+    }
+
+    public function CustomerDue($customerId)
+    {
+        $collections = Collection::where('customer_id',$customerId)->get();
+
+        return response()->json($collections);
     }
 }
