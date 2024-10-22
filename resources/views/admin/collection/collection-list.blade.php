@@ -101,9 +101,7 @@
                                     {{-- <a href="{{route('collection.edit',$collection->id)}}" data-bs-toggle="tooltip"
                                         data-bs-placement="bottom" data-bs-original-title="Edit" aria-label="Edit"><i
                                             class="bi bi-pencil-fill text-warning"></i></a> --}}
-                                    <form action="{{ route('collection.destroy', $collection->id) }}" method="POST"
-                                        onsubmit="return confirm('Are you sure you want to delete this collection?');"
-                                        class="d-inline delete-form">
+                                    <form action="{{ route('collection.destroy', $collection->id) }}" method="POST" class="d-inline delete-form">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-danger border-0 bg-transparent p-0 delete-btn"
@@ -168,25 +166,25 @@
             $('#datatable').DataTable().columns(6).search(this.value).draw();
         });
     });
-$(document).on('click', '#confirmApproveBtn', function (e) {
-            e.preventDefault(); // Prevent the default anchor behavior
-            var url = $(this).attr('href'); // Get the href link
+    $(document).on('submit', '.delete-form', function(e) {
+            e.preventDefault(); // Prevent default form submission
 
+            var form = this; // Store form instance
             Swal.fire({
-                title: "Do you want to Delete this ?",
-                showDenyButton: true,
-                showCancelButton: false,
-                confirmButtonText: "Approve",
-                denyButtonText: `Deny!`
+                title: "Do you want to delete this?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // If confirmed, redirect to the route
-                    window.location.href = url;
-                    Swal.fire("Thank You", " Deleted", "success");
-                } else if (result.isDenied) {
-                    Swal.fire("Sorry!", " Delete is not confirm", "info");
+                    form.submit(); // If confirmed, submit the form
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire("Cancelled", "Your data is safe :)", "error");
                 }
             });
         });
+
 </script>
 @endpush
