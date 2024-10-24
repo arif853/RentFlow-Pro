@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\RoomtypeController;
 use App\Http\Controllers\Admin\CollectionController;
+use App\Http\Controllers\Admin\CollectionReportController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\DesignationController;
@@ -116,6 +117,15 @@ Route::middleware(['auth','is_user_active'])->group(function () {
     Route::get('/dashboard/collection/checkout/get-asset/{complex_id}', [CheckoutController::class,'getAssets']);
     Route::get('/dashboard/collection/checkout/get-asset-details/{asset_id}', [CheckoutController::class,'getAssetdetails']);
     Route::get('/dashboard/collection/get/collection/details/{customer_id}', [CheckoutController::class,'CustomerDue'])->name('collection.customer.due');
+
+    Route::get('/dashboard/collectionreport/monthwise/totalcollection',[CollectionReportController::class,'monthWiseReport'])->name('colelctionreport.monthwise');
+    Route::get('/dashboard/collectionreport/monthwise/details/',[CollectionReportController::class,'monthWiseDetails']);
+    Route::get('/dashboard/collectionreport/monthwise/pdf/{collectionMonth}', [CollectionReportController::class, 'generateMonthWiseCollectionPdf'])->name('collectionreport.monthwise.pdf');
+
+    Route::get('/dashboard/collectionreport/yearhwise/totalcollection',[CollectionReportController::class,'yearhWiseReport'])->name('colelctionreport.yearwise');
+    Route::get('/dashboard/collectionreport/yearhwise/details/',[CollectionReportController::class,'yearhWiseDetails']);
+    Route::get('/dashboard/collectionreport/yearhwise/pdf/{collectionMonth}', [CollectionReportController::class, 'generateCollectionPdf'])->name('collectionreport.yearwise.pdf');
+
 
     Route::get('/dashboard/report/booking',[ReportController::class,'bookingReport'])->name('report.booking');
     Route::get('/dashboard/report/booking/details/{buildingId}',[ReportController::class,'bookingDetails']);
