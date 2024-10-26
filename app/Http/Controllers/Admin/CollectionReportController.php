@@ -11,6 +11,7 @@ use App\Models\Building;
 use App\Models\Location;
 use App\Models\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 
 class CollectionReportController extends Controller
@@ -79,7 +80,9 @@ class CollectionReportController extends Controller
     public function monthWiseDetails(Request $request)
     {
         $selectedMonth = $request->input('selected_month');
+
         $selectedBuilding = $request->input('selected_building');
+
         $query = Collection::query();
 
         if ($selectedMonth) {
@@ -95,42 +98,48 @@ class CollectionReportController extends Controller
 
     }
 
-    public function generateMonthWiseCollectionPdf($collectionMonth)
-    {
-        // Replace the '-' back with '/' if necessary
-        $collectionMonth = str_replace('-', '/', $collectionMonth);
+    public function generateMonthWiseCollectionPdf($collectionMonth, $selectedBuilding)
+{
+    // Replace the '-' back with '/' if necessary
+    $collectionMonth = str_replace('-', '/', $collectionMonth);
 
-        // Start the query on the Collection model
-        $query = Collection::query();
+    // Start the query on the Collection model
+    $query = Collection::query();
 
-        // Apply filters based on the month
-        if ($collectionMonth) {
-            $query->where('month', $collectionMonth);
-        }
-
-        // Fetch collections with related models
-        $collections = $query->with(['customer', 'asset', 'building'])->get();
-
-        // Load the view for PDF
-        $pdf = new Dompdf();
-        $options = new Options();
-        $options->set('defaultFont', 'Arial');
-        $pdf->setOptions($options);
-
-        // Format the month using Carbon
-        $formattedMonth = Carbon::createFromFormat('m/Y', $collectionMonth)->format('F Y');
-
-        // Pass data to the view, including the formatted month
-        $html = view('admin.collectionreport.monthwise-total-pdf-report', compact('collections', 'formattedMonth'))->render();
-
-        // Load the HTML into Dompdf and generate the PDF
-        $pdf->loadHtml($html);
-        $pdf->setPaper('A4');
-        $pdf->render();
-
-        // Output the generated PDF
-        return $pdf->stream('monthwise_total_report.pdf');
+    // Apply filters based on the month
+    if ($collectionMonth && $collectionMonth!='0/0') {
+        $query->where('month', $collectionMonth);
     }
+
+    // Apply filter based on the building
+    if ($selectedBuilding && $selectedBuilding != 0) {
+        $query->where('building_id', $selectedBuilding);
+    }
+
+    // Fetch collections with related models
+    $collections = $query->with(['customer', 'asset', 'building'])->get();
+
+    // Load the view for PDF
+    $pdf = new Dompdf();
+    $options = new Options();
+    $options->set('defaultFont', 'Arial');
+    $pdf->setOptions($options);
+
+    // Format the month using Carbon
+    $formattedMonth = Carbon::createFromFormat('m/Y', $collectionMonth)->format('F Y');
+
+    // Pass data to the view, including the formatted month
+    $html = view('admin.collectionreport.monthwise-total-pdf-report', compact('collections', 'formattedMonth'))->render();
+
+    // Load the HTML into Dompdf and generate the PDF
+    $pdf->loadHtml($html);
+    $pdf->setPaper('A4');
+    $pdf->render();
+
+    // Output the generated PDF
+    return $pdf->stream('monthwise_total_report.pdf');
+}
+
 
 
 
