@@ -13,7 +13,6 @@ use App\Models\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Models\Customer;
 
 class CollectionReportController extends Controller
 {
@@ -241,56 +240,6 @@ class CollectionReportController extends Controller
 
         // Output the generated PDF
         return $pdf->stream('yearwise_total_report.pdf');
-    }
-    
-    public function clientwiseReport()
-    {
-        $customers = Customer::all();
-        return view('admin.collectionreport.clientwise-total-report',compact('customers'));
-    }
-
-    public function clientwiseDetails(Request $request)
-    {
-        $selectedClient = $request->input('customer_id');
-
-        $collections = Collection::where('customer_id',$selectedClient)
-        ->get();
-
-        // Load asset relationships for the retrieved collections
-        $collections->load('asset');
-
-        return response()->json($collections);
-
-    }
-
-    public function generateClientWiseCollectionPdf($selectedCustomer)
-    {
-
-
-        $collections = Collection::where('customer_id',$selectedCustomer)
-        ->get();
-
-        $customerName = Customer::where('id', $selectedCustomer)->value('client_name');
-
-        // Load asset relationships for the retrieved collections
-        $collections->load(['customer', 'asset', 'building']);
-
-        // Load the view for PDF
-        $pdf = new Dompdf();
-        $options = new Options();
-        $options->set('defaultFont', 'Arial');
-        $pdf->setOptions($options);
-
-        // Pass data to the view, including the formatted month
-        $html = view('admin.collectionreport.clientwise-total-pdf-report', compact('collections','customerName'))->render();
-
-        // Load the HTML into Dompdf and generate the PDF
-        $pdf->loadHtml($html);
-        $pdf->setPaper('A4');
-        $pdf->render();
-
-        // Output the generated PDF
-        return $pdf->stream('clientwise_total_report.pdf');
     }
 
 
