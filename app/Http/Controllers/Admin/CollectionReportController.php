@@ -8,6 +8,7 @@ use Dompdf\Options;
 use App\Models\Asset;
 use App\Models\Floor;
 use App\Models\Building;
+use App\Models\Customer;
 use App\Models\Location;
 use App\Models\Collection;
 use Illuminate\Http\Request;
