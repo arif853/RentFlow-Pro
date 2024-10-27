@@ -154,42 +154,72 @@ class CollectionReportController extends Controller
 
     public function yearwiseReport()
     {
-        return view('admin.collectionreport.yearwise-total-report');
+        $buildings = Building::all();
+        $assets = Asset::all();
+        return view('admin.collectionreport.yearwise-total-report',compact('buildings','assets'));
     }
 
     public function yearwiseDetails(Request $request)
     {
-        $selectedYear = $request->input('selected_year');
-        $query = Collection::query();
-
+        $selectedBuilding = $request->input('selected_building') != 0 ? $request->input('selected_building') : null;
+        $selectedAsset = $request->input('selected_asset') != 0 ? $request->input('selected_asset') : null;
+        $selectedYear = $request->input('selected_year') != 0 ? $request->input('selected_year') : null;
 
         $collections = Collection::select('asset_id')
-        ->selectRaw('SUM(payable_amount) as total_payable_amount')
-        ->selectRaw('SUM(collection_amount) as total_collection_amount')
-        ->selectRaw('SUM(due_amount) as total_due_amount')
-        ->where('month', 'like', '%/' . $selectedYear)
-        ->groupBy('asset_id')
-        ->get();
+            ->selectRaw('SUM(payable_amount) as total_payable_amount')
+            ->selectRaw('SUM(collection_amount) as total_collection_amount')
+            ->selectRaw('SUM(due_amount) as total_due_amount');
+
+        // Apply filters conditionally
+        if ($selectedYear) {
+            $collections->where('month', 'like', '%/' . $selectedYear);
+        }
+
+        if ($selectedBuilding) {
+            $collections->where('building_id', $selectedBuilding);
+        }
+
+        if ($selectedAsset) {
+            $collections->where('asset_id', $selectedAsset);
+        }
+
+        $collections = $collections->groupBy('asset_id')->get();
 
         // Load asset relationships for the retrieved collections
         $collections->load('asset');
 
         return response()->json($collections);
-
     }
 
-    public function generateYearWiseCollectionPdf($collectionYear)
-    {
-        $query = Collection::query();
 
+
+    public function generateYearWiseCollectionPdf($collectionYear,$collectionBuilding,$collectionAsset)
+    {
+
+
+        $selectedBuilding = $collectionBuilding != 0 ? $collectionBuilding : null;
+        $selectedAsset = $collectionAsset != 0 ? $collectionAsset : null;
+        $selectedYear = $collectionYear != 0 ? $collectionYear : null;
 
         $collections = Collection::select('asset_id')
-        ->selectRaw('SUM(payable_amount) as total_payable_amount')
-        ->selectRaw('SUM(collection_amount) as total_collection_amount')
-        ->selectRaw('SUM(due_amount) as total_due_amount')
-        ->where('month', 'like', '%/' . $collectionYear)
-        ->groupBy('asset_id')
-        ->get();
+            ->selectRaw('SUM(payable_amount) as total_payable_amount')
+            ->selectRaw('SUM(collection_amount) as total_collection_amount')
+            ->selectRaw('SUM(due_amount) as total_due_amount');
+
+        // Apply filters conditionally
+        if ($selectedYear) {
+            $collections->where('month', 'like', '%/' . $selectedYear);
+        }
+
+        if ($selectedBuilding) {
+            $collections->where('building_id', $selectedBuilding);
+        }
+
+        if ($selectedAsset) {
+            $collections->where('asset_id', $selectedAsset);
+        }
+
+        $collections = $collections->groupBy('asset_id')->get();
 
         // Load asset relationships for the retrieved collections
         $collections->load(['customer', 'asset', 'building']);

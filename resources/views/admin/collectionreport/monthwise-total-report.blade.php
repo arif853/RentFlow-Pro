@@ -103,7 +103,7 @@
 <script>
     $(document).ready(function () {
 
-        const $assetSelect = $('#asset');
+    const $assetSelect = $('#asset');
     const $allAssetOptions = $assetSelect.find('option').not(':first'); // Exclude the first option
 
     // Initially hide all asset options

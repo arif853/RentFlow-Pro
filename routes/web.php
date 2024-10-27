@@ -125,7 +125,7 @@ Route::middleware(['auth','is_user_active'])->group(function () {
 
     Route::get('/dashboard/collectionreport/yearwise/totalcollection',[CollectionReportController::class,'yearWiseReport'])->name('colelctionreport.yearwise');
     Route::get('/dashboard/collectionreport/yearwise/details/',[CollectionReportController::class,'yearWiseDetails']);
-    Route::get('/dashboard/collectionreport/yearwise/pdf/{collectionYear}', [CollectionReportController::class, 'generateYearWiseCollectionPdf'])->name('collectionreport.yearwise.pdf');
+    Route::get('/dashboard/collectionreport/yearwise/pdf/{collectionYear}/{collectionBuilding}/{collectionAsset}', [CollectionReportController::class, 'generateYearWiseCollectionPdf'])->name('collectionreport.yearwise.pdf');
 
     Route::get('/dashboard/collectionreport/clientwise/totalcollection',[CollectionReportController::class,'clientWiseReport'])->name('colelctionreport.clientwise');
     Route::get('/dashboard/collectionreport/clientwise/details/',[CollectionReportController::class,'clientWiseDetails']);
