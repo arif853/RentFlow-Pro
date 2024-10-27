@@ -30,20 +30,24 @@
             </div>
             <div class="table-responsive mt-3">
                 <div class="col-12">
-                    <div class="col-4 d-flex">
-                        <div class="col-9 ps-3">
-                            <label for="selected_year">Select Year</label>
+                    <div class="col-12 d-flex align-items-end">
+                        <div class="col-auto">
+                            <label for="selected_year">Select year</label>
                             <div class="input-group">
-                                <input class="form-control" type="text" id="selected_year" name="month" placeholder="Select month and year" readonly>
-                                    <span class="input-group-text">
-                                        <i class="bi bi-calendar"></i>
-                                    </span>
+                                <input class="form-control" type="text" id="selected_year" name="year" placeholder="Selectyear" readonly>
+                                <span class="input-group-text">
+                                    <i class="bi bi-calendar"></i>
+                                </span>
                             </div>
+                        </div>
+                        <div class="col-auto ms-3">
+                            <button type="button" class="btn btn-primary" id="btn_download_pdf" style="display: none;">Download PDF</button>
                         </div>
                     </div>
 
+
+
                 </div>
-                <button type="button" class="btn btn-primary mt-3" id="btn_download_pdf" style="display: none">Download PDF</button>
                 <div id="assetList" class="mt-3">
                     <table class="table table-striped">
                         <thead>
@@ -73,8 +77,8 @@
 <script>
     $(document).ready(function () {
         $('#selected_year').datepicker({
-                format: "yyyy", // Month and year only
-                minViewMode: 2,    // Only view month and year
+                format: "yyyy", // year and year only
+                minViewMode: 2,    // Only view year and year
                 autoclose: true,   // Close picker automatically after selection
                 todayHighlight: true
         });
@@ -92,7 +96,7 @@
     function details() {
         // Make the AJAX request
         $.ajax({
-            url: '/dashboard/collectionreport/yearhwise/details/',
+            url: '/dashboard/collectionreport/yearwise/details/',
             type: 'GET',
             data: {
                 selected_year: selectedYear,
@@ -132,9 +136,8 @@
 
     $('#btn_download_pdf').on('click', function () {
 
-        var collectionYear = $('#selected_year').val() || 0; // Default to 0 if not selected
-        let formattedcollectionYear = collectionYear.replace('/', '-');
-        window.location.href = `/dashboard/collectionreport/monthwise/pdf/${formattedcollectionYear}`;
+        var collectionYear = $('#selected_year').val() || 0;
+        window.location.href = `/dashboard/collectionreport/yearwise/pdf/${collectionYear}`;
 
     });
 

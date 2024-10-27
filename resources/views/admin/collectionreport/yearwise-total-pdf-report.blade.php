@@ -36,14 +36,11 @@
         <p class="phead">Address: Hello this is address</p>
         <p class="phead">Phone: 0175454655</p>
     </div>
-    <h3>Month Wise Report ({{$formattedMonth}})</h3>
+    <h3>Year Report ({{$collectionYear}})</h3>
     <table>
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Date</th>
-                <th scope="col">Client</th>
-                <th scope="col">Building</th>
                 <th scope="col">Asset</th>
                 <th scope="col">Collectable Amount</th>
                 <th scope="col">Collection Amount</th>
@@ -54,13 +51,10 @@
             @foreach ($collections as $index => $collection)
             <tr>
                 <th scope="row">{{$index + 1}}</th>
-                <td>{{$collection->collection_date}}</td>
-                <td>{{$collection->customer->client_name}}</td>
-                <td>{{$collection->building->building_name}}</td>
                 <td>{{$collection->asset->unit_name}}</td>
-                <td>{{$collection->payable_amount}}</td>
-                <td>{{$collection->collection_amount}}</td>
-                <td>{{$collection->due_amount}}</td>
+                <td>{{$collection->total_payable_amount}}</td>
+                <td>{{$collection->total_collection_amount}}</td>
+                <td>{{$collection->total_due_amount}}</td>
             </tr>
             @endforeach
         </tbody>
