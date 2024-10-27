@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\DesignationController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\WebSettingController;
 use App\Models\Checkout;
 
 Route::get('/cache_clear',function(){
@@ -142,6 +143,8 @@ Route::middleware(['auth','is_user_active'])->group(function () {
     Route::get('/dashboard/report/asset/pdf/{locationId}/{buildingId}/{floorId}', [ReportController::class, 'generateAssetPdf'])->name('report.asset.pdf');
     Route::get('/dashboard/report/checkout/pdf/{buildingId}', [ReportController::class, 'generateCheckoutPdf'])->name('report.checkout.pdf');
 
+
+    Route::resource('/dashboard/websetting',WebSettingController::class);
 
     Route::resource('/dashboard/customer',CustomerController::class);
 
