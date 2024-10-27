@@ -75,22 +75,26 @@ class CollectionReportController extends Controller
     public function monthWiseReport()
     {
         $buildings = Building::all();
-        return view('admin.collectionreport.monthwise-total-report',compact('buildings'));
+        $assets = Asset::all();
+        return view('admin.collectionreport.monthwise-total-report',compact('buildings','assets'));
     }
 
     public function monthWiseDetails(Request $request)
     {
-        $selectedMonth = $request->input('selected_month');
-
         $selectedBuilding = $request->input('selected_building');
+        $selectedAsset = $request->input('selected_asset');
+        $selectedMonth = $request->input('selected_month');
 
         $query = Collection::query();
 
-        if ($selectedMonth) {
-            $query->where('month', $selectedMonth);
-        }
         if ($selectedBuilding) {
             $query->where('building_id',$selectedBuilding);
+        }
+        if ($selectedAsset) {
+            $query->where('asset_id',$selectedAsset);
+        }
+        if ($selectedMonth) {
+            $query->where('month', $selectedMonth);
         }
 
         $collections = $query->with(['customer','asset','building'])->get();
@@ -99,7 +103,7 @@ class CollectionReportController extends Controller
 
     }
 
-    public function generateMonthWiseCollectionPdf($collectionMonth, $selectedBuilding)
+    public function generateMonthWiseCollectionPdf($collectionMonth, $selectedBuilding, $selectedAsset)
 {
     // Replace the '-' back with '/' if necessary
     $collectionMonth = str_replace('-', '/', $collectionMonth);
@@ -115,6 +119,9 @@ class CollectionReportController extends Controller
     // Apply filter based on the building
     if ($selectedBuilding && $selectedBuilding != 0) {
         $query->where('building_id', $selectedBuilding);
+    }
+    if ($selectedAsset && $selectedAsset != 0) {
+        $query->where('asset_id', $selectedAsset);
     }
 
     // Fetch collections with related models
@@ -148,42 +155,72 @@ class CollectionReportController extends Controller
 
     public function yearwiseReport()
     {
-        return view('admin.collectionreport.yearwise-total-report');
+        $buildings = Building::all();
+        $assets = Asset::all();
+        return view('admin.collectionreport.yearwise-total-report',compact('buildings','assets'));
     }
 
     public function yearwiseDetails(Request $request)
     {
-        $selectedYear = $request->input('selected_year');
-        $query = Collection::query();
-
+        $selectedBuilding = $request->input('selected_building') != 0 ? $request->input('selected_building') : null;
+        $selectedAsset = $request->input('selected_asset') != 0 ? $request->input('selected_asset') : null;
+        $selectedYear = $request->input('selected_year') != 0 ? $request->input('selected_year') : null;
 
         $collections = Collection::select('asset_id')
-        ->selectRaw('SUM(payable_amount) as total_payable_amount')
-        ->selectRaw('SUM(collection_amount) as total_collection_amount')
-        ->selectRaw('SUM(due_amount) as total_due_amount')
-        ->where('month', 'like', '%/' . $selectedYear)
-        ->groupBy('asset_id')
-        ->get();
+            ->selectRaw('SUM(payable_amount) as total_payable_amount')
+            ->selectRaw('SUM(collection_amount) as total_collection_amount')
+            ->selectRaw('SUM(due_amount) as total_due_amount');
+
+        // Apply filters conditionally
+        if ($selectedYear) {
+            $collections->where('month', 'like', '%/' . $selectedYear);
+        }
+
+        if ($selectedBuilding) {
+            $collections->where('building_id', $selectedBuilding);
+        }
+
+        if ($selectedAsset) {
+            $collections->where('asset_id', $selectedAsset);
+        }
+
+        $collections = $collections->groupBy('asset_id')->get();
 
         // Load asset relationships for the retrieved collections
         $collections->load('asset');
 
         return response()->json($collections);
-
     }
 
-    public function generateYearWiseCollectionPdf($collectionYear)
-    {
-        $query = Collection::query();
 
+
+    public function generateYearWiseCollectionPdf($collectionYear,$collectionBuilding,$collectionAsset)
+    {
+
+
+        $selectedBuilding = $collectionBuilding != 0 ? $collectionBuilding : null;
+        $selectedAsset = $collectionAsset != 0 ? $collectionAsset : null;
+        $selectedYear = $collectionYear != 0 ? $collectionYear : null;
 
         $collections = Collection::select('asset_id')
-        ->selectRaw('SUM(payable_amount) as total_payable_amount')
-        ->selectRaw('SUM(collection_amount) as total_collection_amount')
-        ->selectRaw('SUM(due_amount) as total_due_amount')
-        ->where('month', 'like', '%/' . $collectionYear)
-        ->groupBy('asset_id')
-        ->get();
+            ->selectRaw('SUM(payable_amount) as total_payable_amount')
+            ->selectRaw('SUM(collection_amount) as total_collection_amount')
+            ->selectRaw('SUM(due_amount) as total_due_amount');
+
+        // Apply filters conditionally
+        if ($selectedYear) {
+            $collections->where('month', 'like', '%/' . $selectedYear);
+        }
+
+        if ($selectedBuilding) {
+            $collections->where('building_id', $selectedBuilding);
+        }
+
+        if ($selectedAsset) {
+            $collections->where('asset_id', $selectedAsset);
+        }
+
+        $collections = $collections->groupBy('asset_id')->get();
 
         // Load asset relationships for the retrieved collections
         $collections->load(['customer', 'asset', 'building']);
@@ -206,6 +243,60 @@ class CollectionReportController extends Controller
         return $pdf->stream('yearwise_total_report.pdf');
     }
     
+    public function clientwiseReport()
+    {
+        $customers = Customer::all();
+        return view('admin.collectionreport.clientwise-total-report',compact('customers'));
+    }
+
+    public function clientwiseDetails(Request $request)
+    {
+        $selectedClient = $request->input('customer_id');
+
+        $collections = Collection::where('customer_id',$selectedClient)
+        ->get();
+
+        // Load asset relationships for the retrieved collections
+        $collections->load('asset');
+
+        return response()->json($collections);
+
+    }
+
+    public function generateClientWiseCollectionPdf($selectedCustomer)
+    {
+
+
+        $collections = Collection::where('customer_id',$selectedCustomer)
+        ->get();
+
+        $customerName = Customer::where('id', $selectedCustomer)->value('client_name');
+
+        // Load asset relationships for the retrieved collections
+        $collections->load(['customer', 'asset', 'building']);
+
+        // Load the view for PDF
+        $pdf = new Dompdf();
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+        $pdf->setOptions($options);
+
+        // Pass data to the view, including the formatted month
+        $html = view('admin.collectionreport.clientwise-total-pdf-report', compact('collections','customerName'))->render();
+
+        // Load the HTML into Dompdf and generate the PDF
+        $pdf->loadHtml($html);
+        $pdf->setPaper('A4');
+        $pdf->render();
+
+        // Output the generated PDF
+        return $pdf->stream('clientwise_total_report.pdf');
+    }
+
+
+
+
+
     public function clientwiseReport()
     {
         $customers = Customer::all();

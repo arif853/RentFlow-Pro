@@ -31,17 +31,7 @@
             <div class="table-responsive mt-3">
                 <div class="col-12">
                     <div class="col-12 d-flex align-items-end">
-                        <div class="col-auto">
-                            <label for="selected_month">Select Month</label>
-                            <div class="input-group">
-                                <input class="form-control" type="text" id="selected_month" name="month" placeholder="Select month and year" readonly>
-                                <span class="input-group-text">
-                                    <i class="bi bi-calendar"></i>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="col-auto ms-3">
+                        <div class="col-2 ms-3">
                             <label for="building">Building</label>
                             <select class="form-select" name="building" id="building">
                                 <option value="0">Select a Building</option>
@@ -50,9 +40,30 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="col-2 ms-3">
+                            <label for="asset">Asset</label>
+                            <select class="form-select" name="asset" id="asset">
+                                <option value="0">Select an Asset</option>
+                                @foreach ($assets as $asset)
+                                <option value="{{ $asset->id }}" data-building-id="{{ $asset->building_id }}">
+                                    {{ $asset->unit_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-auto ms-3">
+                            <label for="selected_month">Select Month</label>
+                            <div class="input-group">
+                                <input class="form-control" type="text" id="selected_month" name="month"
+                                    placeholder="Select month and year" readonly>
+                                <span class="input-group-text">
+                                    <i class="bi bi-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
 
                         <div class="col-auto ms-3">
-                            <button type="button" class="btn btn-primary" id="btn_download_pdf" style="display: none;">Download PDF</button>
+                            <button type="button" class="btn btn-primary" id="btn_download_pdf"
+                                style="display: none;">Download PDF</button>
                         </div>
                     </div>
 
@@ -87,26 +98,42 @@
 @endsection
 
 @push('script')
- <!-- Bootstrap Datepicker JS -->
- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
- <script>
+<!-- Bootstrap Datepicker JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script>
     $(document).ready(function () {
+
+    const $assetSelect = $('#asset');
+    const $allAssetOptions = $assetSelect.find('option').not(':first'); // Exclude the first option
+
+    // Initially hide all asset options
+    $allAssetOptions.hide();
+
+    $('#building').on('change', function () {
+        const selectedBuildingId = $(this).val();
+
+        // Reset the asset dropdown to only show "Select an Asset" option
+        $assetSelect.val('0');
+        $allAssetOptions.hide();
+
+        // Show assets related to the selected building
+        if (selectedBuildingId) {
+            $allAssetOptions.each(function () {
+                const $option = $(this);
+                const buildingId = $option.data('building-id');
+
+                // Show only options that match the selected building
+                if (buildingId == selectedBuildingId) {
+                    $option.show();
+                }
+            });
+        }
+    });
+
+
         let selectedMonth = 0;
         let selectedBuilding = 0;
-
-        $('#selected_month').datepicker({
-                format: "mm/yyyy", // Month and year only
-                minViewMode: 1,    // Only view month and year
-                autoclose: true,   // Close picker automatically after selection
-                todayHighlight: true
-        });
-
-        // Handle month change
-        $('#selected_month').on('change', function () {
-            $('#btn_download_pdf').show();
-            selectedMonth = $(this).val() || 0; // Default to 0 if not selected
-            details(); // Call details function to filter assets
-        });
+        let selectedAsset = 0;
 
         // Handle building change
         $('#building').on('change', function () {
@@ -115,9 +142,33 @@
             details(); // Call details function to filter assets
         });
 
-        function details() {
-            console.log(selectedMonth);
+        // Handle building change
+        $('#asset').on('change', function () {
+            $('#btn_download_pdf').show();
+            selectedAsset = $(this).val() || 0; // Default to 0 if not selected
+            details(); // Call details function to filter assets
+            console.log(selectedAsset);
+        });
 
+
+        $('#selected_month').datepicker({
+            format: "mm/yyyy", // Month and year only
+            minViewMode: 1, // Only view month and year
+            autoclose: true, // Close picker automatically after selection
+            todayHighlight: true
+        });
+
+
+
+        // Handle month change
+        $('#selected_month').on('change', function () {
+            $('#btn_download_pdf').show();
+            selectedMonth = $(this).val() || 0; // Default to 0 if not selected
+            details(); // Call details function to filter assets
+        });
+
+
+        function details() {
 
             // Make the AJAX request
             $.ajax({
@@ -126,6 +177,7 @@
                 data: {
                     selected_month: selectedMonth,
                     selected_building: selectedBuilding,
+                    selected_asset: selectedAsset,
                 },
                 success: function (data) {
                     $('#assetTableBody').empty();
@@ -162,12 +214,15 @@
         $('#btn_download_pdf').on('click', function () {
             var collectionMonth = $('#selected_month').val() || '0/0'; // Default to 0 if not selected
             var selectedBuilding = $('#building').val() || 0; // Default to 0 if not selected
+            var selectedAsset = $('#asset').val() || 0; // Default to 0 if not selected
 
             let formattedCollectionMonth = collectionMonth.replace('/', '-');
-            window.location.href = `/dashboard/collectionreport/monthwise/pdf/${formattedCollectionMonth}/${selectedBuilding}`;
+            window.location.href =
+                `/dashboard/collectionreport/monthwise/pdf/${formattedCollectionMonth}/${selectedBuilding}/${selectedAsset}`;
         });
 
     });
+
 </script>
 
 @endpush

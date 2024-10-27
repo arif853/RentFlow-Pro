@@ -111,25 +111,22 @@
                         <li>
                             <a href="{{route('report.checkout')}}"><i class="bi bi-circle"></i>Checkout Report</a>
                         </li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="has-arrow" href="javascript:;">
-                        <div class="parent-icon"><i class="bi bi-card-checklist"></i></div>
-                        <div class="menu-title">Collection Reports</div>
-                    </a>
-                    <ul>
                         <li>
-                            <a href="{{route('colelctionreport.monthwise')}}"><i class="bi bi-circle"></i>Month Wise</a>
-                        </li>
-                        <li>
-                            <a href="{{route('colelctionreport.yearwise')}}"><i class="bi bi-circle"></i>Year Wise</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="bi bi-circle"></i>Client Wise</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="bi bi-circle"></i>Asset Wise</a>
+                            <a class="has-arrow" href="javascript:;">
+                                <div class="parent-icon"><i class="bi bi-card-checklist"></i></div>
+                                <div class="menu-title">Collection Reports</div>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="{{route('colelctionreport.monthwise')}}"><i class="bi bi-circle"></i>Month Wise</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('colelctionreport.yearwise')}}"><i class="bi bi-circle"></i>Year Wise</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('colelctionreport.clientwise')}}"><i class="bi bi-circle"></i>Client Wise</a>
+                                </li>
+                            </ul>
                         </li>
 
                     </ul>
