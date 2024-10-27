@@ -129,7 +129,7 @@ Route::middleware(['auth','is_user_active'])->group(function () {
 
     Route::get('/dashboard/collectionreport/clientwise/totalcollection',[CollectionReportController::class,'clientWiseReport'])->name('colelctionreport.clientwise');
     Route::get('/dashboard/collectionreport/clientwise/details/',[CollectionReportController::class,'clientWiseDetails']);
-    Route::get('/dashboard/collectionreport/clientwise/pdf/{collectionMonth}', [CollectionReportController::class, 'generateclientWiseCollectionPdf'])->name('collectionreport.clientwise.pdf');
+    Route::get('/dashboard/collectionreport/clientwise/pdf/{selectedCustomer}', [CollectionReportController::class, 'generateClientWiseCollectionPdf'])->name('collectionreport.clientwise.pdf');
 
 
     Route::get('/dashboard/report/booking',[ReportController::class,'bookingReport'])->name('report.booking');

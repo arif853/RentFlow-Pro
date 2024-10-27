@@ -13,6 +13,7 @@ use App\Models\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 
 class CollectionReportController extends Controller
 {
@@ -248,21 +249,15 @@ class CollectionReportController extends Controller
 
     public function clientwiseReport()
     {
-        return view('admin.collectionreport.clientwise-total-report');
+        $customers = Customer::all();
+        return view('admin.collectionreport.clientwise-total-report',compact('customers'));
     }
 
     public function clientwiseDetails(Request $request)
     {
-        $selectedClient = $request->input('selected_client');
-        $query = Collection::query();
+        $selectedClient = $request->input('customer_id');
 
-
-        $collections = Collection::select('asset_id')
-        ->selectRaw('SUM(payable_amount) as total_payable_amount')
-        ->selectRaw('SUM(collection_amount) as total_collection_amount')
-        ->selectRaw('SUM(due_amount) as total_due_amount')
-        ->where('month', 'like', '%/' . $selectedClient)
-        ->groupBy('asset_id')
+        $collections = Collection::where('customer_id',$selectedClient)
         ->get();
 
         // Load asset relationships for the retrieved collections
@@ -272,38 +267,34 @@ class CollectionReportController extends Controller
 
     }
 
-    // public function generateClientWiseCollectionPdf($collectionYear)
-    // {
-    //     $query = Collection::query();
+    public function generateClientWiseCollectionPdf($selectedCustomer)
+    {
 
 
-    //     $collections = Collection::select('asset_id')
-    //     ->selectRaw('SUM(payable_amount) as total_payable_amount')
-    //     ->selectRaw('SUM(collection_amount) as total_collection_amount')
-    //     ->selectRaw('SUM(due_amount) as total_due_amount')
-    //     ->where('month', 'like', '%/' . $collectionYear)
-    //     ->groupBy('asset_id')
-    //     ->get();
+        $collections = Collection::where('customer_id',$selectedCustomer)
+        ->get();
 
-    //     // Load asset relationships for the retrieved collections
-    //     $collections->load(['customer', 'asset', 'building']);
+        $customerName = Customer::where('id', $selectedCustomer)->value('client_name');
 
-    //     // Load the view for PDF
-    //     $pdf = new Dompdf();
-    //     $options = new Options();
-    //     $options->set('defaultFont', 'Arial');
-    //     $pdf->setOptions($options);
+        // Load asset relationships for the retrieved collections
+        $collections->load(['customer', 'asset', 'building']);
 
-    //     // Pass data to the view, including the formatted month
-    //     $html = view('admin.collectionreport.yearwise-total-pdf-report', compact('collections', 'collectionYear'))->render();
+        // Load the view for PDF
+        $pdf = new Dompdf();
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+        $pdf->setOptions($options);
 
-    //     // Load the HTML into Dompdf and generate the PDF
-    //     $pdf->loadHtml($html);
-    //     $pdf->setPaper('A4');
-    //     $pdf->render();
+        // Pass data to the view, including the formatted month
+        $html = view('admin.collectionreport.clientwise-total-pdf-report', compact('collections','customerName'))->render();
 
-    //     // Output the generated PDF
-    //     return $pdf->stream('yearwise_total_report.pdf');
-    // }
+        // Load the HTML into Dompdf and generate the PDF
+        $pdf->loadHtml($html);
+        $pdf->setPaper('A4');
+        $pdf->render();
+
+        // Output the generated PDF
+        return $pdf->stream('clientwise_total_report.pdf');
+    }
 
 }
