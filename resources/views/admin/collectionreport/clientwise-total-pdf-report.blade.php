@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Month Wise Total Collection Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            font-size: 11px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .head{
+            text-align: center;
+            line-height: 5px;
+        }
+        .phead{
+            font-size: 13px;
+            font-weight: 400;
+        }
+    </style>
+</head>
+<body>
+    <div class="head">
+        <h1>Rental</h1>
+        <p class="phead">Address: Hello this is address</p>
+        <p class="phead">Phone: 0175454655</p>
+    </div>
+    <h3>Year Report ({{$collectionYear}})</h3>
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Asset</th>
+                <th scope="col">Collectable Amount</th>
+                <th scope="col">Collection Amount</th>
+                <th scope="col">Due</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($collections as $index => $collection)
+            <tr>
+                <th scope="row">{{$index + 1}}</th>
+                <td>{{$collection->asset->unit_name}}</td>
+                <td>{{$collection->total_payable_amount}}</td>
+                <td>{{$collection->total_collection_amount}}</td>
+                <td>{{$collection->total_due_amount}}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</body>
+</html>

@@ -74,22 +74,26 @@ class CollectionReportController extends Controller
     public function monthWiseReport()
     {
         $buildings = Building::all();
-        return view('admin.collectionreport.monthwise-total-report',compact('buildings'));
+        $assets = Asset::all();
+        return view('admin.collectionreport.monthwise-total-report',compact('buildings','assets'));
     }
 
     public function monthWiseDetails(Request $request)
     {
-        $selectedMonth = $request->input('selected_month');
-
         $selectedBuilding = $request->input('selected_building');
+        $selectedAsset = $request->input('selected_asset');
+        $selectedMonth = $request->input('selected_month');
 
         $query = Collection::query();
 
-        if ($selectedMonth) {
-            $query->where('month', $selectedMonth);
-        }
         if ($selectedBuilding) {
             $query->where('building_id',$selectedBuilding);
+        }
+        if ($selectedAsset) {
+            $query->where('asset_id',$selectedAsset);
+        }
+        if ($selectedMonth) {
+            $query->where('month', $selectedMonth);
         }
 
         $collections = $query->with(['customer','asset','building'])->get();
@@ -98,7 +102,7 @@ class CollectionReportController extends Controller
 
     }
 
-    public function generateMonthWiseCollectionPdf($collectionMonth, $selectedBuilding)
+    public function generateMonthWiseCollectionPdf($collectionMonth, $selectedBuilding, $selectedAsset)
 {
     // Replace the '-' back with '/' if necessary
     $collectionMonth = str_replace('-', '/', $collectionMonth);
@@ -114,6 +118,9 @@ class CollectionReportController extends Controller
     // Apply filter based on the building
     if ($selectedBuilding && $selectedBuilding != 0) {
         $query->where('building_id', $selectedBuilding);
+    }
+    if ($selectedAsset && $selectedAsset != 0) {
+        $query->where('asset_id', $selectedAsset);
     }
 
     // Fetch collections with related models
@@ -204,5 +211,69 @@ class CollectionReportController extends Controller
         // Output the generated PDF
         return $pdf->stream('yearwise_total_report.pdf');
     }
+
+
+
+
+
+    public function clientwiseReport()
+    {
+        return view('admin.collectionreport.clientwise-total-report');
+    }
+
+    public function clientwiseDetails(Request $request)
+    {
+        $selectedClient = $request->input('selected_client');
+        $query = Collection::query();
+
+
+        $collections = Collection::select('asset_id')
+        ->selectRaw('SUM(payable_amount) as total_payable_amount')
+        ->selectRaw('SUM(collection_amount) as total_collection_amount')
+        ->selectRaw('SUM(due_amount) as total_due_amount')
+        ->where('month', 'like', '%/' . $selectedClient)
+        ->groupBy('asset_id')
+        ->get();
+
+        // Load asset relationships for the retrieved collections
+        $collections->load('asset');
+
+        return response()->json($collections);
+
+    }
+
+    // public function generateClientWiseCollectionPdf($collectionYear)
+    // {
+    //     $query = Collection::query();
+
+
+    //     $collections = Collection::select('asset_id')
+    //     ->selectRaw('SUM(payable_amount) as total_payable_amount')
+    //     ->selectRaw('SUM(collection_amount) as total_collection_amount')
+    //     ->selectRaw('SUM(due_amount) as total_due_amount')
+    //     ->where('month', 'like', '%/' . $collectionYear)
+    //     ->groupBy('asset_id')
+    //     ->get();
+
+    //     // Load asset relationships for the retrieved collections
+    //     $collections->load(['customer', 'asset', 'building']);
+
+    //     // Load the view for PDF
+    //     $pdf = new Dompdf();
+    //     $options = new Options();
+    //     $options->set('defaultFont', 'Arial');
+    //     $pdf->setOptions($options);
+
+    //     // Pass data to the view, including the formatted month
+    //     $html = view('admin.collectionreport.yearwise-total-pdf-report', compact('collections', 'collectionYear'))->render();
+
+    //     // Load the HTML into Dompdf and generate the PDF
+    //     $pdf->loadHtml($html);
+    //     $pdf->setPaper('A4');
+    //     $pdf->render();
+
+    //     // Output the generated PDF
+    //     return $pdf->stream('yearwise_total_report.pdf');
+    // }
 
 }

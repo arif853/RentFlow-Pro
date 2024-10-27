@@ -120,12 +120,16 @@ Route::middleware(['auth','is_user_active'])->group(function () {
 
     Route::get('/dashboard/collectionreport/monthwise/totalcollection',[CollectionReportController::class,'monthWiseReport'])->name('colelctionreport.monthwise');
     Route::get('/dashboard/collectionreport/monthwise/details/',[CollectionReportController::class,'monthWiseDetails']);
-    Route::get('/dashboard/collectionreport/monthwise/pdf/{collectionMonth}/{selectedBuilding}', [CollectionReportController::class, 'generateMonthWiseCollectionPdf'])->name('collectionreport.monthwise.pdf');
+    Route::get('/dashboard/collectionreport/monthwise/pdf/{collectionMonth}/{selectedBuilding}/{selectedAsset}', [CollectionReportController::class, 'generateMonthWiseCollectionPdf'])->name('collectionreport.monthwise.pdf');
 
 
     Route::get('/dashboard/collectionreport/yearwise/totalcollection',[CollectionReportController::class,'yearWiseReport'])->name('colelctionreport.yearwise');
     Route::get('/dashboard/collectionreport/yearwise/details/',[CollectionReportController::class,'yearWiseDetails']);
-    Route::get('/dashboard/collectionreport/yearwise/pdf/{collectionMonth}', [CollectionReportController::class, 'generateYearWiseCollectionPdf'])->name('collectionreport.yearwise.pdf');
+    Route::get('/dashboard/collectionreport/yearwise/pdf/{collectionYear}', [CollectionReportController::class, 'generateYearWiseCollectionPdf'])->name('collectionreport.yearwise.pdf');
+
+    Route::get('/dashboard/collectionreport/clientwise/totalcollection',[CollectionReportController::class,'clientWiseReport'])->name('colelctionreport.clientwise');
+    Route::get('/dashboard/collectionreport/clientwise/details/',[CollectionReportController::class,'clientWiseDetails']);
+    Route::get('/dashboard/collectionreport/clientwise/pdf/{collectionMonth}', [CollectionReportController::class, 'generateclientWiseCollectionPdf'])->name('collectionreport.clientwise.pdf');
 
 
     Route::get('/dashboard/report/booking',[ReportController::class,'bookingReport'])->name('report.booking');
