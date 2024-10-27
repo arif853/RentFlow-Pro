@@ -145,12 +145,12 @@ class CollectionReportController extends Controller
 
 
 
-    public function yearhWiseReport()
+    public function yearwiseReport()
     {
         return view('admin.collectionreport.yearwise-total-report');
     }
 
-    public function yearhWiseDetails(Request $request)
+    public function yearwiseDetails(Request $request)
     {
         $selectedYear = $request->input('selected_year');
         $query = Collection::query();
@@ -171,41 +171,38 @@ class CollectionReportController extends Controller
 
     }
 
-    // public function generateYearWiseCollectionPdf($collectionMonth)
-    // {
-    //     // Replace the '-' back with '/' if necessary
-    //     $collectionMonth = str_replace('-', '/', $collectionMonth);
+    public function generateYearWiseCollectionPdf($collectionYear)
+    {
+        $query = Collection::query();
 
-    //     // Start the query on the Collection model
-    //     $query = Collection::query();
 
-    //     // Apply filters based on the month
-    //     if ($collectionMonth) {
-    //         $query->where('month', $collectionMonth);
-    //     }
+        $collections = Collection::select('asset_id')
+        ->selectRaw('SUM(payable_amount) as total_payable_amount')
+        ->selectRaw('SUM(collection_amount) as total_collection_amount')
+        ->selectRaw('SUM(due_amount) as total_due_amount')
+        ->where('month', 'like', '%/' . $collectionYear)
+        ->groupBy('asset_id')
+        ->get();
 
-    //     // Fetch collections with related models
-    //     $collections = $query->with(['customer', 'asset', 'building'])->get();
+        // Load asset relationships for the retrieved collections
+        $collections->load(['customer', 'asset', 'building']);
 
-    //     // Load the view for PDF
-    //     $pdf = new Dompdf();
-    //     $options = new Options();
-    //     $options->set('defaultFont', 'Arial');
-    //     $pdf->setOptions($options);
+        // Load the view for PDF
+        $pdf = new Dompdf();
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+        $pdf->setOptions($options);
 
-    //     // Format the month using Carbon
-    //     $formattedMonth = Carbon::createFromFormat('m/Y', $collectionMonth)->format('F Y');
+        // Pass data to the view, including the formatted month
+        $html = view('admin.collectionreport.yearwise-total-pdf-report', compact('collections', 'collectionYear'))->render();
 
-    //     // Pass data to the view, including the formatted month
-    //     $html = view('admin.collectionreport.monthwise-total-pdf-report', compact('collections', 'formattedMonth'))->render();
+        // Load the HTML into Dompdf and generate the PDF
+        $pdf->loadHtml($html);
+        $pdf->setPaper('A4');
+        $pdf->render();
 
-    //     // Load the HTML into Dompdf and generate the PDF
-    //     $pdf->loadHtml($html);
-    //     $pdf->setPaper('A4');
-    //     $pdf->render();
-
-    //     // Output the generated PDF
-    //     return $pdf->stream('yearwise_total_report.pdf');
-    // }
+        // Output the generated PDF
+        return $pdf->stream('yearwise_total_report.pdf');
+    }
 
 }

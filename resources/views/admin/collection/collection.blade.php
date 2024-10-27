@@ -393,9 +393,13 @@
                     url: '/dashboard/collection/get-asset-details/' + assetId,
                     type: 'GET',
                     success: function (data) {
-                        // console.log('ajax data', data);
+                        console.log('ajax data', data.guard_amount);
+                        $('#internet_amount').val(data.internet_amount);
+                        $('#guard_amount').val(data.guard_amount);
+                        $('#dish_amount').val(data.dish_amount);
                         // console.log(data.bookings);
                         data.bookings.forEach(item => {
+
                             const customer = item.customer; // Accessing the customer object
                             // console.log(customer.checkout.is_confirm);
                             $('#client_name').text(customer.client_name);
@@ -475,6 +479,31 @@
                             parseFloat(data.others_charge || 0)
                         );
 
+                        $('#non_adjust_payable_amount').val(
+                            parseFloat(data.monthly_rent || 0) +
+                            parseFloat(data.service_charge || 0) +
+                            parseFloat(data.others_charge || 0) +
+                            parseFloat($('#gas_amount').val() || 0) +
+                            parseFloat($('#electricity_amount').val() ||0) +
+                            parseFloat($('#water_amount').val() ||0) +
+                            parseFloat($('#guard_amount').val() ||0) +
+                            parseFloat($('#internet_amount').val() ||0) +
+                            parseFloat($('#dish_amount').val() || 0)
+                        );
+                        $('#total_payable_amount').val(
+                            parseFloat(data.monthly_rent || 0) +
+                            parseFloat(data.service_charge || 0) +
+                            parseFloat(data.others_charge || 0) +
+                            parseFloat($('#gas_amount').val() || 0) +
+                            parseFloat($('#electricity_amount').val() ||0) +
+                            parseFloat($('#water_amount').val() ||0) +
+                            parseFloat($('#guard_amount').val() ||0) +
+                            parseFloat($('#internet_amount').val() ||0) +
+                            parseFloat($('#dish_amount').val() || 0) -
+                            parseFloat($('#adjust_amount').val() || 0)
+                        );
+
+
                         $('#gas_amount, #electricity_amount, #water_amount, #guard_amount, #internet_amount, #dish_amount').on('keyup',
                             function () {
                                 $('#non_adjust_payable_amount').val(
@@ -504,10 +533,7 @@
 
                         $('#collection_amount').on('keyup',
                             function () {
-                                var due_amount = parseFloat($('#total_payable_amount')
-                                        .val() ||
-                                        0) -
-                                    parseFloat($('#collection_amount').val() || 0);
+                                var due_amount = parseFloat($('#total_payable_amount').val() ||0) - parseFloat($('#collection_amount').val () || 0);
                                 $('#due_amount').val(due_amount);
                                 if ($('#due_amount').val() < 0) {
                                     alert(

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('due_logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('collection_id')->constrained('collections');
-            $table->foreignId('customer_id')->constrained('customers');
+            $table->foreignId('collection_id')->constrained('collections')->onDelete('cascade');
+            $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
             $table->date('collection_date');
             $table->string('collection_month');
             $table->decimal('collection_amount', 10, 2)->nullable();

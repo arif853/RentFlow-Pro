@@ -183,139 +183,152 @@ class CollectionController extends Controller
         ]);
 
         $html = '
-                <!DOCTYPE html>
-                <html lang="en">
-                    <head>
-                        <meta charset="UTF-8">
-                        <title>Collection</title>
-                        <style>
-                            body {
-                                padding: 20px;
-                                font-family: Arial, sans-serif;
-                            }
-                            h1 {
-                                font-size: 24px;
-                                font-weight: bold;
-                            }
-                            h2 {
-                                margin: 0;
-                            }
-                            table {
-                                width: 100%;
-                                border-collapse: collapse;
-                                margin-top: 20px;
-                            }
-                            td {
-                                padding: 10px;
-                                text-align: left;
-                            }
-                            tr:nth-child(odd) {
-                                background-color: #f9f9f9;
-                            }
-                            tr:nth-child(even) {
-                                background-color: #ffffff;
-                            }
-                            .breadcrumb {
-                                list-style: none;
-                                padding: 0;
-                                margin: 0;
-                            }
-                            .breadcrumb li {
-                                display: inline;
-                                margin-right: 5px;
-                            }
-                        </style>
-                    </head>
-                    <body>
+            <!DOCTYPE html>
+            <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Collection Report</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            font-size: 12px;
+                            color: #000;
+                            margin: 20px;
+                        }
+                        h1 {
+                            font-size: 18px;
+                            font-weight: bold;
+                            margin-bottom: 10px;
+                            text-align: center;
+                        }
+                        h2 {
+                            font-size: 14px;
+                            font-weight: bold;
+                            margin-top: 20px;
+                            margin-bottom: 10px;
+                            border-bottom: 1px solid #000;
+                        }
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin-bottom: 20px;
+                        }
+                        th, td {
+                            padding: 8px;
+                            text-align: left;
+                            border-bottom: 1px solid #ddd;
+                        }
+                        th {
+                            font-weight: bold;
+                        }
+                        .narrow {
+                            padding: 6px;
+                        }
+                        .right {
+                            text-align: right;
+                        }
+                        .table-section {
+                            margin-bottom: 20px;
+                        }
+                    </style>
+                </head>
+                <body>
 
-                        <main>
-                            <div style="margin-bottom: 20px;">
-                                <h1>Collection</h1>
-                                <nav aria-label="breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <li>
-                                            <a href="javascript:;" style="text-decoration: none; color: #007bff;">
-                                                <i class="bx bx-home-alt"></i>
-                                            </a>
-                                        </li>
-                                    </ol>
-                                </nav>
-                            </div>
+                    <h1>Collection Report</h1>
 
-                            <div style="max-width: 600px; margin: 0 auto;">
-                                <div style="overflow: hidden;">
-                                    <h2>Collection Details</h2>
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                                <td>Complex</td>
-                                                <td>' . ($collection->building ? $collection->building->building_name . ", " . $collection->building->building_code : 'N/A') . '</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Unit Name</td>
-                                                <td>' . $collection->asset->unit_name . '</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Customer Name</td>
-                                                <td>' . $collection->customer->client_name . '</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Customer Phone Number</td>
-                                                <td>' . $collection->customer->client_phone . '</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Employee Name</td>
-                                                <td>' . ($collection->employee ? $collection->employee->name : "N/A") . '</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Collection Date</td>
-                                                <td>' . $collection->collection_date . '</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Gas Bill Type</td>
-                                                <td>' . $collection->gas_type . '</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Electricity Bill Type</td>
-                                                <td>' . $collection->gas_type . '</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Water Bill Type</td>
-                                                <td>' . $collection->gas_type . '</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Monthly Rent</td>
-                                                <td>' . $collection->asset->monthly_rent . '</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Service Charge</td>
-                                                <td>' . $collection->asset->service_charge . '</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Other Charge</td>
-                                                <td>' . $collection->asset->others_charge . '</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Total Payable Rent</td>
-                                                <td>' . $collection->payable_amount . '</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Collection Amount</td>
-                                                <td>' . $collection->collection_amount . '</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Due</td>
-                                                <td>' . $collection->due_amount . '</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </main>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>Complex</th>
+                                <td class="right">' . ($collection->building ? $collection->building->building_name . ", " . $collection->building->building_code : 'N/A') . '</td>
+                            </tr>
+                            <tr>
+                                <th>Unit Name</th>
+                                <td class="right">' . $collection->asset->unit_name . '</td>
+                            </tr>
+                            <tr>
+                                <th>Customer Name</th>
+                                <td class="right">' . $collection->customer->client_name . '</td>
+                            </tr>
+                            <tr>
+                                <th>Customer Phone</th>
+                                <td class="right">' . $collection->customer->client_phone . '</td>
+                            </tr>
+                            <tr>
+                                <th>Employee Name</th>
+                                <td class="right">' . ($collection->employee ? $collection->employee->name : "N/A") . '</td>
+                            </tr>
+                            <tr>
+                                <th>Collection Date</th>
+                                <td class="right">' . $collection->collection_date . '</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                    </body>
-                </html>
-        ';
+                    <h2>Billing Details</h2>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>Gas Bill</th>
+                                <td class="right">' . number_format($collection->gas_amount ? $collection->gas_amount : 0, 2) . '</td>
+                            </tr>
+                            <tr>
+                                <th>Electricity Bill</th>
+                                <td class="right">' . number_format($collection->electricity_amount ? $collection->electricity_amount : 0, 2) . '</td>
+                            </tr>
+                            <tr>
+                                <th>Water Bill</th>
+                                <td class="right">' . number_format($collection->water_amount ? $collection->water_amount : 0, 2) . '</td>
+                            </tr>
+                            <tr>
+                                <th>Internet Bill</th>
+                                <td class="right">' . number_format($collection->internet_amount ? $collection->internet_amount : 0, 2) . '</td>
+                            </tr>
+                            <tr>
+                                <th>Dish Bill</th>
+                                <td class="right">' . number_format($collection->dish_amount ? $collection->dish_amount : 0, 2) . '</td>
+                            </tr>
+                            <tr>
+                                <th>Guard Bill</th>
+                                <td class="right">' . number_format($collection->guard_amount ? $collection->guard_amount : 0, 2) . '</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h2>Rent and Charges</h2>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>Monthly Rent</th>
+                                <td class="right">' . number_format($collection->asset->monthly_rent ? $collection->asset->monthly_rent : 0, 2) . '</td>
+                            </tr>
+                            <tr>
+                                <th>Service Charge</th>
+                                <td class="right">' . number_format($collection->asset->service_charge ? $collection->asset->service_charge : 0, 2) . '</td>
+                            </tr>
+                            <tr>
+                                <th>Other Charges</th>
+                                <td class="right">' . number_format($collection->asset->others_charge ? $collection->asset->others_charge : 0, 2) . '</td>
+                            </tr>
+                            <tr>
+                                <th>Total Payable Rent</th>
+                                <td class="right">' . number_format($collection->payable_amount ? $collection->payable_amount : 0, 2) . '</td>
+                            </tr>
+                            <tr>
+                                <th>Collection Amount</th>
+                                <td class="right">' . number_format($collection->collection_amount ? $collection->collection_amount : 0, 2) . '</td>
+                            </tr>
+                            <tr>
+                                <th>Due</th>
+                                <td class="right">' . number_format($collection->due_amount ? $collection->due_amount : 0, 2) . '</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </body>
+            </html>
+            ';
+
 
         $mpdf->WriteHTML($html);
 
