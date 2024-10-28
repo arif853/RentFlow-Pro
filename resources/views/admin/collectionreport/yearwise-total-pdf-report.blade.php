@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Month Wise Total Collection Report</title>
+    <title>Year Wise Total Collection Report</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,7 +25,7 @@
             line-height: 5px;
         }
         .phead{
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 400;
         }
     </style>

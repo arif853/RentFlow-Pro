@@ -28,7 +28,7 @@
             line-height: 5px;
         }
         .phead {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 400;
         }
     </style>
