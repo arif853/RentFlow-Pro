@@ -14,8 +14,8 @@ class WebSettingController extends Controller
      */
     public function index()
     {
-        $companies = Company::all();
-        return view('admin.websetting.websetting',compact('companies'));
+        $company = Company::first();
+        return view('admin.websetting.websetting',compact('company'));
     }
 
     /**
@@ -51,17 +51,14 @@ class WebSettingController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id)
+public function update(Request $request, $id)
 {
     $request->validate([
         'company_name' => 'required|string|max:255',
         'phone_number' => 'required|string|max:15',
         'email' => 'required|email|max:255',
         'address' => 'required|string',
-        'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust max size as needed
+        'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
 
     $company = Company::findOrFail($id);
@@ -74,19 +71,19 @@ class WebSettingController extends Controller
 
     // Handle logo upload
     if ($request->hasFile('logo')) {
-        // Delete old logo if exists
-        if ($company->logo) {
-            Storage::delete($company->logo);
+        // Delete old logo if it exists
+        if ($company->logo && Storage::exists('public/' . $company->logo)) {
+            Storage::delete('public/' . $company->logo);
         }
 
-        // Create a unique filename with a number
-        $file = $request->file('logo'); // Get the original file name without extension
-        $extension = $file->getClientOriginalExtension(); // Get the file extension
-        $uniqueFilename = 'logo' . '_' . time() . '.' . $extension; // Create a unique filename
+        // Create a unique filename
+        $file = $request->file('logo');
+        $extension = $file->getClientOriginalExtension();
+        $uniqueFilename = 'logo' . '_' . time() . '.' . $extension;
 
-        // Store logo in 'logos' directory with unique filename
-        $path = $file->storeAs('logos', $uniqueFilename);
-        $company->logo = $path;
+        // Store logo in 'public/logos' directory
+        $path = $file->storeAs('public/logos', $uniqueFilename);
+        $company->logo = 'logos/' . $uniqueFilename; // Save the relative path
     }
 
     $company->save();
@@ -95,7 +92,9 @@ class WebSettingController extends Controller
 }
 
 
-    /**
+
+
+        /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)

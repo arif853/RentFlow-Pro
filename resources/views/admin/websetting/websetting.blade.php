@@ -17,18 +17,16 @@
     </div>
     <!--end breadcrumb-->
 
-    <div class="card">
-        <div class="card-body d-flex">
-            <div class="col-5">
-                @foreach ($companies as $company)
-                <form action="{{ route('websetting.update', $company->id) }}" method="POST"
-                    enctype="multipart/form-data">
+    <div class="d-flex col-12 justify-content-between">
+        <div class="card col-6 d-flex mx-auto">
+            <div class="card-body d-flex justify-content-center">
+                <form action="{{ route('websetting.update', $company->id) }}" method="POST" enctype="multipart/form-data" class="w-75">
                     @csrf
                     @method('PUT')
-                    <div>
+                    <div class="col-12">
                         <!-- Company Name -->
                         <div class="mb-3">
-                            <label for="company_name" class="form-label">Company Name</label>
+                            <label for="company_name" class="form-label mt-5">Company Name</label>
                             <input type="text" class="form-control" id="company_name" name="company_name"
                                 placeholder="Enter company name" value="{{ $company->company_name }}" required>
                         </div>
@@ -61,39 +59,47 @@
                         </div>
 
                         <!-- Image Preview -->
-                        <div class="mb-3">
-                            <img id="logo-preview" src="{{ asset($company->logo) }}" alt="Logo Preview" style="display: {{ $company->logo ? 'block' : 'none' }}; max-width: 200px; max-height: 200px;">
+                        <div class="mb-3 text-center">
+                            <img id="logo-preview" src="{{ asset($company->logo) }}" alt="Logo Preview"
+                                style="display: {{ $company->logo ? 'block' : 'none' }}; max-width: 200px; max-height: 200px;">
                         </div>
 
                         <!-- Submit Button -->
-                        <div class="">
+                        <div class="text-center">
                             <button type="submit" class="btn btn-primary">Save Company</button>
                         </div>
                     </div>
                 </form>
-                @endforeach
             </div>
-            <div class="col-5 mx-auto">
-                @foreach ($companies as $company)
-                <div class="text-center mb-4">
-                    <!-- Logo -->
-                    <div class="mb-2">
-                        <img src="{{ Storage::url($company->logo) }}" alt="Company Logo" class="logo-preview" style="max-width: 200px; max-height: 200px; object-fit: cover;">
+        </div>
+
+        <div class="card col-5">
+            <div class="card-body d-flex">
+                <div class="mx-auto d-flex justify-content-center align-items-center">
+                    <div class="text-center mb-4 w-100" style="line-height: 2;">
+                        <!-- Adjusted line height -->
+                        <!-- Logo -->
+                        <div class="mb-2">
+                            <img src="{{ asset('storage/' . $company->logo) }}" alt="Company Logo" class="logo-preview"
+                                style="max-width: 300px; max-height: 300px; object-fit: cover;">
+                        </div>
+
+                        <!-- Company Name -->
+                        <h5 class="mb-1" style="font-size: 1.5rem;">{{ $company->company_name }}</h5>
+
+                        <!-- Phone Number -->
+                        <p class="mb-1" style="font-size: 1.25rem;"><strong>Phone:</strong> {{ $company->phone_number }}
+                        </p>
+
+                        <!-- Email -->
+                        <p class="mb-1" style="font-size: 1.25rem;"><strong>Email:</strong> {{ $company->email }}</p>
+
+                        <!-- Address -->
+                        <p class="mb-1" style="font-size: 1.25rem;"><strong>Address:</strong> {{ $company->address }}
+                        </p>
                     </div>
-
-                    <!-- Company Name -->
-                    <h5 class="mb-1">{{ $company->company_name }}</h5>
-
-                    <!-- Phone Number -->
-                    <p class="mb-1"><strong>Phone:</strong> {{ $company->phone_number }}</p>
-
-                    <!-- Email -->
-                    <p class="mb-1"><strong>Email:</strong> {{ $company->email }}</p>
-
-                    <!-- Address -->
-                    <p class="mb-1"><strong>Address:</strong> {{ $company->address }}</p>
                 </div>
-                @endforeach
+
             </div>
         </div>
     </div>
@@ -107,5 +113,6 @@
         output.src = URL.createObjectURL(event.target.files[0]);
         output.style.display = 'block';
     }
+
 </script>
 @endpush

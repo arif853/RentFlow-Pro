@@ -7,6 +7,7 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Models\Asset;
 use App\Models\Floor;
+use App\Models\Company;
 use App\Models\Building;
 use App\Models\Customer;
 use App\Models\Location;
@@ -136,8 +137,12 @@ class CollectionReportController extends Controller
     // Format the month using Carbon
     $formattedMonth = Carbon::createFromFormat('m/Y', $collectionMonth)->format('F Y');
 
+
+    $company = Company::find(1); // Fetch company data with the logo path
+
+
     // Pass data to the view, including the formatted month
-    $html = view('admin.collectionreport.monthwise-total-pdf-report', compact('collections', 'formattedMonth'))->render();
+    $html = view('admin.collectionreport.monthwise-total-pdf-report', compact('collections', 'formattedMonth','company'))->render();
 
     // Load the HTML into Dompdf and generate the PDF
     $pdf->loadHtml($html);
@@ -231,8 +236,10 @@ class CollectionReportController extends Controller
         $options->set('defaultFont', 'Arial');
         $pdf->setOptions($options);
 
+        $company = Company::find(1);
+
         // Pass data to the view, including the formatted month
-        $html = view('admin.collectionreport.yearwise-total-pdf-report', compact('collections', 'collectionYear'))->render();
+        $html = view('admin.collectionreport.yearwise-total-pdf-report', compact('collections', 'collectionYear','company'))->render();
 
         // Load the HTML into Dompdf and generate the PDF
         $pdf->loadHtml($html);
@@ -269,8 +276,6 @@ class CollectionReportController extends Controller
 
     public function generateClientWiseCollectionPdf($selectedCustomer)
     {
-
-
         $collections = Collection::where('customer_id',$selectedCustomer)
         ->get();
 
@@ -285,8 +290,10 @@ class CollectionReportController extends Controller
         $options->set('defaultFont', 'Arial');
         $pdf->setOptions($options);
 
+        $company = Company::find(1);
+
         // Pass data to the view, including the formatted month
-        $html = view('admin.collectionreport.clientwise-total-pdf-report', compact('collections','customerName'))->render();
+        $html = view('admin.collectionreport.clientwise-total-pdf-report', compact('collections','customerName','company'))->render();
 
         // Load the HTML into Dompdf and generate the PDF
         $pdf->loadHtml($html);
