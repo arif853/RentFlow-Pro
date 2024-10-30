@@ -18,61 +18,7 @@ use App\Http\Controllers\Controller;
 
 class CollectionReportController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
     public function monthWiseReport()
     {
         $buildings = Building::all();
@@ -105,57 +51,52 @@ class CollectionReportController extends Controller
     }
 
     public function generateMonthWiseCollectionPdf($collectionMonth, $selectedBuilding, $selectedAsset)
-{
-    // Replace the '-' back with '/' if necessary
-    $collectionMonth = str_replace('-', '/', $collectionMonth);
+    {
+        // Replace the '-' back with '/' if necessary
+        $collectionMonth = str_replace('-', '/', $collectionMonth);
 
-    // Start the query on the Collection model
-    $query = Collection::query();
+        // Start the query on the Collection model
+        $query = Collection::query();
 
-    // Apply filters based on the month
-    if ($collectionMonth && $collectionMonth!='0/0') {
-        $query->where('month', $collectionMonth);
+        // Apply filters based on the month
+        if ($collectionMonth && $collectionMonth!='0/0') {
+            $query->where('month', $collectionMonth);
+        }
+
+        // Apply filter based on the building
+        if ($selectedBuilding && $selectedBuilding != 0) {
+            $query->where('building_id', $selectedBuilding);
+        }
+        if ($selectedAsset && $selectedAsset != 0) {
+            $query->where('asset_id', $selectedAsset);
+        }
+
+        // Fetch collections with related models
+        $collections = $query->with(['customer', 'asset', 'building'])->get();
+
+        // Load the view for PDF
+        $pdf = new Dompdf();
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+        $pdf->setOptions($options);
+
+        // Format the month using Carbon
+        $formattedMonth = Carbon::createFromFormat('m/Y', $collectionMonth)->format('F Y');
+
+        $company = Company::find(1); // Fetch company data with the logo path
+
+
+        // Pass data to the view, including the formatted month
+        $html = view('admin.collectionreport.monthwise-total-pdf-report', compact('collections', 'formattedMonth','company'))->render();
+
+        // Load the HTML into Dompdf and generate the PDF
+        $pdf->loadHtml($html);
+        $pdf->setPaper('A4');
+        $pdf->render();
+
+        // Output the generated PDF
+        return $pdf->stream('monthwise_total_report.pdf');
     }
-
-    // Apply filter based on the building
-    if ($selectedBuilding && $selectedBuilding != 0) {
-        $query->where('building_id', $selectedBuilding);
-    }
-    if ($selectedAsset && $selectedAsset != 0) {
-        $query->where('asset_id', $selectedAsset);
-    }
-
-    // Fetch collections with related models
-    $collections = $query->with(['customer', 'asset', 'building'])->get();
-
-    // Load the view for PDF
-    $pdf = new Dompdf();
-    $options = new Options();
-    $options->set('defaultFont', 'Arial');
-    $pdf->setOptions($options);
-
-    // Format the month using Carbon
-    $formattedMonth = Carbon::createFromFormat('m/Y', $collectionMonth)->format('F Y');
-
-
-    $company = Company::find(1); // Fetch company data with the logo path
-
-
-    // Pass data to the view, including the formatted month
-    $html = view('admin.collectionreport.monthwise-total-pdf-report', compact('collections', 'formattedMonth','company'))->render();
-
-    // Load the HTML into Dompdf and generate the PDF
-    $pdf->loadHtml($html);
-    $pdf->setPaper('A4');
-    $pdf->render();
-
-    // Output the generated PDF
-    return $pdf->stream('monthwise_total_report.pdf');
-}
-
-
-
-
 
 
     public function yearwiseReport()
@@ -197,12 +138,8 @@ class CollectionReportController extends Controller
         return response()->json($collections);
     }
 
-
-
     public function generateYearWiseCollectionPdf($collectionYear,$collectionBuilding,$collectionAsset)
     {
-
-
         $selectedBuilding = $collectionBuilding != 0 ? $collectionBuilding : null;
         $selectedAsset = $collectionAsset != 0 ? $collectionAsset : null;
         $selectedYear = $collectionYear != 0 ? $collectionYear : null;
@@ -226,6 +163,7 @@ class CollectionReportController extends Controller
         }
 
         $collections = $collections->groupBy('asset_id')->get();
+
 
         // Load asset relationships for the retrieved collections
         $collections->load(['customer', 'asset', 'building']);
@@ -254,7 +192,7 @@ class CollectionReportController extends Controller
     public function clientwiseReport()
     {
         $customers = Customer::all();
-        return view('admin.collectionreport.clientwise-total-report',compact('customers'));
+        return view('admin.collectionreport.clientwise-total-pdf-report',compact('customers'));
     }
 
     public function clientwiseDetails(Request $request)
@@ -263,7 +201,7 @@ class CollectionReportController extends Controller
 
         $collections = Collection::where('customer_id',$selectedClient)
         ->get();
-
+        $company = Company::find(1);
         // Load asset relationships for the retrieved collections
         $collections->load('asset');
 

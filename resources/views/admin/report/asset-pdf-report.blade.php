@@ -31,12 +31,15 @@
     </style>
 </head>
 <body>
+    <div class="logo" style="position: fixed; left:0; top:-30px; padding:20px;">
+        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('storage/' . $company->logo))) }}"
+        alt="Company Logo" style="width: 80px;">
+    </div>
     <div class="head">
-        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('storage/' . $company->logo))) }}" alt="Company Logo" style="width: 140px; margin-bottom: 10px;">
+
         <h2>{{$company->company_name}}</h2>
-        <p class="phead">Phone: {{$company->phone_number}}</p>
-        <p class="phead">Email: {{$company->email}}</p>
-        <p class="phead">Address: {{$company->address}}</p>
+        <p class="phead" style="font-size: 10px;">{{$company->phone_number}} | {{$company->email}}</p>
+        <p class="phead" style="font-size: 10px;">{{$company->address}}</p>
     </div>
     <h3>Asset Report</h3>
     <table>

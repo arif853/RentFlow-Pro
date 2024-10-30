@@ -13,7 +13,7 @@
             border-collapse: collapse;
         }
         th, td {
-            border: 1px solid #000;
+            border: 1px solid #0000005b;
             padding: 8px;
             text-align: left;
         }
@@ -31,14 +31,17 @@
     </style>
 </head>
 <body>
-    <div class="head">
-        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('storage/' . $company->logo))) }}" alt="Company Logo" style="width: 140px; margin-bottom: 10px;">
-        <h2>{{$company->company_name}}</h2>
-        <p class="phead">Phone: {{$company->phone_number}}</p>
-        <p class="phead">Email: {{$company->email}}</p>
-        <p class="phead">Address: {{$company->address}}</p>
+    <div class="logo" style="position: fixed; left:0; top:-30px; padding:20px;">
+        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('storage/' . $company->logo))) }}"
+        alt="Company Logo" style="width: 80px;">
     </div>
-    <h3>Booking Report</h3>
+    <div class="head">
+
+        <h2>{{$company->company_name}}</h2>
+        <p class="phead" style="font-size: 10px;">{{$company->phone_number}} | {{$company->email}}</p>
+        <p class="phead" style="font-size: 10px;">{{$company->address}}</p>
+    </div>
+    <h3 style="text-align: center; padding:10px 0;">Booking Report</h3>
     <table>
         <thead>
             <tr>
@@ -49,6 +52,8 @@
                 <th>Client Name</th>
                 <th>Phone Number</th>
                 <th>Monthly Rent</th>
+                <th>Advance</th>
+                <th>Adjustable</th>
             </tr>
         </thead>
         <tbody>
@@ -61,6 +66,8 @@
                     <td>{{ $booking->customer->client_name }}</td>
                     <td>{{ $booking->customer->client_phone }}</td>
                     <td>{{ $booking->asset->monthly_rent }}</td>
+                    <td>{{ $booking->customer->customerInfo->advance_amount_type == "Yes" ? $booking->customer->customerInfo->advance_amount : 0 }}</td>
+                    <td>{{ $booking->customer->customerInfo->adjustable_amout_type == "Yes" ? $booking->customer->customerInfo->adjustable_amount : 0 }}</td>
                 </tr>
             @endforeach
         </tbody>

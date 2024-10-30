@@ -135,14 +135,14 @@
 
          // Handle building change
          $('#building').on('change', function () {
-            $('#btn_download_pdf').show();
+            // $('#btn_download_pdf').show();
             selectedBuilding = $(this).val() || 0; // Default to 0 if not selected
             details(); // Call details function to filter assets
         });
 
         // Handle building change
         $('#asset').on('change', function () {
-            $('#btn_download_pdf').show();
+            // $('#btn_download_pdf').show();
             selectedAsset = $(this).val() || 0; // Default to 0 if not selected
             details(); // Call details function to filter assets
             console.log(selectedAsset);

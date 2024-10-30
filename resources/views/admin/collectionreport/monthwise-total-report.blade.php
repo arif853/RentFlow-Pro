@@ -76,7 +76,8 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Date</th>
+                                <th scope="col">Collection Date</th>
+                                <th scope="col">Collection Month</th>
                                 <th scope="col">Client</th>
                                 <th scope="col">Building</th>
                                 <th scope="col">Asset</th>
@@ -137,14 +138,14 @@
 
         // Handle building change
         $('#building').on('change', function () {
-            $('#btn_download_pdf').show();
+            // $('#btn_download_pdf').show();
             selectedBuilding = $(this).val() || 0; // Default to 0 if not selected
             details(); // Call details function to filter assets
         });
 
         // Handle building change
         $('#asset').on('change', function () {
-            $('#btn_download_pdf').show();
+            // $('#btn_download_pdf').show();
             selectedAsset = $(this).val() || 0; // Default to 0 if not selected
             details(); // Call details function to filter assets
             console.log(selectedAsset);
@@ -188,6 +189,7 @@
                                 <tr>
                                     <th scope="row">${index + 1}</th>
                                     <td>${collection.collection_date}</td>
+                                    <td>${collection.month}</td>
                                     <td>${collection.customer.client_name}</td>
                                     <td>${collection.building.building_name}</td>
                                     <td>${collection.asset.unit_name}</td>

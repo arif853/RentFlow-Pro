@@ -120,19 +120,19 @@ Route::middleware(['auth','is_user_active'])->group(function () {
     Route::get('/dashboard/collection/get/collection/details/{customer_id}', [CheckoutController::class,'CustomerDue'])->name('collection.customer.due');
 
 
-    Route::get('/dashboard/collectionreport/clientwise/totalcollection',[CollectionReportController::class,'clientwiseReport'])->name('collection.report.monthwise');
-    Route::get('/dashboard/collectionreport/clientwise/details/',[CollectionReportController::class,'monthWiseDetails']);
-    Route::get('/dashboard/collectionreport/clientwise/pdf/{collectionMonth}/{selectedBuilding}/{selectedAsset}', [CollectionReportController::class, 'generateMonthWiseCollectionPdf'])->name('collectionreport.monthwise.pdf');
+    Route::get('/dashboard/collectionreport/clientwise/totalcollection',[CollectionReportController::class,'clientwiseReport'])->name('collection.report.clientwise');
+    Route::get('/dashboard/collectionreport/clientwise/details/',[CollectionReportController::class,'clientWiseDetails']);
+    Route::get('/dashboard/collectionreport/clientwise/pdf/{selectedAsset}', [CollectionReportController::class, 'generateMonthWiseCollectionPdf'])->name('collectionreport.monthwise.pdf');
 
-    Route::get('/dashboard/collectionreport/monthwise/totalcollection',[CollectionReportController::class,'monthWiseReport'])->name('collection.report.clientwise');
-    Route::get('/dashboard/collectionreport/monthwise/details/',[CollectionReportController::class,'clientWiseDetails']);
-    Route::get('/dashboard/collectionreport/monthwise/pdf/{collectionMonth}/{selectedBuilding}/{selectedAsset}', [CollectionReportController::class, 'generateClientWiseCollectionPdf'])
-    ->name('collectionreport.clientwise.pdf');
+    Route::get('/dashboard/collectionreport/monthwise/totalcollection',[CollectionReportController::class,'monthWiseReport'])->name('collection.report.monthwise');
+    Route::get('/dashboard/collectionreport/monthwise/details/',[CollectionReportController::class,'monthWiseDetails']);
+    Route::get('/dashboard/collectionreport/monthwise/pdf/{collectionMonth}/{selectedBuilding}/{selectedAsset}', [CollectionReportController::class, 'generateMonthWiseCollectionPdf'])
+    ->name('collectionreport.monthwise.pdf');
 
 
     Route::get('/dashboard/collectionreport/yearwise/totalcollection',[CollectionReportController::class,'yearWiseReport'])->name('collection.report.yearwise');
     Route::get('/dashboard/collectionreport/yearwise/details/',[CollectionReportController::class,'yearWiseDetails']);
-    Route::get('/dashboard/collectionreport/yearwise/pdf/{collectionMonth}', [CollectionReportController::class, 'generateYearWiseCollectionPdf'])->name('collectionreport.yearwise.pdf');
+    Route::get('/dashboard/collectionreport/yearwise/pdf/{collectionYear}/{selectedBuilding}/{selectedAsset}', [CollectionReportController::class, 'generateYearWiseCollectionPdf'])->name('collectionreport.yearwise.pdf');
 
 
     Route::get('/dashboard/report/booking',[ReportController::class,'bookingReport'])->name('report.booking');

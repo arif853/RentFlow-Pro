@@ -106,10 +106,17 @@
                                                                 <span class="side-title">Monthly Rent :</span>
                                                                 <span id="monthly_rent">---</span>
                                                             </li>
-                                                            <li
-                                                                class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                                            <li  class="list-group-item d-flex
+                                                                        justify-content-between
+                                                                        align-items-center bg-transparent advance" style="display: none !important; ">
                                                                 <span class="side-title">Advance :</span>
-                                                                <span id="monthly_rent">---</span>
+                                                                <span id="view_advance">---</span>
+                                                            </li>
+                                                            <li  class="list-group-item d-flex
+                                                                        justify-content-between
+                                                                        align-items-center bg-transparent adjustable " style="display: none !important;">
+                                                                <span class="side-title"> Adjustable(Per Month):</span>
+                                                                <span id="view_advance_adjustable">---</span>
                                                             </li>
                                                             <li
                                                                 class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
@@ -388,28 +395,56 @@
                             $('#client_name').text(customer.client_name);
                             $('#client_phone').text(customer.client_phone);
                             $('#customer_id').val(customer.id);
-                            console.log(customer.customer_info.adjustable_amout_type === 'Yes');
+                            // console.log(customer.customer_info.adjustable_amout_type === 'Yes');
 
                             if (customer.customer_info.adjustable_amout_type === 'Yes' && customer.checkout == null && parseFloat(customer.customer_info.advance_amount)>=parseFloat(customer.customer_info.adjustable_amount)) {
                                 $('.advanced_amount_type').show();
                                 $('#advance_amount').val(customer.customer_info.advance_amount);
                                 $('#left_advance_amount').val(customer.customer_info.advance_amount-customer.customer_info.adjustable_amount);
                                 $('#adjust_amount').val(customer.customer_info.adjustable_amount);
+
+                                $('.advance').show();
+                                $('.adjustable').show();
+
+                                $('#view_advance').text(customer.customer_info.advance_amount);
+                                $('#view_advance_adjustable').text(customer.customer_info.adjustable_amount);
+
                             } else if (customer.customer_info.adjustable_amout_type === 'Yes' && customer.checkout == null && parseFloat(customer.customer_info.advance_amount)>0) {
                                 $('#advance_amount').val(customer.customer_info.advance_amount);
                                 $('#left_advance_amount').val(0);
                                 $('#adjust_amount').val(customer.customer_info.advance_amount);
                                 $('.advanced_amount_type').show();
+
+                                $('.advance').show();
+                                $('.adjustable').show();
+
+                                $('#view_advance').text(customer.customer_info.advance_amount);
+                                $('#view_advance_adjustable').text(customer.customer_info.adjustable_amount);
+
                             } else if (customer.customer_info.advance_amount_type === 'Yes' && customer.checkout && customer.checkout.is_confirm === 1 && parseFloat(customer.customer_info.advance_amount)>=parseFloat(data.monthly_rent)) {
                                 $('#advance_amount').val(customer.customer_info.advance_amount);
                                 $('#left_advance_amount').val(customer.customer_info.advance_amount-data.monthly_rent);
                                 $('#adjust_amount').val(data.monthly_rent);
                                 $('.advanced_amount_type').show();
+
+                                $('.advance').show();
+                                $('.adjustable').show();
+
+                                $('#view_advance').text(customer.customer_info.advance_amount);
+                                $('#view_advance_adjustable').text(customer.customer_info.adjustable_amount);
+
                             } else if (customer.customer_info.advance_amount_type === 'Yes' && customer.checkout && customer.checkout.is_confirm === 1 && parseFloat(customer.customer_info.advance_amount)>0) {
                                 $('#advance_amount').val(customer.customer_info.advance_amount);
                                 $('#left_advance_amount').val(0);
                                 $('#adjust_amount').val(customer.customer_info.advance_amount);
                                 $('.advanced_amount_type').show();
+
+                                $('.advance').show();
+                                $('.adjustable').show();
+
+                                $('#view_advance').text(customer.customer_info.advance_amount);
+                                $('#view_advance_adjustable').text(customer.customer_info.adjustable_amount);
+
                             } else {
                                 $('#advance_amount').val(0);
                                 $('#adjust_amount').val(0);

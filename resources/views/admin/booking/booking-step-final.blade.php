@@ -313,7 +313,7 @@
                                                     <span class="text-danger">{{$message}}</span>
                                                 @enderror
                                             </div>
-                                            <div class="col-12 col-md-4 mb-2" id="advanceAmountFields">
+                                            <div class="col-12 col-md-4 mb-2" id="advanceAmountFields" style="{{$selectedYes ? '':'display: none;'}}">
                                                 <label class="form-label">Advance Amount</label>
                                                 <input type="number" class="form-control" placeholder="Advance Amount"
                                                 name="advance_amount" value="{{$customer->customerInfo ? $customer->customerInfo->advance_amount : ''}}">
@@ -341,7 +341,7 @@
                                                 @enderror
                                             </div>
                                             <div class="col-12 col-md-6 mb-2" >
-                                                <div id="adjustableAmountFields">
+                                                <div id="adjustableAmountFields"  style="{{$selectedYes ? '':'display: none;'}}">
                                                     <label class="form-label">Monthly Adjustable Amount</label>
                                                     <input type="number" class="form-control" placeholder="Monthly Adjustable Amount"
                                                     name="adjustable_amount" value="{{$customer->customerInfo ? $customer->customerInfo->adjustable_amount : ''}}">

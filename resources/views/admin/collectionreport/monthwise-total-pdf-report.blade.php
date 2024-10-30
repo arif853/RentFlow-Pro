@@ -34,19 +34,22 @@
     </style>
 </head>
 <body>
+    <div class="logo" style="position: fixed; left:0; top:-30px; padding:20px;">
+        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('storage/' . $company->logo))) }}"
+        alt="Company Logo" style="width: 80px;">
+    </div>
     <div class="head">
-        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('storage/' . $company->logo))) }}" alt="Company Logo" style="width: 140px; margin-bottom: 10px;">
+
         <h2>{{$company->company_name}}</h2>
-        <p class="phead">Phone: {{$company->phone_number}}</p>
-        <p class="phead">Email: {{$company->email}}</p>
-        <p class="phead">Address: {{$company->address}}</p>
+        <p class="phead" style="font-size: 10px;">{{$company->phone_number}} | {{$company->email}}</p>
+        <p class="phead" style="font-size: 10px;">{{$company->address}}</p>
     </div>
     <h3>Month Wise Report ({{$formattedMonth}})</h3>
     <table>
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Date</th>
+                <th scope="col">Collection Date</th>
                 <th scope="col">Client</th>
                 <th scope="col">Building</th>
                 <th scope="col">Asset</th>
@@ -79,13 +82,17 @@
             @endphp
             @endforeach
             <!-- Display totals in the last row -->
+
+
+        </tbody>
+        <tfoot>
             <tr class="total-row">
-                <td colspan="5" class="text-right">Total</td>
+                <td colspan="5" class="text-right" style="text-align: right; font-weight:700;">Total</td>
                 <td>{{number_format($totalCollectableAmount, 2)}}</td>
                 <td>{{number_format($totalCollectionAmount, 2)}}</td>
                 <td>{{ number_format($totalDueAmount, 2) }}</td>
             </tr>
-        </tbody>
+        </tfoot>
     </table>
 </body>
 </html>

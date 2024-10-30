@@ -49,12 +49,14 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
+                                <th scope="col">Booking Date</th>
                                 <th scope="col">Building</th>
                                 <th scope="col">Floor</th>
                                 <th scope="col">Asset</th>
                                 <th scope="col">Client Name</th>
-                                <th scope="col">Phone Number</th>
                                 <th scope="col">Monthly Rent</th>
+                                <th scope="col">Advance</th>
+                                <th scope="col">Adjustable</th>
                             </tr>
                         </thead>
                         <tbody id="bookingTableBody">
@@ -75,7 +77,7 @@ $(document).ready(function () {
     $('#btn_submit').on('click', function () {
         $('#btn_download_pdf').show();
         var buildingId = $('#building_id').val();
-        console.log(buildingId);
+        // console.log(buildingId);
 
         if (buildingId) {
             $.ajax({
@@ -84,20 +86,39 @@ $(document).ready(function () {
                 success: function (data) {
                     // Clear the existing table rows
                     $('#bookingTableBody').empty();
-                    console.log(data);
+                    // console.log(data);
                     if (data) {
                         $.each(data, function (index, booking) {
-                            // console.log(booking.building);
+                            var advance = 0;
+                            var adjustable = 0;
+                            if (booking.customer.customer_info != null && booking.customer.customer_info.advance_amount_type === "Yes") {
+                                var advance = booking.customer.customer_info.advance_amount;
+                                console.log(advance);
+                            }
+                            if (booking.customer.customer_info != null && booking.customer.customer_info.adjustable_amout_type === "Yes") {
+                                var adjustable = booking.customer.customer_info.adjustable_amount;
+                                console.log(adjustable);
+                            }
+                             var formatedDate = new Date(booking.created_at).toLocaleDateString('en-US', {
+                                                                year: 'numeric',
+                                                                month: 'long',
+                                                                day: 'numeric',
+                                                                hour: '2-digit',
+                                                                minute: '2-digit',
+                                                            });
+
 
                             $('#bookingTableBody').append(`
                                 <tr>
                                     <th scope="row">${index + 1}</th>
+                                    <td>${formatedDate}</td>
                                     <td>${booking.building.building_name}</td>
                                     <td>${booking.floor.floor_name}</td>
                                     <td>${booking.asset.unit_name}</td>
                                     <td>${booking.customer.client_name}</td>
-                                    <td>${booking.customer.client_phone}</td>
                                     <td>${booking.asset.monthly_rent}</td>
+                                    <td>${advance}</td>
+                                    <td>${adjustable}</td>
                                 </tr>
                             `);
                         });

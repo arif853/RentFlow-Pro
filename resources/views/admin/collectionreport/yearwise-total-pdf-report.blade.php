@@ -31,18 +31,22 @@
     </style>
 </head>
 <body>
+    <div class="logo" style="position: fixed; left:0; top:-30px; padding:20px;">
+        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('storage/' . $company->logo))) }}"
+        alt="Company Logo" style="width: 80px;">
+    </div>
     <div class="head">
-        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('storage/' . $company->logo))) }}" alt="Company Logo" style="width: 140px; margin-bottom: 10px;">
+
         <h2>{{$company->company_name}}</h2>
-        <p class="phead">Phone: {{$company->phone_number}}</p>
-        <p class="phead">Email: {{$company->email}}</p>
-        <p class="phead">Address: {{$company->address}}</p>
+        <p class="phead" style="font-size: 10px;">{{$company->phone_number}} | {{$company->email}}</p>
+        <p class="phead" style="font-size: 10px;">{{$company->address}}</p>
     </div>
     <h3>Year Report ({{$collectionYear}})</h3>
     <table>
         <thead>
             <tr>
                 <th scope="col">#</th>
+                <th scope="col">Building</th>
                 <th scope="col">Asset</th>
                 <th scope="col">Collectable Amount</th>
                 <th scope="col">Collection Amount</th>
@@ -50,16 +54,35 @@
             </tr>
         </thead>
         <tbody>
+            @php
+                $totalCollectableAmount = 0;
+                $totalCollectionAmount = 0;
+                $totalDueAmount = 0;
+            @endphp
             @foreach ($collections as $index => $collection)
             <tr>
                 <th scope="row">{{$index + 1}}</th>
+                <td>{{$collection->asset->building->building_name}}</td>
                 <td>{{$collection->asset->unit_name}}</td>
                 <td>{{$collection->total_payable_amount}}</td>
                 <td>{{$collection->total_collection_amount}}</td>
                 <td>{{$collection->total_due_amount}}</td>
             </tr>
+            @php
+                $totalCollectableAmount += $collection->total_payable_amount;
+                $totalCollectionAmount += $collection->total_collection_amount;
+                $totalDueAmount += $collection->total_due_amount;
+            @endphp
             @endforeach
         </tbody>
+        <tfoot>
+            <tr class="total-row">
+                <td colspan="3" class="text-right" style="text-align: right; font-weight:700;">Total</td>
+                <td>{{number_format($totalCollectableAmount, 2)}}</td>
+                <td>{{number_format($totalCollectionAmount, 2)}}</td>
+                <td>{{ number_format($totalDueAmount, 2) }}</td>
+            </tr>
+        </tfoot>
     </table>
 </body>
 </html>

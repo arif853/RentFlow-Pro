@@ -22,21 +22,29 @@ class ReportController extends Controller
         $buildings = Building::all();
         return view('admin.report.booking-report',compact('buildings'));
     }
+
+
     public function bookingDetails($buildingId)
     {
-        $booking = Booking::where('building_id', $buildingId)->where('status', 'confirmed')->with(['building','customer','floor','asset'])->get();
+        $booking = Booking::where('building_id', $buildingId)->where('status', 'confirmed')->with(['building','customer','customer.customerInfo','floor','asset'])->get();
         return response()->json($booking);
     }
+
+
     public function checkoutReport()
     {
         $buildings = Building::all();
         return view('admin.report.checkout-report',compact('buildings'));
     }
+
+
     public function checkoutDetails($buildingId)
     {
         $chekout = Checkout::where('building_id', $buildingId)->where('is_confirm', 1)->with(['building','asset','customer'])->get();
         return response()->json($chekout);
     }
+
+
     public function assetReport()
     {
         $buildings = Building::all();
@@ -44,6 +52,8 @@ class ReportController extends Controller
         $floors = Floor::all();
         return view('admin.report.asset-report',compact('buildings','locations','floors'));
     }
+
+
     public function assetDetails(Request $request)
     {
         // Retrieve the input data from the request

@@ -114,18 +114,18 @@
                         <li>
                             <a class="has-arrow" href="javascript:;">
                                 <i class="bi bi-circle"></i>
-                                <div class="menu-title">Collection Reports</div>
+                                <div >Collection Reports</div>
                             </a>
                             <ul>
                                 <li>
-                                    <a href="{{route('collection.report.monthwise')}}">Month Wise</a>
+                                    <a class="menu-title" href="{{route('collection.report.monthwise')}}">Month Wise</a>
                                 </li>
                                 <li>
-                                    <a href="{{route('collection.report.yearwise')}}">Year Wise</a>
+                                    <a class="menu-title" href="{{route('collection.report.yearwise')}}">Year Wise</a>
                                 </li>
-                                <li>
-                                    <a href="{{route('collection.report.clientwise')}}">Client Wise</a>
-                                </li>
+                                {{-- <li>
+                                    <a class="menu-title" href="{{route('collection.report.clientwise')}}">Client Wise</a>
+                                </li> --}}
                             </ul>
                         </li>
 
