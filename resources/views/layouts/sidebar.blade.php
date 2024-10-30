@@ -113,7 +113,7 @@
                         </li>
                         <li>
                             <a class="has-arrow" href="javascript:;">
-                                <div class="parent-icon"><i class="bi bi-card-checklist"></i></div>
+                                <i class="bi bi-circle"></i>
                                 <div class="menu-title">Collection Reports</div>
                             </a>
                             <ul>
@@ -131,11 +131,10 @@
 
                     </ul>
                 </li>
-
                 <li>
-                    <a href="#">
-                        <div class="parent-icon"><i class="bi bi-chat-right-text"></i></div>
-                        <div class="menu-title">Notification</div>
+                    <a href="{{route('websetting.index')}}">
+                        <div class="parent-icon"><i class="bi bi-grid-fill"></i></div>
+                        <div class="menu-title">Web Settings</div>
                     </a>
                 </li>
 

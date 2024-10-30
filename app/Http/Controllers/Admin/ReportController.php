@@ -7,6 +7,7 @@ use Dompdf\Options;
 use App\Models\Asset;
 use App\Models\Floor;
 use App\Models\Booking;
+use App\Models\Company;
 use App\Models\Building;
 use App\Models\Checkout;
 use App\Models\Location;
@@ -87,8 +88,10 @@ class ReportController extends Controller
         $options->set('defaultFont', 'Arial');
         $pdf->setOptions($options);
 
+        $company = Company::find(1);
+
         // Pass data to the view
-        $html = view('admin.report.booking-pdf-report', compact('bookings'))->render();
+        $html = view('admin.report.booking-pdf-report', compact('bookings','company'))->render();
 
         $pdf->loadHtml($html);
         $pdf->setPaper('A4');
@@ -125,8 +128,10 @@ class ReportController extends Controller
         $options->set('defaultFont', 'Arial');
         $pdf->setOptions($options);
 
+        $company = Company::find(1);
+
         // Pass data to the view
-        $html = view('admin.report.asset-pdf-report', compact('assets'))->render();
+        $html = view('admin.report.asset-pdf-report', compact('assets','company'))->render();
 
         $pdf->loadHtml($html);
         $pdf->setPaper('A4');
@@ -154,8 +159,10 @@ class ReportController extends Controller
         $options->set('defaultFont', 'Arial');
         $pdf->setOptions($options);
 
+        $company = Company::find(1);
+
         // Pass data to the view
-        $html = view('admin.report.checkout-pdf-report', compact('checkouts'))->render();
+        $html = view('admin.report.checkout-pdf-report', compact('checkouts','company'))->render();
 
         $pdf->loadHtml($html);
         $pdf->setPaper('A4');

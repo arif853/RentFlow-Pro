@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use App\Models\CustomerExtra;
 use function Illuminate\Log\log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class CollectionController extends Controller
@@ -152,12 +153,19 @@ class CollectionController extends Controller
 
     public function getAssets($buildingId)
     {
-        // $assets = Asset::where('building_id',$buildingId)->get();
-        $assets = Asset::where('building_id', $buildingId)
-        ->whereHas('bookings', function ($query) {
-            $query->where('status', 'confirmed');
-        })->get();
+        try{
+            $assets = Asset::where('building_id', $buildingId)
+            ->whereHas('bookings', function ($query) {
+                $query->where('status', 'confirmed');
+            })->get();
+
+        // dd($assets);
         return response()->json($assets);
+        }
+        catch(\Exception $e){
+            Log::alert($e->getMessage());
+        }
+
     }
 
     public function getAssetdetails($assetId)

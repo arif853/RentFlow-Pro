@@ -27,16 +27,18 @@
             line-height: 5px;
         }
         .phead{
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 400;
         }
     </style>
 </head>
 <body>
     <div class="head">
-        <h1>Rental</h1>
-        <p class="phead">Address: Hello rthis is adress</p>
-        <p class="phead">Phone: 0175454655</p>
+        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('storage/' . $company->logo))) }}" alt="Company Logo" style="width: 140px; margin-bottom: 10px;">
+        <h2>{{$company->company_name}}</h2>
+        <p class="phead">Phone: {{$company->phone_number}}</p>
+        <p class="phead">Email: {{$company->email}}</p>
+        <p class="phead">Address: {{$company->address}}</p>
     </div>
     <h3>Checkout Report</h3>
     <table>

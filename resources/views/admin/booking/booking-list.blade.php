@@ -87,7 +87,7 @@
                                 @elseif ($booking->status == 'confirmed')
                                 <a href="#" class="badge bg-success">Confirmed</a>
                                 @else
-                                <a href="#" class="badge bg-danger">Caneled</a>
+                                <a href="#" class="badge bg-danger">Canceled</a>
 
                                 @endif
                             </td>

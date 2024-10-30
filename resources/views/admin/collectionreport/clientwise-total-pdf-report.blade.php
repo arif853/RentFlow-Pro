@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Year Wise Total Collection Report</title>
+    <title>Client Total Collection Report</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -38,27 +38,46 @@
         <p class="phead">Email: {{$company->email}}</p>
         <p class="phead">Address: {{$company->address}}</p>
     </div>
-    <h3>Year Report ({{$collectionYear}})</h3>
+    <h3>Client Report ({{$customerName}})</h3>
     <table>
         <thead>
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Asset</th>
+                <th scope="col">Month</th>
                 <th scope="col">Collectable Amount</th>
                 <th scope="col">Collection Amount</th>
                 <th scope="col">Due</th>
             </tr>
         </thead>
         <tbody>
+            @php
+                $totalCollectableAmount = 0;
+                $totalCollectionAmount = 0;
+                $totalDueAmount = 0;
+            @endphp
             @foreach ($collections as $index => $collection)
             <tr>
                 <th scope="row">{{$index + 1}}</th>
                 <td>{{$collection->asset->unit_name}}</td>
-                <td>{{$collection->total_payable_amount}}</td>
-                <td>{{$collection->total_collection_amount}}</td>
-                <td>{{$collection->total_due_amount}}</td>
+                <td>{{$collection->month}}</td>
+                <td>{{number_format($collection->payable_amount, 2)}}</td>
+                <td>{{number_format($collection->collection_amount, 2)}}</td>
+                <td>{{number_format($collection->due_amount, 2)}}</td>
             </tr>
+            @php
+                $totalCollectableAmount += $collection->payable_amount;
+                $totalCollectionAmount += $collection->collection_amount;
+                $totalDueAmount += $collection->due_amount;
+            @endphp
             @endforeach
+            <!-- Display totals in the last row -->
+            <tr class="total-row">
+                <td colspan="3" class="text-right">Total</td>
+                <td>{{number_format($totalCollectableAmount, 2)}}</td>
+                <td>{{number_format($totalCollectionAmount, 2)}}</td>
+                <td>{{ number_format($totalDueAmount, 2) }}</td>
+            </tr>
         </tbody>
     </table>
 </body>
