@@ -251,9 +251,6 @@ class CollectionReportController extends Controller
     }
 
 
-
-
-
     public function clientwiseReport()
     {
         $customers = Customer::all();

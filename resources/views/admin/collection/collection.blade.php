@@ -108,6 +108,11 @@
                                                             </li>
                                                             <li
                                                                 class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                                                <span class="side-title">Advance :</span>
+                                                                <span id="monthly_rent">---</span>
+                                                            </li>
+                                                            <li
+                                                                class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                                                                 <span class="side-title">Service Charge :</span>
                                                                 <span id="service_charge">---</span>
                                                             </li>
@@ -159,28 +164,6 @@
                                                     placeholder="Employee" readonly>
                                             </div>
                                             <div class="col-12">
-                                                <!-- Month Wise Selection -->
-                                                {{-- <div class="col-12" id="month_wise_dates">
-                                                    <label>Select Month</label>
-                                                    <select class="form-select col-12" id="selected_month" name="month">
-                                                        <option class="" value="">Select a month</option>
-                                                        <option class="" value="January">January</option>
-                                                        <option class="" value="February">February</option>
-                                                        <option class="" value="March">March</option>
-                                                        <option class="" value="April">April</option>
-                                                        <option class="" value="May">May</option>
-                                                        <option class="" value="June">June</option>
-                                                        <option class="" value="July">July</option>
-                                                        <option class="" value="August">August</option>
-                                                        <option class="" value="September">September</option>
-                                                        <option class="" value="October">October</option>
-                                                        <option class="" value="November">November</option>
-                                                        <option class="" value="December">December</option>
-                                                    </select>
-                                                    @error('month')
-                                                    <span class="text-danger">{{$message}}</span>
-                                                    @enderror
-                                                </div> --}}
 
                                                 <div class="col-12" id="month_wise_dates">
                                                     <label for="selected_month" class="form-label">Select Month</label>

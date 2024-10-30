@@ -59,10 +59,8 @@
                 </div>
             </div>
             <div class="table-responsive mt-3">
-                @if($collections->isEmpty())
-                <tr>No data available.</tr>
-                @else
-                <table class="table align-middle" id="datatable">
+
+                <table class="table align-middle" id="collectionTable">
                     <thead class="table-secondary">
                         <tr>
                             <th>Sl</th>
@@ -78,6 +76,9 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
+                    @if($collections->isEmpty())
+                    <tr>No data available.</tr>
+                    @else
                     <tbody>
 
                         @foreach ($collections as $key => $collection)
@@ -85,7 +86,7 @@
                             <td>{{$key+1}}</td>
                             <td><a href="{{route('customer.show',$collection->customer_id)}}" data-bs-toggle="tooltip"
                                 data-bs-placement="bottom" data-bs-original-title="Details" aria-label="Details">{{$collection->customer->client_name}}</a></td>
-                            <td>{{$collection->asset->unit_name}}</td>
+                           
                             <td>{{$collection->building->building_name}}</td>
                             <td>{{$collection->asset->unit_name}}</td>
                             <td>{{$collection->employee ? $collection->employee->name : 'N/A'}}</td>
@@ -119,8 +120,8 @@
                         @endforeach
 
                     </tbody>
+                    @endif
                 </table>
-                @endif
             </div>
         </div>
     </div>
@@ -132,6 +133,8 @@
  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 <script>
     $(document).ready(function() {
+        $('#collectionTable').DataTable();
+
         $('#selected_month').datepicker({
                 format: "mm/yyyy", // Month and year only
                 minViewMode: 1,    // Only view month and year
@@ -166,6 +169,7 @@
         $('#selected_month').on('change', function () {
             $('#datatable').DataTable().columns(6).search(this.value).draw();
         });
+
     });
     $(document).on('submit', '.delete-form', function(e) {
             e.preventDefault(); // Prevent default form submission

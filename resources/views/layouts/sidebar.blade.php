@@ -118,13 +118,13 @@
                             </a>
                             <ul>
                                 <li>
-                                    <a href="{{route('colelctionreport.monthwise')}}"><i class="bi bi-circle"></i>Month Wise</a>
+                                    <a href="{{route('collection.report.monthwise')}}">Month Wise</a>
                                 </li>
                                 <li>
-                                    <a href="{{route('colelctionreport.yearwise')}}"><i class="bi bi-circle"></i>Year Wise</a>
+                                    <a href="{{route('collection.report.yearwise')}}">Year Wise</a>
                                 </li>
                                 <li>
-                                    <a href="{{route('colelctionreport.clientwise')}}"><i class="bi bi-circle"></i>Client Wise</a>
+                                    <a href="{{route('collection.report.clientwise')}}">Client Wise</a>
                                 </li>
                             </ul>
                         </li>
