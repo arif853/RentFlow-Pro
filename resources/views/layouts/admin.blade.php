@@ -20,8 +20,11 @@
     <link href="{{asset('admin')}}/assets/css/bootstrap-extended.css" rel="stylesheet" />
     <link href="{{asset('admin')}}/assets/css/style.css" rel="stylesheet" />
     <link href="{{asset('admin')}}/assets/css/icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <!-- Modern UI Styles -->
+    <link href="{{asset('admin')}}/assets/css/modern-ui.css" rel="stylesheet" />
 
     <!-- loader-->
     <link href="{{asset('admin')}}/assets/css/pace.min.css" rel="stylesheet" />

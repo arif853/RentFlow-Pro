@@ -1,16 +1,18 @@
 @extends('layouts.admin')
-@section('title','Add Builing')
+@section('title','Add Building')
 @section('content')
 <!--start content-->
 <main class="page-content">
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Complex</div>
+        <div class="breadcrumb-title pe-3">
+            <i class="bi bi-building-add me-2"></i>Complex
+        </div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
-                    </li>
+                    <li class="breadcrumb-item"><a href="{{route('dashboard')}}"><i class="bi bi-house-door"></i></a></li>
+                    <li class="breadcrumb-item"><a href="{{route('building.index')}}">Buildings</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Add Complex</li>
                 </ol>
             </nav>
@@ -19,52 +21,65 @@
     <!--end breadcrumb-->
     <div class="row">
         <div class="col-lg-12 mx-auto">
-            <div class="card">
+            <div class="card hover-lift">
                 <div class="card-header py-3 bg-transparent">
                     <div class="d-sm-flex align-items-center">
-                        <h5 class="mb-2 mb-sm-0">Add Complex</h5>
+                        <div>
+                            <h5 class="mb-1 fw-semibold"><i class="bi bi-plus-circle me-2 text-primary"></i>Add New Complex</h5>
+                            <small class="text-muted">Fill in the details to create a new building complex</small>
+                        </div>
                         <div class="ms-auto">
-                            <a href="{{route('building.index')}}" class="btn btn-secondary">Manage Complex</a>
-                            {{-- <button type="button" class="btn btn-primary">Add Complex</button> --}}
+                            <a href="{{route('building.index')}}" class="btn btn-outline-secondary">
+                                <i class="bi bi-list-ul me-1"></i>Manage Complex
+                            </a>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row g-3">
                         <div class="col-12 col-lg-12">
-                            <div class="card shadow-none bg-light border">
-                                <div class="card-body">
-
-                                    <form class="row g-3" action="{{route('building.store')}}" method="POST">
+                            <div class="card shadow-none border" style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);">
+                                <div class="card-body p-4">
+                                    <div class="mb-4">
+                                        <h6 class="fw-semibold text-primary mb-1"><i class="bi bi-info-circle me-2"></i>Basic Information</h6>
+                                        <p class="text-muted mb-0" style="font-size: 0.875rem;">Enter the primary details of the complex</p>
+                                    </div>
+                                    <form class="row g-4" action="{{route('building.store')}}" method="POST">
                                         @csrf
                                         @method('POST')
                                         <!--Row-1-->
                                         <div class="col-12 col-md-4">
-                                            <label class="form-label">Complex Name <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" placeholder="Complex Name"
-                                            name="building_name" required id="buildingName" value="{{ old('building_name') }}">
+                                            <label class="form-label fw-medium">Complex Name <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white"><i class="bi bi-building text-primary"></i></span>
+                                                <input type="text" class="form-control" placeholder="Enter complex name"
+                                                name="building_name" required id="buildingName" value="{{ old('building_name') }}">
+                                            </div>
                                             @error('building_name')
-                                            <span class="text-danger">{{$message}}</span>
+                                            <small class="text-danger mt-1 d-block"><i class="bi bi-exclamation-circle me-1"></i>{{$message}}</small>
                                             @enderror
                                         </div>
                                         <div class="col-12 col-md-4">
-                                            <label class="form-label">Complex Type</label>
+                                            <label class="form-label fw-medium">Complex Type</label>
                                             <select class="form-select" name="building_type">
-                                                <option value="commercial">Commercial</option>
-                                                <option value="residential">Residential</option>
-                                                <option value="teen-sheed">Teen Sheed</option>
-                                                <option value="semi-paka">Semi Paka</option>
-                                                <option value="others">Others</option>
+                                                <option value="commercial">🏢 Commercial</option>
+                                                <option value="residential">🏠 Residential</option>
+                                                <option value="teen-sheed">🏗️ Teen Sheed</option>
+                                                <option value="semi-paka">🏘️ Semi Paka</option>
+                                                <option value="others">📦 Others</option>
                                             </select>
                                             @error('building_type')
-                                            <span class="text-danger">{{$message}}</span>
+                                            <small class="text-danger mt-1 d-block"><i class="bi bi-exclamation-circle me-1"></i>{{$message}}</small>
                                             @enderror
                                         </div>
                                         <div class="col-12 col-md-4">
-                                            <label class="form-label">Total Floor</label>
-                                            <input type="text" class="form-control" placeholder="Total Floor" name="total_floor" >
+                                            <label class="form-label fw-medium">Total Floors</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white"><i class="bi bi-layers text-primary"></i></span>
+                                                <input type="number" class="form-control" placeholder="Number of floors" name="total_floor" min="1">
+                                            </div>
                                             @error('total_floor')
-                                            <span class="text-danger">{{$message}}</span>
+                                            <small class="text-danger mt-1 d-block"><i class="bi bi-exclamation-circle me-1"></i>{{$message}}</small>
                                             @enderror
                                         </div>
                                         <!--Row-2-->

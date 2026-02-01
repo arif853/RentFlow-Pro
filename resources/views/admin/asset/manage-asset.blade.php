@@ -51,7 +51,7 @@
                 </div>
 
                 <table class="table align-middle" id="datatable">
-                    <thead class="table-secondary">
+                    <thead >
                         <tr>
                             <th>Sl</th>
                             <th>Asset ID</th>
