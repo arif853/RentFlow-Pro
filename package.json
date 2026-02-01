@@ -1,4 +1,10 @@
 {
+    "name": "rentflow-pro",
+    "version": "1.0.0",
+    "description": "Property and Rental Management System",
+    "keywords": ["laravel", "property-management", "rental-management", "real-estate"],
+    "author": "Your Name",
+    "license": "MIT",
     "private": true,
     "type": "module",
     "scripts": {

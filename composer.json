@@ -1,8 +1,8 @@
 {
-    "name": "laravel/laravel",
+    "name": "rentflowpro/rentflow-pro",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "A comprehensive property and rental management system built with Laravel",
+    "keywords": ["laravel", "property management", "rental management", "real estate", "tenant management"],
     "license": "MIT",
     "require": {
         "php": "^8.2",
