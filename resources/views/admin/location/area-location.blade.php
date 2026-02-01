@@ -98,9 +98,9 @@
                 <div class="col-12 col-lg-8 d-flex">
                     <div class="card border shadow-none w-100">
                         <div class="card-body">
-                            <div class="table-responsive">
+                            <div class="">
                                 <table class="table align-middle">
-                                    <thead class="table-secondary">
+                                    <thead class="">
                                         <tr>
                                             <th><input class="form-check-input" type="checkbox"></th>
                                             <th>Sl</th>
